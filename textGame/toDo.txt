@@ -1,60 +1,60 @@
 Deadwood:
--create board
--prompt how many players
--create ^ many players
--UI
+- create board
+- prompt how many players
+- create ^ many players
+- UI
 
 
 Board:
--initialize positions
--reset board
--initialize sets
--endDay
-	-counter of how many remaining sets
--endGame
--getPlayerPos
+- initialize positions
+- reset board
+- initialize sets
+- endDay
+	- counter of how many remaining sets
+- endGame
+- getPlayerPos
 
 
 Set:
--initialize set card(role)
--shuffle sets
--wrap scene
-	-figure out if end day after wrap scene?
--calculate bonuses/pay player
--create get methods
+- initialize set card(role)
+- shuffle sets
+- wrap scene
+	- figure out if end day after wrap scene?
+- calculate bonuses/pay player
+- create get methods
 
 Role:
--create get methods (level, dialouge, name)
--on card/off card
--isOccupied
--makeOccupied
+- create get methods (level, dialouge, name)
+- on card/off card
+- isOccupied
+- makeOccupied
 
 
 Player:
--initialize player
--action options
--get methods for money/role
--calc final score
--changeRole
+- initialize player
+- action options
+- get methods for money/role
+- calc final score
+- changeRole
 
 
 CastingOffice:
--get upgrade costs
--verify upgrades
+- get upgrade costs
+- verify upgrades
 
 
 Design updates
 (keep and update a brief change log)
--update CastingOffice's methods to match actual implementation plan
--change Game class to Deadwood class
+- update CastingOffice's methods to match actual implementation plan
+- change Game class to Deadwood class
 
 
 Other:
 - get ParseXML example working -- Katie
   X cards.xml -- Katie
   - board.xml -- Katie
--READ.ME with instructions on how to compile and run the code
--design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
--individual 4 paragraph submissions on Canvas
-  -Katie
-  -Lilu
+- READ.ME with instructions on how to compile and run the code
+- design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
+- individual 4 paragraph submissions on Canvas
+  - Katie
+  - Lilu
