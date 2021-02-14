@@ -50,7 +50,9 @@ Design updates
 
 
 Other:
--get ParseXML example working -- Katie
+- get ParseXML example working -- Katie
+  X cards.xml -- Katie
+  - board.xml -- Katie
 -READ.ME with instructions on how to compile and run the code
 -design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
 -individual 4 paragraph submissions on Canvas
