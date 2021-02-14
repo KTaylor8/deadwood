@@ -1,6 +1,3 @@
-Overall:
-
-
 Deadwood:
 -create board
 -prompt how many players
@@ -44,3 +41,18 @@ Player:
 CastingOffice:
 -get upgrade costs
 -verify upgrades
+
+
+Design updates
+(keep and update a brief change log)
+-update CastingOffice's methods to match actual implementation plan
+-change Game class to Deadwood class
+
+
+Other:
+-get ParseXML example working -- Katie
+-READ.ME with instructions on how to compile and run the code
+-design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
+-individual 4 paragraph submissions on Canvas
+  -Katie
+  -Lilu
