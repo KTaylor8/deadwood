@@ -1,0 +1,44 @@
+Overall:
+
+
+Deadwood:
+-create board
+-prompt how many players
+-create ^ many players
+
+
+Board:
+-initialize positions
+-reset board
+-initialize sets
+-endDay
+	-counter of how many remaining sets
+-endGame
+
+
+Set:
+-initialize set card(role)
+-shuffle sets
+-wrap scene
+	-figure out if end day after wrap scene?
+-calculate bonuses/pay player
+-create get methods
+
+Role:
+-create get methods (level, dialouge, name)
+-on card/off card
+-isOccupied
+-makeOccupied
+
+
+Player:
+-initialize player
+-action options
+-get methods for money/role
+-calc final score
+-changeRole
+
+
+CastingOffice:
+-get upgrade costs
+-verify upgrades
