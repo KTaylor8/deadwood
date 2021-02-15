@@ -32,57 +32,112 @@ public class MyParseXML {
         } // exception handling
     }
 
+    private void handleAreaData(Node area) {
+        String areaX = area.getAttributes().getNamedItem("x").getNodeValue();
+        String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
+        String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
+        String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
+        System.out.println("  area: ");
+        System.out.println("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
+    }//handleAreaData() method
+
+    private void handlePartData(Node part){
+        //read attributes and text in part
+        String partName = part.getAttributes().getNamedItem("name").getNodeValue();;
+        String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
+        System.out.println(" part name = " + partName + ", part level = " + partLevel);
+
+        //reads attributes and text from parts' children
+        NodeList partChildren = part.getChildNodes();
+
+        for (int k = 0; k < partChildren.getLength(); k++) {
+
+            Node partChildrenSub = partChildren.item(k);
+
+            if ("area".equals(partChildrenSub.getNodeName())) {
+                //reads attributes and text from part's area
+                handleAreaData(partChildrenSub);
+                System.out.println("\n");
+            } else if ("line".equals(partChildrenSub.getNodeName())) {
+                //reads text from part's line
+                String line = partChildrenSub.getTextContent();
+                System.out.println("  Line = " + line);
+            }
+
+        } //for part childnodes
+    }//handlePartData() method
+
     // reads board data from XML file and prints data
     public void readBoardData(Document d) {
 
         Element root = d.getDocumentElement();
 
-        NodeList cards = root.getElementsByTagName("card");
+        NodeList sets = root.getElementsByTagName("set");
 
-        for (int i = 0; i < cards.getLength(); i++) {
+        for (int i = 0; i < sets.getLength(); i++) {
 
-            System.out.println("Printing information for card " + (i + 1));
+            System.out.println("Printing information for set " + (i + 1));
 
-            //reads data from the nodes
-            Node card = cards.item(i);
-            String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
-            System.out.println("Name = " + cardName);
+            //reads attributes from the sets/nodes
+            Node set = sets.item(i);
+            String setName = set.getAttributes().getNamedItem("name").getNodeValue();
+            System.out.println("Name = " + setName);
 
-            //reads data from their children
+            //reads attributes and parts from the sets' children
+            NodeList setChildren = set.getChildNodes();
 
-            NodeList children = card.getChildNodes();
+            for (int j = 0; j < setChildren.getLength(); j++) {
 
-            for (int j = 0; j < children.getLength(); j++) {
+                Node setChildSub = setChildren.item(j);
 
-                Node sub = children.item(j);
+                if ("neighbors".equals(setChildSub.getNodeName())) {
+                    //read/parse  neighbor children
+                    NodeList neighborList = setChildSub.getChildNodes();
+                    for (int k = 1; k < neighborList.getLength(); k++) {
+                        Node neighborListSub = neighborList.item(k);
+                        // not all items in neighborList are actual "neighbor"s; some are metadata or something
+                        if ("neighbor".equals(neighborListSub.getNodeName())) {
+                            Node neighbor = neighborListSub;
+                            String neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+                            System.out.println("  neighbor name: " + neighborName);
+                        }
+                    }
+                    // System.out.println("\n");
+                } else if ("area".equals(setChildSub.getNodeName())) {
+                    handleAreaData(setChildSub);
+                } else if ("takes".equals(setChildSub.getNodeName())) {
+                    //read attributes for takes and their area children
+                    NodeList takeList = setChildSub.getChildNodes();
+                    for (int k = 1; k < takeList.getLength(); k++) {
+                        Node takeListSub = takeList.item(k);
+                        // not all items in takeList are actual "take"s
+                        if ("take".equals(takeListSub.getNodeName())) {
+                            Node take = takeListSub;
+                            String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
+                            System.out.println("  take number: " + takeNumber);
 
-                if ("title".equals(sub.getNodeName())) {
-                    String cardLanguage = sub.getAttributes().getNamedItem("lang").getNodeValue();
-                    System.out.println("Language = " + cardLanguage);
-                    String title = sub.getTextContent();
-                    System.out.println("Title = " + title);
+                            //handle take's child <area>
+                            // handleAreaData(take.getChildNodes().item(0));
+                            // technically, there's 1 item, but we want loose coupling
+                            NodeList takeChildrenNodes = take.getChildNodes();
+                            for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
+                                Node takeChildrenSub = takeChildrenNodes.item(l);
+                                if ("area".equals(takeChildrenSub.getNodeName())) {
+                                    handleAreaData(takeChildrenSub);
+                                }
+                            }
+                        }
+                    }
+                } else if ("part".equals(setChildSub.getNodeName())) {
+                    handlePartData(setChildSub);
+                } //for part nodes
+                // don't use an else block
 
-                } else if ("author".equals(sub.getNodeName())) {
-                    String authorName = sub.getTextContent();
-                    System.out.println(" Author = " + authorName);
-
-                } else if ("year".equals(sub.getNodeName())) {
-                    String yearVal = sub.getTextContent();
-                    System.out.println(" Publication Year = " + yearVal);
-
-                } else if ("price".equals(sub.getNodeName())) {
-                    String priceVal = sub.getTextContent();
-                    System.out.println(" Price = " + priceVal);
-
-                }
-
-
-            } //for childnodes
-
+            } //for set childnodes
             System.out.println("\n");
+        }//for set nodes
 
-        }//for card nodes
-    }
+    }//readBoardData() method
 
     // reads card data from XML file and prints data
     public void readCardData(Document d) {
@@ -103,62 +158,31 @@ public class MyParseXML {
             System.out.println("Name = " + cardName + ", budget = " + budget);
 
             //reads attributes and parts from the cards' children
-            NodeList cardChildren = card.getChildNodes();
+            NodeList cardList = card.getChildNodes();
 
-            for (int j = 0; j < cardChildren.getLength(); j++) {
+            for (int j = 0; j < cardList.getLength(); j++) {
 
-                Node cardChild = cardChildren.item(j);
+                Node cardListSub = cardList.item(j);
 
-                if ("scene".equals(cardChild.getNodeName())) {
+                if ("scene".equals(cardListSub.getNodeName())) {
                     //read attributes and text in scene
-                    Node scene = cardChild;
+                    Node scene = cardListSub;
                     String sceneNumber = scene.getAttributes().getNamedItem("number").getNodeValue();
                     String sceneDescription = scene.getTextContent();
                     System.out.println(" scene description:" + sceneDescription);
                     System.out.println(" scene number = " + sceneNumber);
-
-                } else if ("part".equals(cardChild.getNodeName())) {
-                    //read attributes and text in part
-                    Node part = cardChild;
-                    String partName = part.getAttributes().getNamedItem("name").getNodeValue();;
-                    String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
-                    System.out.println(" part name = " + partName + ", part level = " + partLevel);
-
-                    //reads attributes and text from parts' children
-                    NodeList partChildren = part.getChildNodes();
-
-                    for (int k = 0; k < partChildren.getLength(); k++) {
-        
-                        Node partChild = partChildren.item(k);
-        
-                        if ("area".equals(partChild.getNodeName())) {
-                            //reads attributes and text from part's area
-                            Node area = partChild;
-                            String areaX = area.getAttributes().getNamedItem("x").getNodeValue();
-                            String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
-                            String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
-                            String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
-                            System.out.println("  x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
-
-                        } else if ("line".equals(partChild.getNodeName())) {
-                            //reads text from part's line
-                            String line = partChild.getTextContent();
-                            System.out.println("  Line = " + line);
-                        }
-        
-                    } //for part childnodes
-
                     System.out.println("\n");
+                } else if ("part".equals(cardListSub.getNodeName())) {
+                    handlePartData(cardListSub);
                     
                 } //for part nodes
 
-
             } //for card childnodes
-
-            // System.out.println("\n");
+            System.out.println("\n");
 
         }//for card nodes
 
-    }// readCardData() method
+    }//readCardData() method
+
 
 }//class
