@@ -52,7 +52,13 @@ Design updates
 Other:
 - get ParseXML example working -- Katie
   X cards.xml -- Katie
-  - board.xml -- Katie
+  X board.xml -- Katie
+- use parsing example to parse data for actual game use -- Katie
+  - make a class for the card
+  - load board parts/roles into their sets on board.java
+  - loads cards' parts/roles into their cards
+  - at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
+  - this needs to be updated on the design.pdf
 - READ.ME with instructions on how to compile and run the code
 - design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
 - individual 4 paragraph submissions on Canvas
