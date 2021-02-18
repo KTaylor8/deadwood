@@ -30,7 +30,7 @@ Role:
 - makeOccupied
 
 
-Player:
+Player:(lilu)
 - initialize player
 - action options
 - get methods for money/role
