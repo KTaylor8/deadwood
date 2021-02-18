@@ -30,17 +30,17 @@ Role:
 - makeOccupied
 
 
-Player:(lilu)
-- initialize player
+Player:
+x initialize player
 - action options
-- get methods for money/role
-- calc final score
-- changeRole
+x get methods for money/role
+x calc final score
+x changeRole
 
 
 CastingOffice:
-- get upgrade costs
-- verify upgrades
+x get upgrade costs
+- verify upgrades -> might not need (Lilu)
 
 
 Design updates
