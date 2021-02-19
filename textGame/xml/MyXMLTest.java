@@ -14,20 +14,20 @@ public class MyXMLTest {
         Document doc = null;
         MyParseXML parsing = new MyParseXML();
 
-        // // board data
-        // try {
-        //     doc = parsing.getDocFromFile("board.xml");
-        //     parsing.readBoardData(doc);
+        // parse board data
+        try {
+            doc = parsing.getDocFromFile("board.xml");
+            parsing.readBoardData(doc);
 
-        // } catch (NullPointerException e) {
-        //     System.out.println("Error = " + e);
-        //     return;
-        // } catch (Exception e) {
-        //     System.out.println("Error = " + e);
-        //     return;
-        // }
+        } catch (NullPointerException e) {
+            System.out.println("Error = " + e);
+            return;
+        } catch (Exception e) {
+            System.out.println("Error = " + e);
+            return;
+        }
 
-        // card data
+        //parse card data
         try {
             doc = parsing.getDocFromFile("cards.xml");
             parsing.readCardData(doc);

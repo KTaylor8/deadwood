@@ -15,7 +15,7 @@ public class XMLTest {
         ParseXML parsing = new ParseXML();
 
         try {
-            doc = parsing.getDocFromFile("deadwood/board.xml");
+            doc = parsing.getDocFromFile("book.xml");
             parsing.readBookData(doc);
 
         } catch (NullPointerException e) {
