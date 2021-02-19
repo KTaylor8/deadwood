@@ -12,7 +12,7 @@ public class MyXMLTest {
     public static void main(String[] args) {
 
         Document doc = null;
-        MyParseXML parsing = new MyParseXML();
+        XMLParser parsing = new XMLParser();
 
         // parse board data
         try {
