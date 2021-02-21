@@ -54,9 +54,9 @@ Other:
   X cards.xml -- Katie
   X board.xml -- Katie
 - use parsing example to parse data for actual game use -- Katie
-  - make a class for the card
-  - load board parts/roles into their sets on board.java
-  - loads cards' parts/roles into their cards
+  X make a class for the card -- Katie
+  - load board parts/roles into their sets on board.java -- Katie
+  - loads cards' parts/roles into their cards -- Katie
   - at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
   - this needs to be updated on the design.pdf
 - READ.ME with instructions on how to compile and run the code
