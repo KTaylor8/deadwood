@@ -32,20 +32,49 @@ public class XMLParser {
         } // exception handling
     }
 
-    private void handleAreaData(Node area) {
-        String areaX = area.getAttributes().getNamedItem("x").getNodeValue();
-        String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
-        String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
-        String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
-        System.out.println("  area: ");
-        System.out.println("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
+    // class for Area, so then it's easier to store and access the dimensions
+    private class AreaData{
+        String x;
+        String y;
+        String h;
+        String w;
+
+        AreaData(String x, String y, String h, String w) {
+            this.x = x;
+            this.y = y;
+            this.h = h;
+            this.w = w;
+        }
+    }
+
+    private AreaData handleAreaData(Node area) {
+        // String areaX = area.getAttributes().getNamedItem("x").getNodeValue();
+        // String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
+        // String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
+        // String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
+        // System.out.println("  area: ");
+        // System.out.println("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
+
+        return new AreaData(
+            area.getAttributes().getNamedItem("x").getNodeValue(),
+            area.getAttributes().getNamedItem("y").getNodeValue(),
+            area.getAttributes().getNamedItem("h").getNodeValue(),
+            area.getAttributes().getNamedItem("w").getNodeValue()
+        );
     }//handleAreaData() method
 
-    private void handlePartData(Node part){
+    private Role handlePartData(Role roleObj, Node part){
+        
+        // Part data for Role init
+        AreaData partArea;
+        String partName;
+        String partLevel;
+        String partLine;
+
         //read attributes and text in part
-        String partName = part.getAttributes().getNamedItem("name").getNodeValue();;
-        String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
-        System.out.println(" part name = " + partName + ", part level = " + partLevel);
+        partName = part.getAttributes().getNamedItem("name").getNodeValue();;
+        partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
+        // System.out.println(" part name = " + partName + ", part level = " + partLevel);
 
         //reads attributes and text from parts' children
         NodeList partChildren = part.getChildNodes();
@@ -56,15 +85,19 @@ public class XMLParser {
 
             if ("area".equals(partChildrenSub.getNodeName())) {
                 //reads attributes and text from part's area
-                handleAreaData(partChildrenSub);
-                System.out.println("\n");
+                partArea = handleAreaData(partChildrenSub);
+                // System.out.println("\n");
             } else if ("line".equals(partChildrenSub.getNodeName())) {
                 //reads text from part's line
-                String line = partChildrenSub.getTextContent();
-                System.out.println("  Line = " + line);
+                partLine = partChildrenSub.getTextContent();
+                // System.out.println("  Line = " + line);
             }
 
         } //for part childnodes
+
+        roleObj = new Role(partName, partLevel, partArea, partLine);
+
+        return roleObj;
     }//handlePartData() method
 
     // reads board data from XML file and prints data
@@ -86,6 +119,9 @@ public class XMLParser {
             //reads attributes and parts from the sets' children
             NodeList setChildren = set.getChildNodes();
 
+            AreaData setArea;
+            AreaData takeArea;
+
             for (int j = 0; j < setChildren.getLength(); j++) {
 
                 Node setChildSub = setChildren.item(j);
@@ -104,7 +140,7 @@ public class XMLParser {
                     }
                     // System.out.println("\n");
                 } else if ("area".equals(setChildSub.getNodeName())) {
-                    handleAreaData(setChildSub);
+                    setArea = handleAreaData(setChildSub);
                 } else if ("takes".equals(setChildSub.getNodeName())) {
                     //read attributes for takes and their area children
                     NodeList takeList = setChildSub.getChildNodes();
@@ -123,7 +159,7 @@ public class XMLParser {
                             for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
                                 Node takeChildrenSub = takeChildrenNodes.item(l);
                                 if ("area".equals(takeChildrenSub.getNodeName())) {
-                                    handleAreaData(takeChildrenSub);
+                                    takeArea = handleAreaData(takeChildrenSub);
                                 }
                             }
                         }
@@ -140,7 +176,7 @@ public class XMLParser {
     }//readBoardData() method
 
     // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
-    public void convertDocToCardDeck(Document d) {
+    public Stack<Card> convertDocToCardDeck(Document d) {
 
         Element root = d.getDocumentElement();
 
@@ -182,7 +218,7 @@ public class XMLParser {
                     // System.out.println("\n");
                     
                 } else if ("part".equals(cardListSub.getNodeName())) {
-                    role =  handlePartData(cardListSub);
+                    role =  handlePartData(role, cardListSub); // passing empty role in for now--wasn't sure if role should've been init-ed within this method
                     cardRoles.push(role);
                     
                 } //for part nodes
