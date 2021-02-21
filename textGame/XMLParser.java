@@ -139,23 +139,31 @@ public class XMLParser {
 
     }//readBoardData() method
 
-    // reads card data from XML file and prints data
-    public void readCardData(Document d) {
+    // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
+    public void convertDocToCardDeck(Document d) {
 
         Element root = d.getDocumentElement();
 
         NodeList cards = root.getElementsByTagName("card");
 
+        // declare Card, Role, and stacks of Card and Role
+        Card cardObj;
+        Role role;
+
+        Stack<Card> cardDeck = new Stack<Card>();
+        Stack<Role> cardRoles = new Stack<Role>();
+
         for (int i = 0; i < cards.getLength(); i++) {
 
-            System.out.println("Printing information for card " + (i + 1));
+            // System.out.println("Printing information for card " + (i + 1));
+            System.out.println("\nParsing card " + (i + 1));
 
             //reads attributes from the cards/nodes
             Node card = cards.item(i);
             String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
             // String imgName = card.getAttributes().getNamedItem("img").getNodeValue();
             String budget = card.getAttributes().getNamedItem("budget").getNodeValue();
-            System.out.println("Name = " + cardName + ", budget = " + budget);
+            // System.out.println("Name = " + cardName + ", budget = " + budget);
 
             //reads attributes and parts from the cards' children
             NodeList cardList = card.getChildNodes();
@@ -169,16 +177,23 @@ public class XMLParser {
                     Node scene = cardListSub;
                     String sceneNumber = scene.getAttributes().getNamedItem("number").getNodeValue();
                     String sceneDescription = scene.getTextContent();
-                    System.out.println(" scene description:" + sceneDescription);
-                    System.out.println(" scene number = " + sceneNumber);
-                    System.out.println("\n");
+                    // System.out.println(" scene description:" + sceneDescription);
+                    // System.out.println(" scene number = " + sceneNumber);
+                    // System.out.println("\n");
+                    
                 } else if ("part".equals(cardListSub.getNodeName())) {
-                    handlePartData(cardListSub);
+                    role =  handlePartData(cardListSub);
+                    cardRoles.push(role);
                     
                 } //for part nodes
 
             } //for card childnodes
-            System.out.println("\n");
+            // System.out.println("\n");
+
+            // init card obj w/ parsed data, push it to deck, and clear stack of roles for this card
+            cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
+            cardDeck.push(cardObj);
+            cardRoles.clear();
 
         }//for card nodes
 
