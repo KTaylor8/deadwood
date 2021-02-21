@@ -16,7 +16,7 @@ public class MyXMLTest {
 
         // parse board data
         try {
-            doc = parsing.getDocFromFile("board.xml");
+            doc = parsing.getDocFromFile("xml/board.xml");
             parsing.readBoardData(doc);
 
         } catch (NullPointerException e) {
@@ -29,7 +29,7 @@ public class MyXMLTest {
 
         //parse card data
         try {
-            doc = parsing.getDocFromFile("cards.xml");
+            doc = parsing.getDocFromFile("xml/cards.xml");
             parsing.readCardData(doc);
 
         } catch (NullPointerException e) {
