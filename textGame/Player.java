@@ -3,28 +3,24 @@ import java.util.*;
 public class Player{
 
     public String playerName;
-    public int level;
-    public int dollar;
-    public int credit;
-    public boolean employed; 
-    public int rehearseToken;
+    public int level = 1;
+    public int dollar = 0;
+    public int credit = 0;
+    public boolean employed = false; 
+    public int rehearseToken = 0;
 
     public Player(String p){
         playerName = p;
-        level = 1;
-        dollar = 0;
-        credit = 0;
-        employed = false;
-        rehearseToken = 0;
     }
 
-    public Player(String p, int sd, int sc){
+    public Player(int sl, String p){
         playerName = p;
-        level = 1;
-        dollar = sd;
+        level = sl;
+    }
+
+    public Player(String p, int sc){
+        playerName = p;
         credit = sc;
-        employed = false;
-        rehearseToken = 0;
     }
 
     public setLevel(int level){
