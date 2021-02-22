@@ -30,7 +30,7 @@ public class MyXMLTest {
         //parse card data
         try {
             doc = parsing.getDocFromFile("xml/cards.xml");
-            parsing.readCardData(doc);
+            Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
 
         } catch (NullPointerException e) {
             System.out.println("Error = " + e);
