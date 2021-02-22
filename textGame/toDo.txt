@@ -3,6 +3,12 @@ Deadwood:Lilu
 - prompt how many players
 - create ^ many players
 - UI
+- fix the absolutely wild if statements for the move condition cause theres def a better way to do that
+- figure out something for ties
+-Questions:
+  -did we have act thing in game or board???????? (im making that a problem for later)
+
+
 
 
 Board:

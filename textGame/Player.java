@@ -39,8 +39,8 @@ public class Player{
         this.employed = !this.employed;
     }
 
-    public incToken(int token){
-        this.rehearseToken += token;
+    public incToken(){
+        this.rehearseToken++;
     }
 
     public resetToken(){
