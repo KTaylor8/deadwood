@@ -1,4 +1,4 @@
-Deadwood:
+Deadwood:Lilu
 - create board
 - prompt how many players
 - create ^ many players
