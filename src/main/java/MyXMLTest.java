@@ -5,7 +5,7 @@
  */
 
 import org.w3c.dom.Document;
-
+import java.util.*;
 
 public class MyXMLTest {
 
@@ -15,22 +15,25 @@ public class MyXMLTest {
         XMLParser parsing = new XMLParser();
 
         // parse board data
-        try {
-            doc = parsing.getDocFromFile("xml/board.xml");
-            parsing.readBoardData(doc);
+        // try {
+        //     doc = parsing.getDocFromFile("../resources/xml/board.xml");
+        //     parsing.readBoardData(doc);
 
-        } catch (NullPointerException e) {
-            System.out.println("Error = " + e);
-            return;
-        } catch (Exception e) {
-            System.out.println("Error = " + e);
-            return;
-        }
+        // } catch (NullPointerException e) {
+        //     System.out.println("Error = " + e);
+        //     return;
+        // } catch (Exception e) {
+        //     System.out.println("Error = " + e);
+        //     return;
+        // }
 
         //parse card data
         try {
-            doc = parsing.getDocFromFile("xml/cards.xml");
+            doc = parsing.getDocFromFile("../resources/xml/cards.xml");
             Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
+            for (Card card: cardDeck) {
+                System.out.println(card);
+            }
 
         } catch (NullPointerException e) {
             System.out.println("Error = " + e);

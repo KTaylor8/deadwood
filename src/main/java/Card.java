@@ -7,7 +7,7 @@ public class Card{
     String sceneDescription;
     Stack<Role> roles;
 
-    Card(String cardName, String budget, String sceneNumber, String sceneDescription, String cardRoles) {
+    Card(String cardName, String budget, String sceneNumber, String sceneDescription, Stack<Role> cardRoles) {
         this.cardName = cardName;
         this.budget = budget;
         this.sceneNumber = sceneNumber;

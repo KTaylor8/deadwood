@@ -14,6 +14,8 @@ public class Role{
     //     this.line = line;
     // }
 
+    Role() {}
+
     Role(String name, String level, String line) {
         this.name = name;
         this.level = level;
