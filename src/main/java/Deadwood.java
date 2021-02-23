@@ -113,7 +113,7 @@ public class DeadWood{
     public static boolean moveTo(Player p, String place){
         Stack<String> adj = board.getAdjacent(p.position);
         for(int i = 0; i < adj.getLength(); i++){
-            if(place.equals(adj.pop())
+            if(place.equals(adj.pop()))
             {
                 return true;
             }

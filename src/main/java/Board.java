@@ -65,7 +65,7 @@ public class Board{
     }
 
     public Set[] createBoard(Document d){
-        Element root = d.getDocumentElement
+        Element root = d.getDocumentElement;
         NodeList sets = root.getElementsByTagName("set");
         Set setObj;
         Role role = new Role();
@@ -78,7 +78,7 @@ public class Board{
             Node sset = sets.item(i);
             
             
-            Stack<String> adjacentTiles = new Stack<String>;
+            Stack<String> adjacentTiles = new Stack<String>();
             Stack<Role> offCardRoles = new Stack<Role>();
             setName = card.getAttributes().getNamedItem("name").getNodeValue();
 

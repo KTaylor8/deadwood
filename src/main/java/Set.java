@@ -17,17 +17,17 @@ public class Set{
         this.finalTakes = t;
     }
 
-    public resetSet(Card newCard){
+    public void resetSet(Card newCard){
         this.currentCard = newCard;
         this.currentTakes = finalTakes;
         flipStage = 0;
     }
 
-    public incTakes(){
+    public void incTakes(){
         currentTakes--;
     }
 
-    public flipSet(){
+    public void flipSet(){
         flipStage++;
     }
 

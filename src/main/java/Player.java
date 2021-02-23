@@ -11,48 +11,48 @@ public class Player{
     public String position = "trailer";
     public String roleName;
 
-    public Player(String p){
+    public void Player(String p){
         playerName = p;
     }
 
-    public Player(int sl, String p){
+    public void Player(int sl, String p){
         playerName = p;
         level = sl;
     }
 
-    public Player(String p, int sc){
+    public void Player(String p, int sc){
         playerName = p;
         credit = sc;
     }
 
-    public setLevel(int level){
+    public void setLevel(int level){
         this.level = level;
     }
 
-    public incDollar(int dollar){
+    public void incDollar(int dollar){
         this.dollar += dollar;
     }
 
-    public incCred(int credit){
+    public void incCred(int credit){
         this.credit += credit;
     }
 
-    public giveRole(String rn){
+    public void giveRole(String rn){
         this.roleName = rn;
         this.employed = !this.employed;
     }
 
-    public incToken(){
+    public void incToken(){
         this.rehearseToken++;
     }
 
-    public resetRole(){
+    public void resetRole(){
         roleName = "";
         this.rehearseToken = 0;
         this.employed = !this.employed;
     }
 
-    public changePos(String newPos){
+    public void changePos(String newPos){
         this.position = newPos;
     }
 
