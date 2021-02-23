@@ -18,15 +18,15 @@ public class Set{
         this.setName = s;
         this.adjacent = a;
         this.offCardRoles = r;
+
         this.finalTakes = t;
     }
 
     // office constructor
-    Set(String s, Stack<String> a, Stack<Role> r, int[] upgradeD, int[] upgradeC){
+    Set(String s, Stack<String> a, int[] upgradeD, int[] upgradeC){
         this.setName = s;
         this.adjacent = a;
-        this.offCardRoles = r;
-        this.finalTakes = 0;
+        // this.finalTakes = 0;
         upgradeCostDollars = upgradeD;
         upgradeCostCredits = upgradeC;
     }
@@ -35,7 +35,7 @@ public class Set{
     Set(String s, Stack<String> a){
         this.setName = s;
         this.adjacent = a;
-        this.finalTakes = 0;
+        // this.finalTakes = 0;
     }
 
     public void resetSet(Card newCard){
