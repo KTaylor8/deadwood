@@ -183,8 +183,8 @@ public class XMLParser {
         Node upgrade;
         int upgradeCost;
 
-        int[] upgradeD = new int[1];
-        int[] upgradeC = new int[1];
+        int[] upgradeD = new int[0];
+        int[] upgradeC = new int[0];
 
         //reads attributes and parts from the offices' children
         officeChildren = office.getChildNodes();
@@ -204,37 +204,39 @@ public class XMLParser {
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
                 //read attributes for takes and their area children
                 upgradesList = officeChildSub.getChildNodes();
-                // Queue<Node> filteredUpgrades = new PriorityQueue<Node>();
+                Queue<Node> filteredUpgrades = new LinkedList<Node>();
                 for (int k = 1; k < upgradesList.getLength(); k++) {
                     upgradesListSub = upgradesList.item(k);
                     // not all items in upgradesList are actual "upgrade"s
                     if ("upgrade".equals(upgradesListSub.getNodeName())) {
-                        upgrade = upgradesListSub;
-                        upgradeCost = Integer.parseInt(upgrade.getAttributes().getNamedItem("amt").getNodeValue());
-
-                        // I feel like this isn't the best way to do this, but not all items in upgradesList are actual upgrades so idk a better way
-                        if ("dollar".equals(upgrade.getAttributes().getNamedItem("currency").getNodeValue())) {
-                            upgradeD = appendInt(upgradeD, upgradeCost);
-                        }
-
-                        if ("credit".equals(upgrade.getAttributes().getNamedItem("currency").getNodeValue())) {
-                            upgradeC = appendInt(upgradeC, upgradeCost);
-                        }
-
-                        //handle upgrade's child <area>
-                        // handleAreaData(upgrade.getChildNodes().item(0));
-                        // technically, there's 1 item, but we want loose coupling
-                        // NodeList upgradeChildrenNodes = upgrade.getChildNodes();
-                        // ignoring area data for now; uncomment for GUI
-                        // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
-                        //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
-                        //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
-                        //         // upgradeArea = handleAreaData(upgradeChildrenSub); // uncomment for GUI
-                        //     }
-                        // }
+                        filteredUpgrades.add(upgradesListSub);
                     }
-
                 }
+
+                // upgrade amounts in dollars
+                for (int k = 0; k < 5; k++) {
+                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
+                    appendInt(upgradeD, upgradeCost);
+                }
+
+                // upgrade amounts in credits
+                for (int k = 0; k < 5; k++) {
+                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
+                    appendInt(upgradeD, upgradeCost);
+                }
+
+                //handle upgrade's child <area>
+                // handleAreaData(upgrade.getChildNodes().item(0));
+                // technically, there's 1 item, but we want loose coupling
+                // NodeList upgradeChildrenNodes = upgrade.getChildNodes();
+                // ignoring area data for now; uncomment for GUI
+                // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
+                //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
+                //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
+                //         // upgradeArea = handleAreaData(upgradeChildrenSub); // uncomment for GUI
+                //     }
+                // }
+
 
             }
             // don't use an else block
