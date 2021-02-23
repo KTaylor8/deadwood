@@ -11,8 +11,6 @@ public class Player{
     public String position = "trailer";
     public String roleName;
 
-    public Player(){
-    }
     public Player(String p){
         playerName = p;
     }

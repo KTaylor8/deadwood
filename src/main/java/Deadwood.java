@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Deadwood{
     //make queue??
-    static Queue<Player> players = new PriorityQueue<Player>();
     static int numDays;
     
+    static Queue<Player> players = new LinkedList<Player>();
     static Board board;
     public static void main(String[] args){
 
@@ -35,9 +35,10 @@ public class Deadwood{
             System.exit(0);
         }
 
+        System.out.println("baller");
         //creates the player queue with diff values according to num players
         //fix to not make ugly ?
-        addPlayers(numPlayers);
+        players = addPlayers(numPlayers);
 
         
         //figure out how to create board here
@@ -54,7 +55,7 @@ public class Deadwood{
         }
     System.out.println("Calculating winner...");
     Player winner = calcWinner();
-    System.out.println(winner.playerName + "wins with " + winner.calcFinalScore() + "!");
+    System.out.println(winner.playerName + " wins with " + winner.calcFinalScore() + "!");
         
 
     }
@@ -69,7 +70,9 @@ public class Deadwood{
         return winner;
     }
 
-    public static void addPlayers(int numPlayers){
+    public static Queue<Player> addPlayers(int numPlayers){
+        
+        Queue<Player> p = new LinkedList<Player>();
         Scanner scan = new Scanner(System.in);
         String input = "";
 
@@ -78,14 +81,14 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input, 2, 0));
+                p.add(new Player(input, 2, 0));
             }
         }
         else if (numPlayers == 6) {
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input, 0, 4));
+                p.add(new Player(input, 0, 4));
             }
             numDays = 4;
         }
@@ -93,7 +96,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input, 0, 2));
+                p.add(new Player(input, 0, 2));
             }
             numDays = 4;
         }
@@ -101,7 +104,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input));
+                p.add(new Player(input));
             }
             numDays = 4;
         }
@@ -109,10 +112,11 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input));
+                p.add(new Player(input));
             }
             numDays = 3;
         }
+        return p;
     }
 
     public static boolean moveTo(Player p, String place){
@@ -250,5 +254,11 @@ public class Deadwood{
                     }
                 }
 
+    }
+
+    public static void act(Player curPlayer){
+        int budget = board.getBudget(curPlayer.position);
+        //roll a die
+        
     }
 }
