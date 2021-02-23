@@ -359,16 +359,16 @@ public class XMLParser {
 
         // declare Card, Role, and stacks of Card and Role
         Card cardObj;
-        Role role;
+        Role role = new Role();
 
-        Stack<Card> cardDeck;
-        Stack<Role> cardRoles;
+        Stack<Card> cardDeck = new Stack<Card>();
+        Stack<Role> cardRoles = new Stack<Card>();
 
         // Declare vars for Role args
         String cardName;
         String budget;
-        String sceneNumber;
-        String sceneDescription;
+        String sceneNumber = "";
+        String sceneDescription = "";
 
         Element root = d.getDocumentElement();
 
