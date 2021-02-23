@@ -255,6 +255,22 @@ public class XMLParser {
         NodeList trailersChildren;
         Node trailersChildSub;
 
+        trailers = root.getElementsByTagName("trailers").item(0);
+
+        //reads attributes and parts from the trailers' children
+        trailersChildren = trailers.getChildNodes();
+
+        for (int j = 0; j < trailersChildren.getLength(); j++) {
+
+            trailersChildSub = trailersChildren.item(j);
+
+            if ("neighbors".equals(trailersChildSub.getNodeName())) {
+                //read/parse  neighbor children
+                neighborStack = handleNeighborData(trailersChildSub.getChildNodes());
+            } else if ("area".equals(trailersChildSub.getChildNodes())) {
+                // trailersArea = handleAreaData(trailersChildSub); // uncomment for GUI
+            }
+        }
 
         setObj = new Set("trailers", neighborStack);
         appendSet(setArr, setObj);
