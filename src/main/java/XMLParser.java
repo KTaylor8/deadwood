@@ -362,7 +362,7 @@ public class XMLParser {
         Role role = new Role();
 
         Stack<Card> cardDeck = new Stack<Card>();
-        Stack<Role> cardRoles = new Stack<Card>();
+        Stack<Role> cardRoles = new Stack<Role>();
 
         // Declare vars for Role args
         String cardName;
