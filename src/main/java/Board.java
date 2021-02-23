@@ -47,6 +47,8 @@ public class Board{
         return null;
     }
 
+    public int[] getDollarC()
+
     public boolean employ(String pos, String roll){
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
