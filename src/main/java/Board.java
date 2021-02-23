@@ -1,4 +1,12 @@
 import java.util.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class Board{
     String boardPath, cardPath;
@@ -8,7 +16,7 @@ public class Board{
     public Board(String b, String c){
         boardPath = b;
         cardPath = c;
-        setBoard();
+        //setBoard();
     }
 
     public Stack<String> getAdjacent(String pos){
@@ -23,7 +31,7 @@ public class Board{
     public boolean employ(String pos, String roll){
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
-                for(int i = 0; i < (s.offCardRoles).getLength(); i++){
+                for(int i = 0; i < (s.offCardRoles).getLength; i++){
                     if(pos.equals(((s.offCardRoles).peek()).name) && !((s.offCardRoles).peek()).occupied){
                         Role temp = (s.offCardRoles).pop();
                         temp.occupy();
@@ -32,7 +40,7 @@ public class Board{
                     }
                     (s.offCardRoles).push((s.offCardRoles).pop());
                 }
-                for(int i = 0; i < ((s.currentCard).roles).getLength(); i++){
+                for(int i = 0; i < ((s.currentCard).roles).getLength; i++){
                     if(pos.equals((s.currentCard).roles).peek().name && !((s.currentCard).roles).peek().occupied){
                         Role temp = ((s.currentCard).roles).pop();
                         temp.occupy();
@@ -50,15 +58,15 @@ public class Board{
         String free = "";
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
-                for(int i = 0; i < (s.offCardRoles).getLength(); i++){
+                for(int i = 0; i < (s.offCardRoles).getLength; i++){
                     if(!((s.offCardRoles).peek()).occupied){
                         free += "\nOff card role: " + ((s.offCardRoles).peek()).name +" must be level: " + ((s.offCardRoles).peek()).level;
                     }
                     (s.offCardRoles).push((s.offCardRoles).pop());
                 }
-                for(int i = 0; i < ((s.currentCard).roles).getLength(); i++){
+                for(int i = 0; i < ((s.currentCard).roles).getLength; i++){
                     if(!((s.currentCard).roles).peek().occupied){
-                        free += "\nOn card role: " + (s.currentCard).roles).peek().name +" must be level: " + (s.currentCard).roles).peek()).level;
+                        free += "\nOn card role: " + ((s.currentCard).roles).peek().name +" must be level: " + (((s.currentCard).roles).peek()).level + "";
                         
                     }
                     ((s.currentCard).roles).push(((s.currentCard).roles).pop());
@@ -66,7 +74,7 @@ public class Board{
             }
         }
         if(free.equals("")){
-            free = "There are no open roles on this card.";
+            free += "There are no open roles on this card.";
         }
         return free;
     }
@@ -79,7 +87,7 @@ public class Board{
         return numScene;
     }
 
-    public void setBoard(){
+    /*public void setBoard(){
         try {
             Document doc1 = parsing.getDocFromFile(cardPath);
             cardDeck = parsing.convertDocToCardDeck(doc);
@@ -223,5 +231,5 @@ public class Board{
 
         return cardDeck;
     }//readCardData() method
-
+*/
 }
