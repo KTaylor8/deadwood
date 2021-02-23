@@ -51,9 +51,9 @@ x get upgrade costs
 
 Design updates
 (keep and update a brief change log)
-- update CastingOffice's methods to match actual implementation plan
+--update CastingOffice's methods to match actual implementation plan-- remove CastingOffice
 - change Game class to Deadwood class
-
+- change reset board sequence diagram to init board before players
 
 Other:
 - get ParseXML example working -- Katie
