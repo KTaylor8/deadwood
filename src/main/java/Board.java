@@ -22,7 +22,7 @@ public class Board{
     public int getBudget(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.setName)){
-                return ((s.currentCard).budget);
+                return Integer.valueOf((s.currentCard).budget);
             }
         }
     }
