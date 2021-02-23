@@ -34,17 +34,17 @@ public class XMLParser {
         } // exception handling
     }
 
-    private Set[] appendSet(Set[] setArr, Set newSet) {
-        Set[] newSetArr = new Set[setArr.length+1];
+    // private Set[] appendSet(Set[] setArr, Set newSet) {
+    //     Set[] newSetArr = new Set[setArr.length+1];
 
-        int i;
-        for (i = 0; i < setArr.length; i++) {
-            newSetArr[i] = setArr[i];
-        }
-        newSetArr[i] = newSet;
+    //     int i;
+    //     for (i = 0; i < setArr.length; i++) {
+    //         newSetArr[i] = setArr[i];
+    //     }
+    //     newSetArr[i] = newSet;
 
-        return newSetArr;
-    }
+    //     return newSetArr;
+    // }
 
     // private int[] appendInt(int[] intArr, int newInt) {
     //     int[] newIntArr = new int[intArr.length+1];
@@ -59,8 +59,8 @@ public class XMLParser {
     // }
 
     // accepts a list of potential neighbors
-    private Stack<String> handleNeighborData(NodeList neighborList) {
-        Stack<String> neighbors = new Stack<String>();
+    private List<String> handleNeighborData(NodeList neighborList) {
+        List<String> neighbors = new ArrayList<String>();
         Node neighbor;
         String neighborName;
         Node neighborListSub;
@@ -73,7 +73,7 @@ public class XMLParser {
                 neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
                 // System.out.println("  neighbor name: " + neighborName);
 
-                neighbors.push(neighborName);
+                neighbors.add(neighborName);
             }
         }
 
@@ -367,15 +367,15 @@ public class XMLParser {
     }//readBoardData() method
 
     // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
-    public Stack<Card> convertDocToCardDeck(Document d) {
+    public List<Card> convertDocToCardDeck(Document d) {
         NodeList cards;
 
         // declare Card, Role, and stacks of Card and Role
         Card cardObj;
         Role role = new Role();
 
-        Stack<Card> cardDeck = new Stack<Card>();
-        Stack<Role> cardRoles = new Stack<Role>();
+        List<Card> cardDeck = new ArrayList<Card>();
+        List<Role> cardRoles = new ArrayList<Role>();
 
         // Declare vars for Role args
         String cardName;
@@ -418,7 +418,7 @@ public class XMLParser {
                     
                 } else if ("part".equals(cardListSub.getNodeName())) {
                     role =  handlePartData(role, cardListSub); // passing empty role in for now--wasn't sure if role should've been declared within this method
-                    cardRoles.push(role);
+                    cardRoles.add(role);
                     
                 } //for part nodes
 
@@ -427,7 +427,7 @@ public class XMLParser {
 
             // init card obj w/ parsed data, push it to deck, and clear stack of roles for this card
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
-            cardDeck.push(cardObj);
+            cardDeck.add(cardObj);
 
         }//for card nodes
 
