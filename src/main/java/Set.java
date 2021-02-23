@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Set{
     public String setName;
-    public List<String> adjacent;
+    public List<String> neighbors;
     public List<Role> offCardRoles;
     public Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
@@ -14,27 +14,27 @@ public class Set{
     public int[] upgradeCostCredits;
 
     // regular set constructor
-    Set(String s, List<String> a, List<Role> r, int t){
+    Set(String s, List<String> n, List<Role> r, int t){
         this.setName = s;
-        this.adjacent = a;
+        this.neighbors = n;
         this.offCardRoles = r;
 
         this.finalTakes = t;
     }
 
     // office constructor
-    Set(String s, List<String> a, int[] upgradeD, int[] upgradeC){
+    Set(String s, List<String> n, int[] upgradeD, int[] upgradeC){
         this.setName = s;
-        this.adjacent = a;
+        this.neighbors = n;
         // this.finalTakes = 0;
         upgradeCostDollars = upgradeD;
         upgradeCostCredits = upgradeC;
     }
 
     // trailers constructor
-    Set(String s, List<String> a){
+    Set(String s, List<String> n){
         this.setName = s;
-        this.adjacent = a;
+        this.neighbors = n;
         // this.finalTakes = 0;
     }
 
