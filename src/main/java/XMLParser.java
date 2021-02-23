@@ -191,7 +191,7 @@ public class XMLParser {
         Role role = new Role(); // required to use vscode debugger
 
         Stack<Card> cardDeck = new Stack<Card>();
-        Stack<Role> cardRoles = new Stack<Role>();
+        Stack<Role> cardRoles;
 
         // Declare vars for Role args
         String cardName;
@@ -200,6 +200,7 @@ public class XMLParser {
         String sceneDescription = "";
 
         for (int i = 0; i < cards.getLength(); i++) {
+            cardRoles = new Stack<Role>(); // want a new stack each time, don't try to clear and reuse the same one
 
             // System.out.println("Printing information for card " + (i + 1));
             System.out.println("\nParsing card " + (i + 1));
@@ -239,7 +240,6 @@ public class XMLParser {
             // init card obj w/ parsed data, push it to deck, and clear stack of roles for this card
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
             cardDeck.push(cardObj);
-            cardRoles.clear();
 
         }//for card nodes
 
