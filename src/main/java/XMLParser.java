@@ -35,7 +35,7 @@ public class XMLParser {
     }
 
     private Set[] appendSet(Set[] setArr, Set newSet) {
-        Set[] newSetArr = new Set[setArr.length];
+        Set[] newSetArr = new Set[setArr.length+1];
 
         int i;
         for (i = 0; i < setArr.length; i++) {
@@ -47,7 +47,7 @@ public class XMLParser {
     }
 
     private int[] appendInt(int[] intArr, int newInt) {
-        int[] newIntArr = new int[intArr.length];
+        int[] newIntArr = new int[intArr.length+1];
 
         int i;
         for (i = 0; i < intArr.length; i++) {
@@ -71,6 +71,8 @@ public class XMLParser {
                 neighbor = neighborListSub;
                 neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
                 // System.out.println("  neighbor name: " + neighborName);
+
+                neighbors.push(neighborName);
             }
         }
 
@@ -181,8 +183,8 @@ public class XMLParser {
         Node upgrade;
         int upgradeCost;
 
-        int[] upgradeD = new int[5];
-        int[] upgradeC = new int[5];
+        int[] upgradeD = new int[1];
+        int[] upgradeC = new int[1];
 
         //reads attributes and parts from the offices' children
         officeChildren = office.getChildNodes();
@@ -202,40 +204,37 @@ public class XMLParser {
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
                 //read attributes for takes and their area children
                 upgradesList = officeChildSub.getChildNodes();
-                Queue<Node> filteredUpgrades = new PriorityQueue<Node>();
+                // Queue<Node> filteredUpgrades = new PriorityQueue<Node>();
                 for (int k = 1; k < upgradesList.getLength(); k++) {
                     upgradesListSub = upgradesList.item(k);
                     // not all items in upgradesList are actual "upgrade"s
                     if ("upgrade".equals(upgradesListSub.getNodeName())) {
-                        filteredUpgrades.add(upgradesListSub);
-                        //error:
-                        //Error = java.lang.ClassCastException: class com.sun.org.apache.xerces.internal.dom.DeferredElementImpl cannot be cast to class java.lang.Comparable (com.sun.org.apache.xerces.internal.dom.DeferredElementImpl is in module java.xml of loader 'bootstrap'; java.lang.Comparable is in module java.base of loader 'bootstrap')
+                        upgrade = upgradesListSub;
+                        upgradeCost = Integer.parseInt(upgrade.getAttributes().getNamedItem("amt").getNodeValue());
+
+                        // I feel like this isn't the best way to do this, but not all items in upgradesList are actual upgrades so idk a better way
+                        if ("dollar".equals(upgrade.getAttributes().getNamedItem("currency").getNodeValue())) {
+                            upgradeD = appendInt(upgradeD, upgradeCost);
+                        }
+
+                        if ("credit".equals(upgrade.getAttributes().getNamedItem("currency").getNodeValue())) {
+                            upgradeC = appendInt(upgradeC, upgradeCost);
+                        }
+
+                        //handle upgrade's child <area>
+                        // handleAreaData(upgrade.getChildNodes().item(0));
+                        // technically, there's 1 item, but we want loose coupling
+                        // NodeList upgradeChildrenNodes = upgrade.getChildNodes();
+                        // ignoring area data for now; uncomment for GUI
+                        // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
+                        //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
+                        //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
+                        //         // upgradeArea = handleAreaData(upgradeChildrenSub); // uncomment for GUI
+                        //     }
+                        // }
                     }
-                }
 
-                // upgrade amounts in dollars
-                for (int k = 0; k < 5; k++) {
-                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
-                    appendInt(upgradeD, upgradeCost);
                 }
-
-                // upgrade amounts in credits
-                for (int k = 0; k < 5; k++) {
-                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
-                    appendInt(upgradeD, upgradeCost);
-                }
-
-                //handle upgrade's child <area>
-                // handleAreaData(upgrade.getChildNodes().item(0));
-                // technically, there's 1 item, but we want loose coupling
-                // NodeList upgradeChildrenNodes = upgrade.getChildNodes();
-                // ignoring area data for now; uncomment for GUI
-                // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
-                //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
-                //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
-                //         // upgradeArea = handleAreaData(upgradeChildrenSub); // uncomment for GUI
-                //     }
-                // }
 
             }
             // don't use an else block
@@ -243,7 +242,7 @@ public class XMLParser {
         } //for office childnodes
 
         setObj = new Set("office", neighborStack, upgradeD, upgradeC);
-        appendSet(setArr, setObj);
+        setArr = appendSet(setArr, setObj);
 
         // parse trailers Node and append it to setArr
         System.out.println("Parsing data for trailers");
@@ -268,7 +267,7 @@ public class XMLParser {
         }
 
         setObj = new Set("trailers", neighborStack);
-        appendSet(setArr, setObj);
+        setArr = appendSet(setArr, setObj);
 
         // parse set Nodes and append them to setArr
         sets = root.getElementsByTagName("set");
@@ -344,7 +343,7 @@ public class XMLParser {
 
             } //for set childnodes
 
-            appendSet(setArr, setObj);
+            setArr = appendSet(setArr, setObj);
 
         
         }//for set nodes
