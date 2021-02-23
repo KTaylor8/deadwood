@@ -33,11 +33,11 @@ public class Board{
                     (s.offCardRoles).push((s.offCardRoles).pop());
                 }
                 for(int i = 0; i < ((s.currentCard).roles).getLength(); i++){
-                    if(pos.equals((s.currentCard).roles).peek().name) && !((s.currentCard).roles).peek().occupied){
+                    if(pos.equals((s.currentCard).roles).peek().name && !((s.currentCard).roles).peek().occupied){
                         Role temp = ((s.currentCard).roles).pop();
                         temp.occupy();
                         (s.currentCard.roles).push(temp);
-                        return true
+                        return true;
                     }
                     ((s.currentCard).roles).push(((s.currentCard).roles).pop());
                 }
@@ -66,7 +66,7 @@ public class Board{
             }
         }
         if(free.equals("")){
-            free = "There are no open roles on this card."
+            free = "There are no open roles on this card.";
         }
         return free;
     }

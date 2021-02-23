@@ -196,7 +196,7 @@ public class DeadWood{
                         }
                         else{
                             System.out.println("This role does not exist where you are currently, other options are " + board.getRoles(currentPlayer))
-                        }*/
+                        }
                     }
                     //if player wants to upgrade
                     else if(input.equals("upgrade")){
