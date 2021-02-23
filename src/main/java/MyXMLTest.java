@@ -29,10 +29,11 @@ public class MyXMLTest {
 
         //parse card data
         try {
-            doc = parsing.getDocFromFile("../resources/xml/cards.xml");
+            doc = parsing.getDocFromFile("src/main/resources/xml/cards.xml"); //path will be passed in as arg
+            // doc = parsing.getDocFromFile("../resources/xml/cards.xml");
             Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
-            for (Card card: cardDeck) {
-                System.out.println(card);
+            for (Card card: cardDeck) { // for testing that all the cards are there
+                System.out.println("Name: " + card.name + "; Budget: " + card.budget + " Scene Number: " + card.sceneNumber);
             }
 
         } catch (NullPointerException e) {
