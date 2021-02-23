@@ -66,7 +66,7 @@ public class Board{
             }
         }
         if(free.equals("")){
-            free = "There are no open roles on this card."
+            free = "There are no open roles on this card.";
         }
         return free;
     }
