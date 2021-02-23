@@ -47,26 +47,6 @@ public class Set{
     //         setInfo += ("\nSet name: " + adjacent[i]);
     //     }
 
-<<<<<<< HEAD
-        if (setName == "Office") {
-            setInfo += "\nUpgrade costs in dollars: ";
-            for (int i = 0; i < upgradeCostDollars.length; i++) {
-                setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostDollars[i] + "dollars";
-            }
-            setInfo += "\nUpgrade costs in credits: ";
-            for (int i = 0; i < upgradeCostCredits.length; i++) {
-                setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostCredits[i] + "credits";
-            }
-        } 
-        else if (setName == "Trailers") {
-            setInfo = 
-        } 
-        else {
-            setInfo = 
-        }
-        System.out.println(setInfo);
-    }
-=======
     //     if (setName == "Office") {
     //         setInfo += "\nUpgrade costs in dollars: ";
     //         for (int i = 0; i < upgradeCostDollars.length; i++) {
@@ -83,7 +63,6 @@ public class Set{
     //     }
     //     System.out.println(setInfo);
     // }
->>>>>>> 6fdbf783f1de2d3dd62160a3ee7884390f6ce81c
 
     public void resetSet(Card newCard){
         this.currentCard = newCard;
@@ -97,6 +76,14 @@ public class Set{
 
     public void flipSet(){
         flipStage++;
+    }
+
+    public int[] getUpgradeCD(){
+        return upgradeCostDollars;
+    }
+
+    public int[] getUpgradeCC(){
+        return upgradeCostCredits;
     }
 
     public int getScene(){

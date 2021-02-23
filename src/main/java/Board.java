@@ -48,7 +48,21 @@ public class Board{
     }
 
     public int[] getDollarC(){
-        
+        for(Set s: boardSets){
+            if((s.setName).equals("office")){
+                return (s.getUpgradeCD);
+            }
+        }
+        return null;
+    }
+
+    public int[] getCreditC(){
+        for(Set s: boardSets){
+            if((s.setName).equals("office")){
+                return (s.getUpgradeCC);
+            }
+        }
+        return null;
     }
 
     public boolean employ(String pos, String roll){

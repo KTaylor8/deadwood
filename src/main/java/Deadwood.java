@@ -209,14 +209,55 @@ public class Deadwood{
                         }
                     }
                     //if player wants to upgrade
-                    else if(input.equals("upgrade")){
-                        /*if(Board.inCastingOffice(currentPlayer)){
-                            System.out.println("You are now level");
+                    else if(input.equals("upgrade d")){
+                        if((currentPlayer.position).equals("office")){
+                            int desiredLevel = Integer.valueOf(input.substring(10));
+                            int[] d = board.getDollarD();
+                            if(d[desiredLevel-1] > currentPlayer.dollar){
+                                System.out.println("You do not have enough dollars for this upgrade");
+                            }
+                            else{
+                                System.out.println("You are now level " + desiredLevel);
+                                currentPlayer.setLevel(desiredLevel);
+                                currentPlayer.incDollar((-1*d[desiredLevel-1]));
+                                System.out.println("And you have " + currentPlayer.dollar + " remaining");
+                            }
                         }
                         else{
                             System.out.println("You are not on the casting office");
-                        }*/
+                        }
 
+                    }
+                    else if(input.equals("upgrade c")){
+                        if((currentPlayer.position).equals("office")){
+                            int desiredLevel = Integer.valueOf(input.substring(10));
+                            int[] c = board.getDollarC();
+                            if(c[desiredLevel-1] > currentPlayer.credit){
+                                System.out.println("You do not have enough credits for this upgrade");
+                            }
+                            else{
+                                System.out.println("You are now level " + desiredLevel);
+                                currentPlayer.setLevel(desiredLevel);
+                                currentPlayer.incCred((-1*d[desiredLevel-1]));
+                                System.out.println("And you have " + currentPlayer.credit + " remaining");
+                            }
+                        }
+                        else{
+                            System.out.println("You are not on the casting office");
+                        }
+
+                    }
+                    else if(input.equals("upgrade costs")){
+                        int[] d = board.getDollarC();
+                        int[] c = board.getCreditC();
+                        System.out.println("Upgrade costs if using dollars:");
+                        for(int i = 0; i < d.length; i++){
+                            System.out.println("Level " + (i+2) +": " d[i]);
+                        }
+                        System.out.println("Upgrade costs if using credits:");
+                        for(int i = 0; i < c.length; i++){
+                            System.out.println("Level " + (i+2) +": " c[i]);
+                        }
                     }
                     //if player wants to act
                     else if(input.equals("act")){
