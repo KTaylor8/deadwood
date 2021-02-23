@@ -25,6 +25,7 @@ public class DeadWood{
         int numPlayers = (int)args[2];
         String boardPath = args[0];
         String cardPath = args[1];
+        String input = "";
         //  intro statement
 
         //make sure user enters valid number
