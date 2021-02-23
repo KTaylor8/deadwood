@@ -104,80 +104,84 @@ public class XMLParser {
         return roleObj;
     }//handlePartData() method
 
-    // // reads board data from XML file and prints data
-    // public void readBoardData(Document d) {
+    // reads data in board.xml, stores it in Set objects, stores those objects in a stack and returns stack
+    public Stack<Set> convertDocToSetStack(Document d) {
+        NodeList sets; /* NodeList of elements with tag name "set" */
+        Node set; /* Individual set Node from sets */
+        String setName;
 
-    //     Element root = d.getDocumentElement();
+        Element root = d.getDocumentElement();
 
-    //     NodeList sets = root.getElementsByTagName("set");
+        sets = root.getElementsByTagName("set");
 
-    //     for (int i = 0; i < sets.getLength(); i++) {
+        for (int i = 0; i < sets.getLength(); i++) {
 
-    //         System.out.println("Printing information for set " + (i + 1));
+            System.out.println("Parsing data for set " + (i + 1));
 
-    //         //reads attributes from the sets/nodes
-    //         Node set = sets.item(i);
-    //         String setName = set.getAttributes().getNamedItem("name").getNodeValue();
-    //         System.out.println("Name = " + setName);
+            //reads attributes from the sets/nodes
+            set = sets.item(i);
+            setName = set.getAttributes().getNamedItem("name").getNodeValue();
+            // String setName = set.getAttributes().getNamedItem("name").getNodeValue();
+            // System.out.println("Name = " + setName);
 
-    //         //reads attributes and parts from the sets' children
-    //         NodeList setChildren = set.getChildNodes();
+            //reads attributes and parts from the sets' children
+            NodeList setChildren = set.getChildNodes();
 
-    //         AreaData setArea;
-    //         AreaData takeArea;
+            // AreaData setArea;
+            // AreaData takeArea;
 
-    //         for (int j = 0; j < setChildren.getLength(); j++) {
+            for (int j = 0; j < setChildren.getLength(); j++) {
 
-    //             Node setChildSub = setChildren.item(j);
+                Node setChildSub = setChildren.item(j);
 
-    //             if ("neighbors".equals(setChildSub.getNodeName())) {
-    //                 //read/parse  neighbor children
-    //                 NodeList neighborList = setChildSub.getChildNodes();
-    //                 for (int k = 1; k < neighborList.getLength(); k++) {
-    //                     Node neighborListSub = neighborList.item(k);
-    //                     // not all items in neighborList are actual "neighbor"s; some are metadata or something
-    //                     if ("neighbor".equals(neighborListSub.getNodeName())) {
-    //                         Node neighbor = neighborListSub;
-    //                         String neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
-    //                         System.out.println("  neighbor name: " + neighborName);
-    //                     }
-    //                 }
-    //                 // System.out.println("\n");
-    //             } else if ("area".equals(setChildSub.getNodeName())) {
-    //                 setArea = handleAreaData(setChildSub);
-    //             } else if ("takes".equals(setChildSub.getNodeName())) {
-    //                 //read attributes for takes and their area children
-    //                 NodeList takeList = setChildSub.getChildNodes();
-    //                 for (int k = 1; k < takeList.getLength(); k++) {
-    //                     Node takeListSub = takeList.item(k);
-    //                     // not all items in takeList are actual "take"s
-    //                     if ("take".equals(takeListSub.getNodeName())) {
-    //                         Node take = takeListSub;
-    //                         String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
-    //                         System.out.println("  take number: " + takeNumber);
+                if ("neighbors".equals(setChildSub.getNodeName())) {
+                    //read/parse  neighbor children
+                    NodeList neighborList = setChildSub.getChildNodes();
+                    for (int k = 1; k < neighborList.getLength(); k++) {
+                        Node neighborListSub = neighborList.item(k);
+                        // not all items in neighborList are actual "neighbor"s; some are metadata or something
+                        if ("neighbor".equals(neighborListSub.getNodeName())) {
+                            Node neighbor = neighborListSub;
+                            String neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+                            System.out.println("  neighbor name: " + neighborName);
+                        }
+                    }
+                    // System.out.println("\n");
+                } else if ("area".equals(setChildSub.getNodeName())) {
+                    setArea = handleAreaData(setChildSub);
+                } else if ("takes".equals(setChildSub.getNodeName())) {
+                    //read attributes for takes and their area children
+                    NodeList takeList = setChildSub.getChildNodes();
+                    for (int k = 1; k < takeList.getLength(); k++) {
+                        Node takeListSub = takeList.item(k);
+                        // not all items in takeList are actual "take"s
+                        if ("take".equals(takeListSub.getNodeName())) {
+                            Node take = takeListSub;
+                            String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
+                            System.out.println("  take number: " + takeNumber);
 
-    //                         //handle take's child <area>
-    //                         // handleAreaData(take.getChildNodes().item(0));
-    //                         // technically, there's 1 item, but we want loose coupling
-    //                         NodeList takeChildrenNodes = take.getChildNodes();
-    //                         for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
-    //                             Node takeChildrenSub = takeChildrenNodes.item(l);
-    //                             if ("area".equals(takeChildrenSub.getNodeName())) {
-    //                                 takeArea = handleAreaData(takeChildrenSub);
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             } else if ("part".equals(setChildSub.getNodeName())) {
-    //                 handlePartData(setChildSub);
-    //             } //for part nodes
-    //             // don't use an else block
+                            //handle take's child <area>
+                            // handleAreaData(take.getChildNodes().item(0));
+                            // technically, there's 1 item, but we want loose coupling
+                            NodeList takeChildrenNodes = take.getChildNodes();
+                            for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
+                                Node takeChildrenSub = takeChildrenNodes.item(l);
+                                if ("area".equals(takeChildrenSub.getNodeName())) {
+                                    takeArea = handleAreaData(takeChildrenSub);
+                                }
+                            }
+                        }
+                    }
+                } else if ("part".equals(setChildSub.getNodeName())) {
+                    handlePartData(setChildSub);
+                } //for part nodes
+                // don't use an else block
 
-    //         } //for set childnodes
-    //         System.out.println("\n");
-    //     }//for set nodes
+            } //for set childnodes
+            System.out.println("\n");
+        }//for set nodes
 
-    // }//readBoardData() method
+    }//readBoardData() method
 
     // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
     public Stack<Card> convertDocToCardDeck(Document d) {
@@ -203,7 +207,7 @@ public class XMLParser {
             cardRoles = new Stack<Role>(); // want a new stack each time, don't try to clear and reuse the same one
 
             // System.out.println("Printing information for card " + (i + 1));
-            System.out.println("\nParsing card " + (i + 1));
+            System.out.println("Parsing card " + (i + 1));
 
             //reads attributes from the cards/nodes
             Node card = cards.item(i);
