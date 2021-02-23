@@ -28,6 +28,15 @@ public class Board{
         return 0;
     }
 
+    public Set getSet(String pos){
+        for(Set s: BoardSets){
+            if(pos.equals(s.setName)){
+                return s;
+            }
+        }
+        return null;
+    }
+
     public Stack<String> getAdjacent(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.setName))

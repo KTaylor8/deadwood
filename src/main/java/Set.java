@@ -6,7 +6,7 @@ public class Set{
     public Stack<Role> offCardRoles;
     public Card currentCard;
     //this is so we know whether it has not been fliped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
-    int flipStage;
+    public int flipStage;
     private int finalTakes;
     private int currentTakes; // field should be private if other classes use a getter method to access them, right?
     
@@ -55,9 +55,11 @@ public class Set{
             for (int i = 0; i < upgradeCostCredits.length; i++) {
                 setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostCredits[i] + "credits";
             }
-        } else if (setName == "Trailers") {
+        } 
+        else if (setName == "Trailers") {
             setInfo = 
-        } else {
+        } 
+        else {
             setInfo = 
         }
         System.out.println(setInfo);

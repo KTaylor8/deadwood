@@ -221,7 +221,8 @@ public class Deadwood{
                     //if player wants to act
                     else if(input.equals("act")){
                         if(currentPlayer.employed){
-                            //act(player) //side note: did we have the act things in game or in board?????
+                            act(currentPlayer);
+                            hasPlayed = true;
                         }
                         else{
                             System.out.println("You are currently not employed");
@@ -257,8 +258,81 @@ public class Deadwood{
     }
 
     public static void act(Player curPlayer){
-        int budget = board.getBudget(curPlayer.position);
-        //roll a die
-        
+        Set sett = board.getSet(curPlayer.position);
+        int budget = Integer.valueOF((sett.currentCard).budget);
+        int die = 1 + (int)(Math.random() * ((6 - 1) + 1));
+
+        System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.rehearseToken + " rehearsal tokens");
+        if(budget > (die + curPlayer.rehearseToken)){
+            System.out.println("Acting failure!");
+            if(onCard(curPlayer.roleName, sett)){
+                System.out.println("Since you had an important role you get nothing!");
+            }
+            else{
+                System.out.println("Since you weren't that important you will get 1 dollar, out of pity");
+            }
+        }
+        else{
+            System.out.println("Acting success!");
+            if(onCard(curPlayer.roleName, sett)){
+                System.out.println("Since you were important, you get 2 credits");
+                curPlayer.incCred(2);
+            }
+            else{
+                System.out.println("Since you weren't that important you get 1 credit and 1 dollar");
+                curPlayer.incCred(1);
+                curPlayer.incDollar(1);
+            }
+            sett.incTakes();
+        }
+        if(sett.getScene() == 0){
+            if(canBonus(sett)){
+                System.out.println("Oh no! That was the last scene! Everyone gets money!");
+                bonuses(sett);
+            }
+            else{
+                System.out.println("That was the last scene, but no ones on card so no one gets money! Aha!");
+            }
+            wrapUp(sett);
+        }
+        else{
+            System.out.println("There are only " + sett.getScene() + " scenes left!");
+        }
+
+    }
+
+    public static void canBonus(Set s){
+        for(int i = 0; i < ((s.currentCard).roles).size(); i ++){
+            if(((s.currentCard).roles).occupied){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void bonuses(Set s){
+        int[] dice = new int[Integer.valueOf((sett.currentCard).budget)];
+        System.out.println("Rolling " + (sett.currentCard).budget + " dice");
+        for(int d: dice){
+            d = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        }
+        Player[] onCardPeople = findOnCardPeople(s);
+        Player[] offCardPeopel = findOffCardPeople(s);
+
+    }
+
+    public static Player[] findOnCardPeople(Set s){
+
+    }
+
+    public static boolean onCard(String role, Set s){
+        Stack<Role> tester = s.offCardRoles;
+        for(int i = 0; i < tester.size(); i++){
+            if(role.equals(tester.name)){
+                return false;
+            }
+            tester.add(tester.pop());
+        }
+        return true;
     }
 }
