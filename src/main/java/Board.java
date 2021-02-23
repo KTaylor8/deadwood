@@ -19,6 +19,14 @@ public class Board{
         //setBoard();
     }
 
+    public int getBudget(String pos){
+        for(Set s: boardSets){
+            if(pos.equals(s.setName)){
+                return (((s.setName).currentCard).budget);
+            }
+        }
+    }
+
     public Stack<String> getAdjacent(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.setName))
