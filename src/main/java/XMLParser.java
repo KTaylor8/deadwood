@@ -148,7 +148,7 @@ public class XMLParser {
                     }
                     // System.out.println("\n");
                 } else if ("area".equals(setChildSub.getNodeName())) {
-                    setArea = handleAreaData(setChildSub);
+                    // setArea = handleAreaData(setChildSub); // uncomment for GUI
                 } else if ("takes".equals(setChildSub.getNodeName())) {
                     //read attributes for takes and their area children
                     NodeList takeList = setChildSub.getChildNodes();
@@ -167,7 +167,7 @@ public class XMLParser {
                             for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
                                 Node takeChildrenSub = takeChildrenNodes.item(l);
                                 if ("area".equals(takeChildrenSub.getNodeName())) {
-                                    takeArea = handleAreaData(takeChildrenSub);
+                                    // takeArea = handleAreaData(takeChildrenSub); // uncomment for GUI
                                 }
                             }
                         }
@@ -185,23 +185,24 @@ public class XMLParser {
 
     // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
     public Stack<Card> convertDocToCardDeck(Document d) {
-
-        Element root = d.getDocumentElement();
-
-        NodeList cards = root.getElementsByTagName("card");
+        NodeList cards;
 
         // declare Card, Role, and stacks of Card and Role
         Card cardObj;
-        Role role = new Role(); // required to use vscode debugger
+        Role role;
 
-        Stack<Card> cardDeck = new Stack<Card>();
+        Stack<Card> cardDeck;
         Stack<Role> cardRoles;
 
         // Declare vars for Role args
         String cardName;
         String budget;
-        String sceneNumber = "";
-        String sceneDescription = "";
+        String sceneNumber;
+        String sceneDescription;
+
+        Element root = d.getDocumentElement();
+
+        cards = root.getElementsByTagName("card");
 
         for (int i = 0; i < cards.getLength(); i++) {
             cardRoles = new Stack<Role>(); // want a new stack each time, don't try to clear and reuse the same one
