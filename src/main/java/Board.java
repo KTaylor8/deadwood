@@ -20,6 +20,57 @@ public class Board{
         }
     }
 
+    public boolean employ(String pos, String roll){
+        for(Set s: boardSets){
+            if((s.setName).equals(pos)){
+                for(int i = 0; i < (s.offCardRoles).getLength(); i++){
+                    if(pos.equals(((s.offCardRoles).peek()).name) && !((s.offCardRoles).peek()).occupied){
+                        Role temp = (s.offCardRoles).pop();
+                        temp.occupy();
+                        (s.offCardRoles).push(temp);
+                        return true;
+                    }
+                    (s.offCardRoles).push((s.offCardRoles).pop());
+                }
+                for(int i = 0; i < ((s.currentCard).roles).getLength(); i++){
+                    if(pos.equals((s.currentCard).roles).peek().name) && !((s.currentCard).roles).peek().occupied){
+                        Role temp = ((s.currentCard).roles).pop();
+                        temp.occupy();
+                        (s.currentCard.roles).push(temp);
+                        return true
+                    }
+                    ((s.currentCard).roles).push(((s.currentCard).roles).pop());
+                }
+            }
+        }
+        return false;
+    }
+
+    public String freeRoles(String pos){
+        String free = "";
+        for(Set s: boardSets){
+            if((s.setName).equals(pos)){
+                for(int i = 0; i < (s.offCardRoles).getLength(); i++){
+                    if(!((s.offCardRoles).peek()).occupied){
+                        free += "\nOff card role: " + ((s.offCardRoles).peek()).name +" must be level: " + ((s.offCardRoles).peek()).level;
+                    }
+                    (s.offCardRoles).push((s.offCardRoles).pop());
+                }
+                for(int i = 0; i < ((s.currentCard).roles).getLength(); i++){
+                    if(!((s.currentCard).roles).peek().occupied){
+                        free += "\nOn card role: " + (s.currentCard).roles).peek().name +" must be level: " + (s.currentCard).roles).peek()).level;
+                        
+                    }
+                    ((s.currentCard).roles).push(((s.currentCard).roles).pop());
+                }
+            }
+        }
+        if(free.equals("")){
+            free = "There are no open roles on this card."
+        }
+        return free;
+    }
+
     public int sceneNum(){
         int numScene = 0;
         for(Set s: boardSets){

@@ -184,12 +184,15 @@ public class DeadWood{
                             System.out.println("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
                         }
                     }
+                    else if(input.equals("available roles")){
+                        System.out.println(board.freeRoles(currentPlayer.pos));
+                    }
                    
                     //if player wants to take roll and are not employed, let them
                     else if(input.includes("take role") && currentPlayer.employed == false){
-                        /*if(board.employ(currentPlayer, input.substring(10))) //also make return bool
+                        if(board.employ(currentPlayer.pos, input.substring(10))) //also make return bool
                         {
-                            currentPlayer.changeEmployed;
+                            currentPlayer.giveRole(substring(10));
                         }
                         else{
                             System.out.println("This role does not exist where you are currently, other options are " + board.getRoles(currentPlayer))
