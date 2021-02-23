@@ -155,12 +155,12 @@ public class XMLParser {
 
         // declare class objects and their stacks
         Set setObj;
-        Role role;
+        Role role = new Role();
 
-        Set[] setArr;
-        Stack<Role> setRoles;
+        Set[] setArr = new Set[1];
+        Stack<Role> setRoles = new Stack<Role>();
 
-        Stack<String> neighborStack;
+        Stack<String> neighborStack = new Stack<String>();
 
         Element root = d.getDocumentElement();
 
@@ -174,13 +174,6 @@ public class XMLParser {
 
         // NodeList neighborList;
         // Node neighborListSub;
-
-        NodeList takeList;
-        Node takeListSub;
-        Node take;
-        int numTakes;
-
-        System.out.println("Parsing data for office");
 
         // office vars
         NodeList upgradesList;
@@ -215,6 +208,8 @@ public class XMLParser {
                     // not all items in upgradesList are actual "upgrade"s
                     if ("upgrade".equals(upgradesListSub.getNodeName())) {
                         filteredUpgrades.add(upgradesListSub);
+                        //error:
+                        //Error = java.lang.ClassCastException: class com.sun.org.apache.xerces.internal.dom.DeferredElementImpl cannot be cast to class java.lang.Comparable (com.sun.org.apache.xerces.internal.dom.DeferredElementImpl is in module java.xml of loader 'bootstrap'; java.lang.Comparable is in module java.base of loader 'bootstrap')
                     }
                 }
 
@@ -283,6 +278,11 @@ public class XMLParser {
             NodeList setChildren;
             String setName;
             Node setChildSub;
+
+            NodeList takeList;
+            Node takeListSub;
+            Node take;
+            int numTakes = 0;
 
             System.out.println("Parsing data for set " + (i + 1));
 
