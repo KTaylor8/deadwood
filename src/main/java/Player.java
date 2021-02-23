@@ -11,20 +11,20 @@ public class Player{
     public String position = "trailer";
     public String roleName;
 
-    public void Player(String p){
+    public Player(){
+    }
+    public Player(String p){
         playerName = p;
     }
 
-    public void Player(int sl, String p){
+    public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
     }
 
-    public void Player(String p, int sc){
-        playerName = p;
-        credit = sc;
+    public void setName(String s){
+        this.playerName = s;
     }
-
     public void setLevel(int level){
         this.level = level;
     }

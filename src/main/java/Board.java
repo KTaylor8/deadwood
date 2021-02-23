@@ -26,12 +26,13 @@ public class Board{
                 return s.adjacent;
             }
         }
+        return null;
     }
 
     public boolean employ(String pos, String roll){
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
-                for(int i = 0; i < (s.offCardRoles).getLength; i++){
+                for(int i = 0; i < (s.offCardRoles).size(); i++){
                     if(pos.equals(((s.offCardRoles).peek()).name) && !((s.offCardRoles).peek()).occupied){
                         Role temp = (s.offCardRoles).pop();
                         temp.occupy();
@@ -40,8 +41,8 @@ public class Board{
                     }
                     (s.offCardRoles).push((s.offCardRoles).pop());
                 }
-                for(int i = 0; i < ((s.currentCard).roles).getLength; i++){
-                    if(pos.equals((s.currentCard).roles).peek().name && !((s.currentCard).roles).peek().occupied){
+                for(int i = 0; i < ((s.currentCard).roles).size(); i++){
+                    if(pos.equals((((s.currentCard).roles).peek()).name) && !((s.currentCard).roles).peek().occupied){
                         Role temp = ((s.currentCard).roles).pop();
                         temp.occupy();
                         (s.currentCard.roles).push(temp);
@@ -58,13 +59,13 @@ public class Board{
         String free = "";
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
-                for(int i = 0; i < (s.offCardRoles).getLength; i++){
+                for(int i = 0; i < (s.offCardRoles).size(); i++){
                     if(!((s.offCardRoles).peek()).occupied){
                         free += "\nOff card role: " + ((s.offCardRoles).peek()).name +" must be level: " + ((s.offCardRoles).peek()).level;
                     }
                     (s.offCardRoles).push((s.offCardRoles).pop());
                 }
-                for(int i = 0; i < ((s.currentCard).roles).getLength; i++){
+                for(int i = 0; i < ((s.currentCard).roles).size(); i++){
                     if(!((s.currentCard).roles).peek().occupied){
                         free += "\nOn card role: " + ((s.currentCard).roles).peek().name +" must be level: " + (((s.currentCard).roles).peek()).level + "";
                         

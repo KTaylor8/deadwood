@@ -5,6 +5,8 @@ public class Deadwood{
     //make queue??
     static Queue<Player> players = new PriorityQueue<Player>();
     static int numDays;
+    
+    static Board board;
     public static void main(String[] args){
 
         //Ask how many players
@@ -26,7 +28,7 @@ public class Deadwood{
         String boardPath = args[0];
         String cardPath = args[1];
         //  intro statement
-
+        board = new Board(boardPath, cardPath);
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             System.out.println("Invalid input, please enter a player number from 2 to 8");
@@ -39,7 +41,6 @@ public class Deadwood{
 
         
         //figure out how to create board here
-        Board board = new Board(boardPath, cardPath);
 
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
@@ -59,12 +60,13 @@ public class Deadwood{
     }
     //figure out something for ties
     public static Player calcWinner(){
-        Player winner = new Player(-100, "Big Loser ");
+        Player winner = new Player("Big Loser", -100, 0);
         for(Player p: players){
             if(p.calcFinalScore() > winner.calcFinalScore()){
                 winner = p;
             }
         }
+        return winner;
     }
 
     public static void addPlayers(int numPlayers){
@@ -76,14 +78,14 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(2, input));
+                players.add(new Player(input, 2, 0));
             }
         }
         else if (numPlayers == 6) {
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input, 4));
+                players.add(new Player(input, 0, 4));
             }
             numDays = 4;
         }
@@ -91,7 +93,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                players.add(new Player(input, 2));
+                players.add(new Player(input, 0, 2));
             }
             numDays = 4;
         }
@@ -115,7 +117,7 @@ public class Deadwood{
 
     public static boolean moveTo(Player p, String place){
         Stack<String> adj = board.getAdjacent(p.position);
-        for(int i = 0; i < adj.getLength; i++){
+        for(int i = 0; i < adj.size(); i++){
             if(place.equals(adj.pop()))
             {
                 return true;
@@ -145,10 +147,10 @@ public class Deadwood{
                     //prints where all players are
                     else if(input.equals("where all")){
                         //print current player first
-                        System.out.println("Current player " + currentPlayer.name + " position: " + currentPlayer.position);
+                        System.out.println("Current player " + currentPlayer.playerName + " position: " + currentPlayer.position);
                         //print the remaining players 
-                        for(int i = 0; i < players.getLength - 1; i++){
-                            System.out.println((players.peek()).name + " is located at: " + (players.peek()).position);
+                        for(int i = 0; i < players.size() - 1; i++){
+                            System.out.println((players.peek()).playerName + " is located at: " + (players.peek()).position);
                             players.add(players.remove());
                         }
                         //make sure current player is place back at last in queue
@@ -163,7 +165,7 @@ public class Deadwood{
                         }
                     }
                     //if player wants to move
-                    else if(input.includes("move")){
+                    else if(input.contains("move")){
                         //if player is not employed
                         if(!currentPlayer.employed){
                             //if player hasnt moved or acted
@@ -176,7 +178,7 @@ public class Deadwood{
                                 }
                                 //else
                                 {
-                                    System.out("invalid place to move to");
+                                    System.out.println("invalid place to move to");
                                 }
                             }
                             else{
@@ -189,17 +191,17 @@ public class Deadwood{
                         }
                     }
                     else if(input.equals("available roles")){
-                        System.out.println(board.freeRoles(currentPlayer.pos));
+                        System.out.println(board.freeRoles(currentPlayer.position));
                     }
                    
                     //if player wants to take roll and are not employed, let them
-                    else if(input.includes("take role") && currentPlayer.employed == false){
-                        if(board.employ(currentPlayer.pos, input.substring(10))) //also make return bool
+                    else if(input.contains("take role") && currentPlayer.employed == false){
+                        if(board.employ(currentPlayer.position, input.substring(10))) //also make return bool
                         {
-                            currentPlayer.giveRole(substring(10));
+                            currentPlayer.giveRole(input.substring(10));
                         }
                         else{
-                            System.out.println("This role does not exist where you are currently, other options are " + board.getRoles(currentPlayer));
+                            System.out.println("This role does not exist where you are currently, other options are " + board.freeRoles(currentPlayer.position));
                         }
                     }
                     //if player wants to upgrade
