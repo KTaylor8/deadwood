@@ -35,6 +35,39 @@ public class DeadWood{
 
         //creates the player queue with diff values according to num players
         //fix to not make ugly ?
+        addPlayers(numPlayers);
+
+        
+        //figure out how to create board here
+        Board board = new board(boardPath, cardPath);
+
+        while(numDays != 0){
+            System.out.println("Placing all players in trailers");
+            while(board.sceneNum() > 1){
+                currentPlayer = players.peek();
+                players.add(players.pop());
+                playerTurn(currentPlayer);
+            }
+            numDays--;
+            System.out.println("Its the end of the day! " + numDays + " days remain");
+        }
+    System.out.println("Calculating winner...");
+    Player winner = calcWinner();
+    System.out.println(winner.playerName + "wins with " + winner.calcFinalScore() + "!");
+        
+
+    }
+    //figure out something for ties
+    public static Player calcWinner(){
+        Player winner = new Player(-100, "Big Loser ");
+        for(Player p: players){
+            if(p.calcFinalScore() > winner.calcFinalScore()){
+                winner = p;
+            }
+        }
+    }
+
+    public static void addPlayers(int numPlayers){
         if(numPlayers > 6){
             numDays = 4;
             for(int i = 1; i <= numPlayers; i++){
@@ -75,34 +108,17 @@ public class DeadWood{
             }
             numDays = 3;
         }
-
-        
-        //figure out how to create board here
-
-        while(numDays != 0){
-            System.out.println("Placing all players in trailers");
-            while(/*board.sceneNum > 1*/){
-                currentPlayer = players.peek();
-                players.add(players.pop());
-                playerTurn(currentPlayer);
-            }
-            numDays--;
-            System.out.println("Its the end of the day! " + numDays + " days remain");
-        }
-    System.out.println("Calculating winner...");
-    Player winner = calcWinner();
-    System.out.println(winner.playerName + "wins with " + winner.calcFinalScore() + "!");
-        
-
     }
-    //figure out something for ties
-    public static Player calcWinner(){
-        Player winner = new Player(-100, "Big Loser ");
-        for(Player p: players){
-            if(p.calcFinalScore() > winner.calcFinalScore()){
-                winner = p;
+
+    public static boolean moveTo(Player p, String place){
+        Stack<String> adj = board.getAdjacent(p.position);
+        for(int i = 0; i < adj.getLength(); i++){
+            if(place.equals(adj.pop())
+            {
+                return true;
             }
         }
+        return false;
     }
 
     public static void playerTurn(Player currentPlayer){
@@ -135,7 +151,11 @@ public class DeadWood{
                     }
                     //prints adjacent tiles to player
                     else if(input.equals("adjacent")){
-                        //System.out.println(board.adjacentTiles(currentPlayer));
+                        Stack<String> temp = board.getAdjacent(currentPlayer.position);
+                        System.out.println("You are adjacent to: ");
+                        while(temp.peek()!= null){
+                            System.out.println("- " + temp.pop());
+                        }
                     }
                     //if player wants to move
                     else if(input.includes("move")){
@@ -144,8 +164,9 @@ public class DeadWood{
                             //if player hasnt moved or acted
                             if(!hasPlayed){
                                 String split = input.substring(5);
-                                //if(board.moveTo(currentPlayer, split) //make return a bool
+                                if(moveTo(currentPlayer, split)) //make return a bool
                                 {
+                                    currentPlayer.changePos(split);
                                     hasPlayed = true;
                                 }
                                 //else
@@ -159,7 +180,7 @@ public class DeadWood{
 
                         }
                         else{
-                            System.out.println("Since you are employed in a role, you cannot work but you can act or rehearse if you have not already");
+                            System.out.println("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
                         }
                     }
                    
