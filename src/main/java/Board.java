@@ -25,6 +25,7 @@ public class Board{
                 return Integer.valueOf((s.currentCard).budget);
             }
         }
+        return null;
     }
 
     public Stack<String> getAdjacent(String pos){
