@@ -17,10 +17,10 @@ public class MyXMLTest {
         //parse board data
         try {
             doc = parsing.getDocFromFile("src/main/resources/xml/board.xml"); //path will be passed in as arg
-            Set[] sets = parsing.parseBoardData(doc);
-            for (Set set: sets) { // for testing that all the cards are there
-                System.out.println("Set name: " + set.setName + "; Name of 1st role: " + set.offCardRoles.peek().name);
-            }
+            List<Set> sets = parsing.parseBoardData(doc);
+            // for (Set set: sets) { // for testing that all the cards are there
+            //     System.out.println("Set name: " + set.setName);
+            // }
 
         } catch (NullPointerException e) {
             System.out.println("Error = " + e);
@@ -33,7 +33,8 @@ public class MyXMLTest {
         //parse card data
         // try {
         //     doc = parsing.getDocFromFile("src/main/resources/xml/cards.xml"); //path will be passed in as arg
-        //     Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
+        // //     Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
+        //        List<Card> cardDeck = parsing.convertDocToCardDeck(doc);
         //     // for (Card card: cardDeck) { // for testing that all the cards are there
         //     //     System.out.println("Name: " + card.name + "; Budget: " + card.budget + " Scene Number: " + card.sceneNumber);
         //     // }
