@@ -17,7 +17,7 @@ public class MyXMLTest {
         //parse board data
         try {
             doc = parsing.getDocFromFile("src/main/resources/xml/board.xml"); //path will be passed in as arg
-            Stack<Set> sets = parsing.convertDocToSetStack(doc);
+            Set[] sets = parsing.parseBoardData(doc);
             for (Set set: sets) { // for testing that all the cards are there
                 System.out.println("Set name: " + set.setName + "; Name of 1st role: " + set.offCardRoles.peek().name);
             }
