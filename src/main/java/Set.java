@@ -1,14 +1,14 @@
 import java.util.*;
 
 public class Set{
-    String setName;
-    Stack<String> adjacent;
-    Stack<Role> offCardRoles;
-    Card currentCard;
+    public String setName;
+    public Stack<String> adjacent;
+    public Stack<Role> offCardRoles;
+    public Card currentCard;
     //this is so we know whether it has not been fliped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
     int flipStage;
-    int finalTakes;
-    int currentTakes;
+    private int finalTakes;
+    public int currentTakes;
 
     Set(String s, Stack<String> a, Stack<Role> r, int t){
         this.setName = s;
@@ -31,5 +31,8 @@ public class Set{
         flipStage++;
     }
 
+    public int getScene(){
+        return currentTakes;
+    }
 
 }

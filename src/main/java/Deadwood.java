@@ -25,7 +25,6 @@ public class DeadWood{
         int numPlayers = (int)args[2];
         String boardPath = args[0];
         String cardPath = args[1];
-        boolean hasPlayed; 
         //  intro statement
 
         //make sure user enters valid number
@@ -80,14 +79,35 @@ public class DeadWood{
         
         //figure out how to create board here
 
-
-
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
             while(/*board.sceneNum > 1*/){
                 currentPlayer = players.peek();
                 players.add(players.pop());
-                hasPlayed = false;
+                playerTurn(currentPlayer);
+            }
+            numDays--;
+            System.out.println("Its the end of the day! " + numDays + " days remain");
+        }
+    System.out.println("Calculating winner...");
+    Player winner = calcWinner();
+    System.out.println(winner.playerName + "wins with " + winner.calcFinalScore() + "!");
+        
+
+    }
+    //figure out something for ties
+    public static Player calcWinner(){
+        Player winner = new Player(-100, "Big Loser ");
+        for(Player p: players){
+            if(p.calcFinalScore() > winner.calcFinalScore()){
+                winner = p;
+            }
+        }
+    }
+
+    public static void playerTurn(Player currentPlayer){
+                
+        boolean hasPlayed = false; 
 
                 while(!input.equals("end")){
                     System.out.println("What would you like to do " + currentPlayer.playerName + "?");
@@ -99,11 +119,19 @@ public class DeadWood{
                     }
                     //prints where current player is
                     else if(input.equals("where")){
-                        //System.out.println(board.playerPosition(currentPlayer));
+                        System.out.println(currentPlayer.position);
                     }
                     //prints where all players are
                     else if(input.equals("where all")){
-                        //System.out.println(board.allPlayerPosition);
+                        //print current player first
+                        System.out.println("Current player " + currentPlayer.name + " position: " + currentPlayer.position);
+                        //print the remaining players 
+                        for(int i = 0; i < players.getLength() - 1; i++){
+                            System.out.println((players.peek()).name + " is located at: " + (players.peek()).position);
+                            players.add(players.pop());
+                        }
+                        //make sure current player is place back at last in queue
+                        players.add(players.pop());
                     }
                     //prints adjacent tiles to player
                     else if(input.equals("adjacent")){
@@ -191,23 +219,5 @@ public class DeadWood{
                     }
                 }
 
-            }
-            numDays--;
-            System.out.println("Its the end of the day! " + numDays + " days remain");
-        }
-    System.out.println("Calculating winner...");
-    Player winner = calcWinner();
-    System.out.println(winner.playerName + "wins with " + winner.calcFinalScore() + "!");
-        
-
-    }
-    //figure out something for ties
-    public static Player calcWinner(){
-        Player winner = new Player(-100, "Big Loser ");
-        for(Player p: players){
-            if(p.calcFinalScore() > winner.calcFinalScore()){
-                winner = p;
-            }
-        }
     }
 }

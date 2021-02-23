@@ -5,10 +5,27 @@ public class Board{
     Stack<Card> cardDeck = new Stack<Card>();
     Set[] boardSets;
 
-    public Board(String b, String, c){
+    public Board(String b, String c){
         boardPath = b;
         cardPath = c;
         setBoard();
+    }
+
+    public Stack<String> getAdjacent(String pos){
+        for(Set s: boardSets){
+            if(pos.equals(s.setName))
+            {
+                return s.adjacent;
+            }
+        }
+    }
+
+    public int sceneNum(){
+        int numScene = 0;
+        for(Set s: boardSets){
+            numScene += s.getScene();
+        }
+        return numScene;
     }
 
     public void setBoard(){

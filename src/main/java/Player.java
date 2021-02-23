@@ -8,6 +8,8 @@ public class Player{
     public int credit = 0;
     public boolean employed = false; 
     public int rehearseToken = 0;
+    public String position = "trailer";
+    public String roleName;
 
     public Player(String p){
         playerName = p;
@@ -35,7 +37,8 @@ public class Player{
         this.credit += credit;
     }
 
-    public changeEmployed(){
+    public giveRole(String rn){
+        this.roleName = rn;
         this.employed = !this.employed;
     }
 
@@ -43,8 +46,14 @@ public class Player{
         this.rehearseToken++;
     }
 
-    public resetToken(){
+    public resetRole(){
+        roleName = "";
         this.rehearseToken = 0;
+        this.employed = !this.employed;
+    }
+
+    public changePos(String newPos){
+        this.position = newPos;
     }
 
     public int calcFinalScore(){
