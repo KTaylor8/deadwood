@@ -22,18 +22,17 @@ public class DeadWood{
         //calcfinalScore
         Scanner scan = new Scanner(System.in);
         Player currentPlayer;    
-        int numPlayers;
+        int numPlayers = (int)args[2];
+        String boardPath = args[0];
+        String cardPath = args[1];
         boolean hasPlayed; 
         //  intro statement
-        System.out.println("Hello! Welcome to the text version of DeadWood! Enter the number of players from 2 to 8");
-        String input = scan.nextLine();
 
         //make sure user enters valid number
-        while(!((int)input > 1) && !((int)input < 9)){
+        while(!(numPlayers > 1) && !(numPlayers < 9)){
             System.out.println("Invalid input, please enter a player number from 2 to 8");
-            input = scan.nextLine();
+            System.exit();
         }
-        numPlayers = (int)input;
 
         //creates the player queue with diff values according to num players
         //fix to not make ugly ?
