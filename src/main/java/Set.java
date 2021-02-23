@@ -38,6 +38,31 @@ public class Set{
         // this.finalTakes = 0;
     }
 
+    public void printInfo() {
+        String setInfo = "";
+        setInfo += ("\nSet name: " + setName);
+        setInfo += "\nNeighbors: ";
+        for (int i = 0; i < adjacent.size(); i++) {
+            setInfo += ("\nSet name: " + adjacent[i]);
+        }
+
+        if (setName == "Office") {
+            setInfo += "\nUpgrade costs in dollars: ";
+            for (int i = 0; i < upgradeCostDollars.length; i++) {
+                setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostDollars[i] + "dollars";
+            }
+            setInfo += "\nUpgrade costs in credits: ";
+            for (int i = 0; i < upgradeCostCredits.length; i++) {
+                setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostCredits[i] + "credits";
+            }
+        } else if (setName == "Trailers") {
+            setInfo = 
+        } else {
+            setInfo = 
+        }
+        System.out.println(setInfo);
+    }
+
     public void resetSet(Card newCard){
         this.currentCard = newCard;
         this.currentTakes = finalTakes;
