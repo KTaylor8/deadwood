@@ -46,7 +46,7 @@ public class Deadwood{
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
             System.out.println(board.sceneNum());
-            while(board.sceneNum() > 1){
+            while(board.sceneNum() > 9){
                 currentPlayer = players.peek();
                 players.add(players.remove());
                 playerTurn(currentPlayer);
@@ -226,7 +226,11 @@ public class Deadwood{
                     else if(input.contains("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
+                            
+                            System.out.println("-1: " + desiredLevel);
                             int[] d = board.getDollarC();
+                            System.out.println("1: " + d[desiredLevel-1] );
+                            System.out.println("2: " + currentPlayer.dollar)
                             if(d[desiredLevel-1] > currentPlayer.dollar){
                                 System.out.println("You do not have enough dollars for this upgrade");
                             }
@@ -275,13 +279,19 @@ public class Deadwood{
                     }
                     //if player wants to act
                     else if(input.equals("act")){
-                        if(currentPlayer.employed){
-                            act(currentPlayer);
-                            hasPlayed = true;
+                        if(!hasPlayed){
+                            if(currentPlayer.employed){
+                                act(currentPlayer);
+                                hasPlayed = true;
+                            }
+                            else{
+                                System.out.println("You are currently not employed");
+                            }
                         }
                         else{
-                            System.out.println("You are currently not employed");
+                            System.out.println("You have already acted this turn");
                         }
+                        
 
                     }
                     //if player wants to rehearse 
