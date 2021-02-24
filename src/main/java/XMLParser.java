@@ -61,7 +61,6 @@ public class XMLParser {
     // accepts a list of potential neighbors
     private List<String> handleNeighborData(NodeList neighborList) {
         List<String> neighbors = new ArrayList<String>();
-        Node neighbor;
         String neighborName;
         Node neighborListSub;
 
@@ -69,9 +68,7 @@ public class XMLParser {
             neighborListSub = neighborList.item(k);
             // not all items in neighborList are actual "neighbor"s; some are metadata or something
             if ("neighbor".equals(neighborListSub.getNodeName())) {
-                neighbor = neighborListSub;
-                neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
-                // System.out.println("  neighbor name: " + neighborName);
+                neighborName = neighborListSub.getAttributes().getNamedItem("name").getNodeValue();
 
                 neighbors.add(neighborName);
             }
@@ -114,33 +111,30 @@ public class XMLParser {
 
     // accepts a single Node part
     private Role handlePartData(Role roleObj, Node part){
-        
-        // Part data for Role init
+        // Declare vars for part data handling
+        NodeList partChildren;
+        Node partChildrenSub;
+
+        // Part data for Role constructor
         // AreaData partArea; // uncomment for GUI
         String partName;
         String partLevel;
         String partLine = "";
 
-        //read attributes and text in part
-        partName = part.getAttributes().getNamedItem("name").getNodeValue();;
+        //read part's attributes and text
+        partName = part.getAttributes().getNamedItem("name").getNodeValue();
         partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
-        // System.out.println(" part name = " + partName + ", part level = " + partLevel);
 
         //reads attributes and text from parts' children
-        NodeList partChildren = part.getChildNodes();
+        partChildren = part.getChildNodes();
 
         for (int k = 0; k < partChildren.getLength(); k++) {
-
-            Node partChildrenSub = partChildren.item(k);
+            partChildrenSub = partChildren.item(k);
 
             if ("area".equals(partChildrenSub.getNodeName())) {
-                //reads attributes and text from part's area
                 // partArea = handleAreaData(partChildrenSub); // uncomment for GUI
-                // System.out.println("\n");
             } else if ("line".equals(partChildrenSub.getNodeName())) {
-                //reads text from part's line
                 partLine = partChildrenSub.getTextContent();
-                // System.out.println("  Line = " + line);
             }
 
         } //for part childnodes
@@ -151,44 +145,37 @@ public class XMLParser {
         return roleObj;
     }//handlePartData() method
 
-    // reads data in board.xml, stores it in Set objects, stores those objects in a stack and returns stack
+    // reads data in board.xml, stores it in Set objects, stores those objects in a List and returns List
     public List<Set> parseBoardData(Document d) {
-        Node office; /* Element with tag name "office" */
-        Node trailer; /* Element with tag name "trailer" */
         NodeList sets; /* NodeList of elements with tag name "set" */
 
-        // declare class objects and their stacks
+        // declare class objects and their Lidyd
         Set setObj;
         Role role = new Role();
-
         List<Set> setList = new ArrayList<Set>();
         List<Role> setRoles = new ArrayList<Role>();
-
         List<String> neighbors = new ArrayList<String>();
 
         Element root = d.getDocumentElement();
 
-        // parse office Node and append it to setArr
-        office = root.getElementsByTagName("office").item(0);
-        System.out.println("Parsing data for office");
 
+        /* Parse office data */
+
+        // Declare vars for office data handling
+        Node office; /* Element with tag name "office" */
         NodeList officeChildren;
-        String officeName;
         Node officeChildSub;
 
-        // NodeList neighborList;
-        // Node neighborListSub;
-
-        // office vars
+        // Upgrade vars
         NodeList upgradesList;
+        Queue<Node> filteredUpgrades; /* Intermediary storage helps parse upgrades */
         Node upgradesListSub;
-        Node upgrade;
         int upgradeCost;
-
-        int[] upgradeD = new int[5];
-        int[] upgradeC = new int[5];
+        int[] upgradeDollars = new int[5]; // number of upgrade options currently hard-coded, but we might make it dynamic later
+        int[] upgradeCredits = new int[5];
 
         //reads attributes and parts from the offices' children
+        office = root.getElementsByTagName("office").item(0);
         officeChildren = office.getChildNodes();
 
         // AreaData officeArea;
@@ -199,14 +186,13 @@ public class XMLParser {
             officeChildSub = officeChildren.item(j);
 
             if ("neighbors".equals(officeChildSub.getNodeName())) {
-                //read/parse  neighbor children
                 neighbors = handleNeighborData(officeChildSub.getChildNodes());
-            } else if ("area".equals(officeChildSub.getChildNodes())) {
+            } else if ("area".equals(officeChildSub.getNodeName())) {
                 // officeArea = handleAreaData(officeChildSub); // uncomment for GUI
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
                 //read attributes for takes and their area children
                 upgradesList = officeChildSub.getChildNodes();
-                Queue<Node> filteredUpgrades = new LinkedList<Node>();
+                filteredUpgrades = new LinkedList<Node>();
                 for (int k = 1; k < upgradesList.getLength(); k++) {
                     upgradesListSub = upgradesList.item(k);
                     // not all items in upgradesList are actual "upgrade"s
@@ -215,66 +201,56 @@ public class XMLParser {
                     }
                 }
 
-                // upgrade amounts in dollars
+                // parse upgrade amounts in dollars
                 for (int k = 0; k < 5; k++) {
                     upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
-                    upgradeD[k] = upgradeCost;
-                    // appendInt(upgradeD, upgradeCost);
+                    upgradeDollars[k] = upgradeCost;
                 }
 
-                // upgrade amounts in credits
+                // parse upgrade amounts in credits
                 for (int k = 0; k < 5; k++) {
                     upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
-                    upgradeC[k] = upgradeCost;
-                    // appendInt(upgradeD, upgradeCost);
+                    upgradeCredits[k] = upgradeCost;
                 }
 
-                //handle upgrade's child <area>
-                // handleAreaData(upgrade.getChildNodes().item(0));
-                // technically, there's 1 item, but we want loose coupling
-                // NodeList upgradeChildrenNodes = upgrade.getChildNodes();
                 // ignoring area data for now; uncomment for GUI
                 // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
                 //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
                 //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
-                //         // upgradeArea = handleAreaData(upgradeChildrenSub); // uncomment for GUI
+                //         // upgradeArea = handleAreaData(upgradeChildrenSub);
                 //     }
                 // }
-
             }
             // don't use an else block
 
         } //for office childnodes
+        setList.add(new Set("office", neighbors, upgradeDollars, upgradeCredits));
 
-        setObj = new Set("Office", neighbors, upgradeD, upgradeC);
-        setList.add(setObj);
 
-        // parse trailer Node and append it to setArr
-        System.out.println("Parsing data for trailer");
+        /* Parse trailer data */
+
+        // Declare vars for trailer data handling
+        Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
         Node trailerChildSub;
 
+        //reads attributes and parts from the trailer's children
         trailer = root.getElementsByTagName("trailer").item(0);
-
-        //reads attributes and parts from the trailer' children
         trailerChildren = trailer.getChildNodes();
 
         for (int j = 0; j < trailerChildren.getLength(); j++) {
-
             trailerChildSub = trailerChildren.item(j);
 
             if ("neighbors".equals(trailerChildSub.getNodeName())) {
-                //read/parse  neighbor children
                 neighbors = handleNeighborData(trailerChildSub.getChildNodes());
-            } else if ("area".equals(trailerChildSub.getChildNodes())) {
+            } else if ("area".equals(trailerChildSub.getNodeName())) {
                 // trailerArea = handleAreaData(trailerChildSub); // uncomment for GUI
             }
         }
+        setList.add(new Set("trailer", neighbors));
 
-        setObj = new Set("Trailer", neighbors);
-        setList.add(setObj);
 
-        // parse set Nodes and append them to setArr
+        /* Parse normal Set data */
         sets = root.getElementsByTagName("set");
 
         for (int i = 0; i < sets.getLength(); i++) {
@@ -288,15 +264,16 @@ public class XMLParser {
             Node take;
             int numTakes = 0;
 
-            setRoles = new ArrayList<Role>(); // want a new stack each time, don't try to clear and reuse the same one
+            NodeList partList;
+            Node partListSub;
 
-            System.out.println("Parsing data for set " + (i + 1));
+            setRoles = new ArrayList<Role>(); // want a new List each time, don't try to clear and reuse the same one
+
+            // System.out.println("Parsing data for set " + (i + 1));
 
             //reads attributes from the sets/nodes
             set = sets.item(i);
             setName = set.getAttributes().getNamedItem("name").getNodeValue();
-            // String setName = set.getAttributes().getNamedItem("name").getNodeValue();
-            // System.out.println("Name = " + setName);
 
             //reads attributes and parts from the sets' children
             setChildren = set.getChildNodes();
@@ -309,10 +286,8 @@ public class XMLParser {
                 setChildSub = setChildren.item(j);
 
                 if ("neighbors".equals(setChildSub.getNodeName())) {
-                    //read/parse  neighbor children
+                    // parse  neighbor children
                     neighbors = handleNeighborData(setChildSub.getChildNodes());
-
-                    // System.out.println("\n");
                 } else if ("area".equals(setChildSub.getNodeName())) {
                     // setArea = handleAreaData(setChildSub); // uncomment for GUI
                 } else if ("takes".equals(setChildSub.getNodeName())) {
@@ -325,27 +300,24 @@ public class XMLParser {
                         if ("take".equals(takeListSub.getNodeName())) {
                             take = takeListSub;
                             numTakes++;
+                            // // ignoring the actual individual takes for now
                             // String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
                             // System.out.println("  take number: " + takeNumber);
 
-                            //handle take's child <area>
-                            // handleAreaData(take.getChildNodes().item(0));
-                            // technically, there's 1 item, but we want loose coupling
-                            // NodeList takeChildrenNodes = take.getChildNodes();
-                            // ignoring area data for now; uncomment for GUI
+                            // // ignoring area data for now; uncomment for GUI
                             // for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
                             //     Node takeChildrenSub = takeChildrenNodes.item(l);
                             //     if ("area".equals(takeChildrenSub.getNodeName())) {
-                            //         // takeArea = handleAreaData(takeChildrenSub); // uncomment for GUI
+                            //         // takeArea = handleAreaData(takeChildrenSub);
                             //     }
                             // }
                         }
                     }
                 } else if ("parts".equals(setChildSub.getNodeName())) {
-                    NodeList partList = setChildSub.getChildNodes();
-                    // loops through 
+                    partList = setChildSub.getChildNodes();
+                    // loops through the Node s"part"s in NodeList "parts"
                     for (int k = 1; k < partList.getLength(); k++) {
-                        Node partListSub = partList.item(k);
+                        partListSub = partList.item(k);
 
                         if ("part".equals(partListSub.getNodeName())) {
                             role = handlePartData(role, partListSub);
@@ -356,8 +328,7 @@ public class XMLParser {
                 // don't use an else block                
 
             } //for set childnodes
-            setObj = new Set(setName, neighbors, setRoles, numTakes);
-            setList.add(setObj);
+            setList.add(new Set(setName, neighbors, setRoles, numTakes));
         
         }//for set nodes
 
@@ -365,18 +336,22 @@ public class XMLParser {
 
     }//readBoardData() method
 
-    // reads card data from XML file, stores it in Card objects, stores those objects in a stack and returns stack
+    // reads card data from XML file, stores it in Card objects, stores those objects in a List and returns List
     public List<Card> convertDocToCardDeck(Document d) {
+        // Declare vars for card data handling
         NodeList cards;
+        Node card;
+        NodeList cardList;
+        Node cardListSub;
+        Node scene;
 
-        // declare Card, Role, and stacks of Card and Role
+        // declare Card, Role, and Lists of Cards and Roles
         Card cardObj;
         Role role = new Role();
-
         List<Card> cardDeck = new ArrayList<Card>();
-        List<Role> cardRoles = new ArrayList<Role>();
+        List<Role> cardRoles = new ArrayList<Role>(); //
 
-        // Declare vars for Role args
+        // Declare vars for Role constructor args
         String cardName;
         String budget;
         String sceneNumber = "";
@@ -387,44 +362,34 @@ public class XMLParser {
         cards = root.getElementsByTagName("card");
 
         for (int i = 0; i < cards.getLength(); i++) {
-            cardRoles = new Stack<Role>(); // want a new stack each time, don't try to clear and reuse the same one
+            cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
 
-            // System.out.println("Printing information for card " + (i + 1));
-            System.out.println("Parsing card " + (i + 1));
+            // System.out.println("Parsing card " + (i + 1));
 
-            //reads attributes from the cards/nodes
-            Node card = cards.item(i);
+            //reads attributes from the Cards/Nodes
+            card = cards.item(i);
             cardName = card.getAttributes().getNamedItem("name").getNodeValue();
-            // String imgName = card.getAttributes().getNamedItem("img").getNodeValue();
             budget = card.getAttributes().getNamedItem("budget").getNodeValue();
-            // System.out.println("Name = " + cardName + ", budget = " + budget);
 
             //reads attributes and parts from the cards' children
-            NodeList cardList = card.getChildNodes();
+            cardList = card.getChildNodes();
 
             for (int j = 0; j < cardList.getLength(); j++) {
-
-                Node cardListSub = cardList.item(j);
+                cardListSub = cardList.item(j);
 
                 if ("scene".equals(cardListSub.getNodeName())) {
                     //read attributes and text in scene
-                    Node scene = cardListSub;
+                    scene = cardListSub;
                     sceneNumber = scene.getAttributes().getNamedItem("number").getNodeValue();
                     sceneDescription = scene.getTextContent();
-                    // System.out.println(" scene description:" + sceneDescription);
-                    // System.out.println(" scene number = " + sceneNumber);
-                    // System.out.println("\n");
-                    
                 } else if ("part".equals(cardListSub.getNodeName())) {
-                    role =  handlePartData(role, cardListSub); // passing empty role in for now--wasn't sure if role should've been declared within this method
+                    role =  handlePartData(role, cardListSub);
                     cardRoles.add(role);
-                    
                 } //for part nodes
 
             } //for card childnodes
-            // System.out.println("\n");
 
-            // init card obj w/ parsed data, add it to deck, and clear list of roles for this card
+            // init card obj w/ parsed data and add it to cardDeck
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
             cardDeck.add(cardObj);
 

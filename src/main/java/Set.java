@@ -45,7 +45,7 @@ public class Set{
         for (int i = 0; i < neighbors.size(); i++) {
             setInfo += ("\n\t\tNeighbor name: " + neighbors.get(i));
         }
-        if (setName == "Office") {
+        if (setName == "office") {
             setInfo += "\n\tUpgrade costs in dollars: ";
             for (int i = 0; i < upgradeCostDollars.length; i++) {
                 setInfo += "\n\t\tRank " + (i+2) + ": $" + upgradeCostDollars[i];
@@ -54,7 +54,7 @@ public class Set{
             for (int i = 0; i < upgradeCostCredits.length; i++) {
                 setInfo += "\n\t\tRank " + (i+2) + ": " + upgradeCostCredits[i] + " credits";
             }
-        } else if (setName != "Trailer") {
+        } else if (setName != "trailer") {
             for (int i = 0; i < offCardRoles.size(); i++) {
                 setInfo += "\n\tOff-card role #" + (i+1) + ":";
                 setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).name;
