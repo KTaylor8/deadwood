@@ -8,16 +8,18 @@ public class Player{
     public int credit = 0;
     public boolean employed = false; 
     public int rehearseToken = 0;
-    public String position = "trailer";
+    public String position = "";
     public String roleName;
 
     public Player(String p){
         playerName = p;
+        position = "trailer";
     }
 
     public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
+        position = "trailer";
     }
 
     public void setName(String s){

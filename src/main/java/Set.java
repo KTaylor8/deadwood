@@ -77,6 +77,14 @@ public class Set{
         flipStage++;
     }
 
+    public int[] getUpgradeCD(){
+        return upgradeCostDollars;
+    }
+
+    public int[] getUpgradeCC(){
+        return upgradeCostCredits;
+    }
+
     public int getScene(){
         return currentTakes;
     }
