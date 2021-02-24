@@ -18,9 +18,9 @@ public class MyXMLTest {
         try {
             doc = parsing.getDocFromFile("src/main/resources/xml/board.xml"); //path will be passed in as arg
             List<Set> sets = parsing.parseBoardData(doc);
-            // for (Set set: sets) { // for testing that all the cards are there
-            //     System.out.println("Set name: " + set.setName);
-            // }
+            for (Set set: sets) { // for testing that all the cards are there
+                set.printInfo();
+            }
 
         } catch (NullPointerException e) {
             System.out.println("Error = " + e);

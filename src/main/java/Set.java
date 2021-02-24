@@ -38,30 +38,32 @@ public class Set{
         // this.finalTakes = 0;
     }
 
-    // I'm setting up this implementation with adjacent/neighbors as a ArrayList List 
-    // public void printInfo() {
-    //     String setInfo = "";
-    //     setInfo += ("\nSet name: " + setName);
-    //     setInfo += "\nNeighbors: ";
-    //     for (int i = 0; i < adjacent.size(); i++) {
-    //         setInfo += ("\nSet name: " + adjacent[i]);
-    //     }
-    //     if (setName == "Office") {
-    //         setInfo += "\nUpgrade costs in dollars: ";
-    //         for (int i = 0; i < upgradeCostDollars.length; i++) {
-    //             setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostDollars[i] + "dollars";
-    //         }
-    //         setInfo += "\nUpgrade costs in credits: ";
-    //         for (int i = 0; i < upgradeCostCredits.length; i++) {
-    //             setInfo += "\n\tRank " + (i+2) + ": " + upgradeCostCredits[i] + "credits";
-    //         }
-    //     } else if (setName == "Trailers") {
-    //         setInfo = 
-    //     } else {
-    //         setInfo = 
-    //     }
-    //     System.out.println(setInfo);
-    // }
+    public void printInfo() {
+        String setInfo = "";
+        setInfo += ("\nSet name: " + setName);
+        setInfo += "\n\tNeighbors: ";
+        for (int i = 0; i < neighbors.size(); i++) {
+            setInfo += ("\n\t\tNeighbor name: " + neighbors.get(i));
+        }
+        if (setName == "Office") {
+            setInfo += "\n\tUpgrade costs in dollars: ";
+            for (int i = 0; i < upgradeCostDollars.length; i++) {
+                setInfo += "\n\t\tRank " + (i+2) + ": $" + upgradeCostDollars[i];
+            }
+            setInfo += "\n\tUpgrade costs in credits: ";
+            for (int i = 0; i < upgradeCostCredits.length; i++) {
+                setInfo += "\n\t\tRank " + (i+2) + ": " + upgradeCostCredits[i] + " credits";
+            }
+        } else if (setName != "Trailer") {
+            for (int i = 0; i < offCardRoles.size(); i++) {
+                setInfo += "\n\tOff-card role #" + (i+1) + ":";
+                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).name;
+                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).level;
+                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).line;
+            }
+        } 
+        System.out.println(setInfo);
+    }
 
     public void resetSet(Card newCard){
         this.currentCard = newCard;
