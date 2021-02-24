@@ -14,14 +14,12 @@ public class Player implements Comparable<Player>{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        level = 4;
     }
 
     public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
         position = "trailer";
-        level = 4;
     }
 
     public int compareTo(Player p) {

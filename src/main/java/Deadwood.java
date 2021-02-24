@@ -49,7 +49,7 @@ public class Deadwood{
 
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
-            while(board.sceneNum() > 9){
+            while(board.sceneNum() > 1){
                 currentPlayer = players.peek();
                 players.add(players.remove());
                 playerTurn(currentPlayer);
