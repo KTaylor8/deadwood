@@ -130,7 +130,7 @@ public class XMLParser {
         roleObj = new Role(partName, partLevel, partLine);
 
         return roleObj;
-    }//handlePartData() method
+    }//getPartData() method
 
 
     /**
