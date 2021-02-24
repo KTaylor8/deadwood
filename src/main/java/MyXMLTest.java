@@ -33,7 +33,6 @@ public class MyXMLTest {
         //parse card data
         // try {
         //     doc = parsing.getDocFromFile("src/main/resources/xml/cards.xml"); //path will be passed in as arg
-        // //     Stack<Card> cardDeck = parsing.convertDocToCardDeck(doc);
         //        List<Card> cardDeck = parsing.convertDocToCardDeck(doc);
         //     // for (Card card: cardDeck) { // for testing that all the cards are there
         //     //     System.out.println("Name: " + card.name + "; Budget: " + card.budget + " Scene Number: " + card.sceneNumber);

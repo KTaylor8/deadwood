@@ -424,7 +424,7 @@ public class XMLParser {
             } //for card childnodes
             // System.out.println("\n");
 
-            // init card obj w/ parsed data, push it to deck, and clear stack of roles for this card
+            // init card obj w/ parsed data, add it to deck, and clear list of roles for this card
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
             cardDeck.add(cardObj);
 
