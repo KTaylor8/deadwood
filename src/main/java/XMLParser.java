@@ -34,32 +34,12 @@ public class XMLParser {
         } // exception handling
     }
 
-    // private Set[] appendSet(Set[] setArr, Set newSet) {
-    //     Set[] newSetArr = new Set[setArr.length+1];
-
-    //     int i;
-    //     for (i = 0; i < setArr.length; i++) {
-    //         newSetArr[i] = setArr[i];
-    //     }
-    //     newSetArr[i] = newSet;
-
-    //     return newSetArr;
-    // }
-
-    // private int[] appendInt(int[] intArr, int newInt) {
-    //     int[] newIntArr = new int[intArr.length+1];
-
-    //     int i;
-    //     for (i = 0; i < intArr.length; i++) {
-    //         newIntArr[i] = intArr[i];
-    //     }
-    //     newIntArr[i] = newInt;
-
-    //     return newIntArr;
-    // }
-
-    // accepts a list of potential neighbors
-    private List<String> handleNeighborData(NodeList neighborList) {
+    /**
+     * Parse neighbor data
+     * @param neighborList accepts a list of potential neighbors
+     * @return neighbors
+     */
+    private static List<String> handleNeighborData(NodeList neighborList) {
         List<String> neighbors = new ArrayList<String>();
         String neighborName;
         Node neighborListSub;
@@ -76,6 +56,7 @@ public class XMLParser {
 
         return neighbors;
     }
+
 
     // class for Area, so then it's easier to store and access the dimensions
     // let's move this to it's own java file later if we decide to keep this class
@@ -109,8 +90,14 @@ public class XMLParser {
     //     );
     // }//handleAreaData() method
 
-    // accepts a single Node part
-    private Role handlePartData(Role roleObj, Node part){
+
+    /**
+     * Parse role/part data
+     * @param roleObj
+     * @param part accepts a single Node part
+     * @return
+     */
+    private static Role getPartData(Role roleObj, Node part){
         // Declare vars for part data handling
         NodeList partChildren;
         Node partChildrenSub;
@@ -145,26 +132,19 @@ public class XMLParser {
         return roleObj;
     }//handlePartData() method
 
-    // reads data in board.xml, stores it in Set objects, stores those objects in a List and returns List
-    public List<Set> parseBoardData(Document d) {
-        NodeList sets; /* NodeList of elements with tag name "set" */
 
-        // declare class objects and their Lidyd
-        Set setObj;
-        Role role = new Role();
-        List<Set> setList = new ArrayList<Set>();
-        List<Role> setRoles = new ArrayList<Role>();
-        List<String> neighbors = new ArrayList<String>();
-
-        Element root = d.getDocumentElement();
-
-
-        /* Parse office data */
-
+    /**
+     * Parse office data into Set
+     * @param root -- document root
+     * @return
+     */
+    private static Set getOfficeData(Element root){
         // Declare vars for office data handling
         Node office; /* Element with tag name "office" */
         NodeList officeChildren;
         Node officeChildSub;
+
+        List<String> neighbors = new ArrayList<String>();     
 
         // Upgrade vars
         NodeList upgradesList;
@@ -224,15 +204,19 @@ public class XMLParser {
             // don't use an else block
 
         } //for office childnodes
-        setList.add(new Set("office", neighbors, upgradeDollars, upgradeCredits));
+
+        return new Set("office", neighbors, upgradeDollars, upgradeCredits);
+    }
 
 
-        /* Parse trailer data */
-
+    /* Parse trailer data into Set */
+    private static Set getTrailerData(Element root){
         // Declare vars for trailer data handling
         Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
         Node trailerChildSub;
+        
+        List<String> neighbors = new ArrayList<String>();
 
         //reads attributes and parts from the trailer's children
         trailer = root.getElementsByTagName("trailer").item(0);
@@ -247,25 +231,39 @@ public class XMLParser {
                 // trailerArea = handleAreaData(trailerChildSub); // uncomment for GUI
             }
         }
-        setList.add(new Set("trailer", neighbors));
 
+        return new Set("trailer", neighbors);
+    }
 
-        /* Parse normal Set data */
+    private List<Set> addSets(Element root, List<Set> setList) {
+        // declare class objects and their Lists
+        Role role = new Role();
+        List<Role> setRoles = new ArrayList<Role>();
+        List<String> neighbors = new ArrayList<String>();
+
+        // Declare vars for normal set data handling
+        NodeList sets; /* NodeList of elements with tag name "set" */
+        Node set; /* Individual set Node from sets */
+        NodeList setChildren;
+        String setName;
+        Node setChildSub;
+        NodeList partList;
+        Node partListSub;
+
+        // take vars
+        NodeList takeList;
+        Node takeListSub;
+        Node take;
+        int numTakes;
+
         sets = root.getElementsByTagName("set");
 
         for (int i = 0; i < sets.getLength(); i++) {
-            Node set; /* Individual set Node from sets */
-            NodeList setChildren;
-            String setName;
-            Node setChildSub;
-
-            NodeList takeList;
-            Node takeListSub;
-            Node take;
-            int numTakes = 0;
-
-            NodeList partList;
-            Node partListSub;
+            // init new objects and take counter for new Set
+            role = new Role();
+            setRoles = new ArrayList<Role>();
+            neighbors = new ArrayList<String>();
+            numTakes = 0;
 
             setRoles = new ArrayList<Role>(); // want a new List each time, don't try to clear and reuse the same one
 
@@ -320,8 +318,7 @@ public class XMLParser {
                         partListSub = partList.item(k);
 
                         if ("part".equals(partListSub.getNodeName())) {
-                            role = handlePartData(role, partListSub);
-                            setRoles.add(role);
+                            setRoles.add(getPartData(role, partListSub));
                         }
                     }
                 } //for part nodes
@@ -331,6 +328,23 @@ public class XMLParser {
             setList.add(new Set(setName, neighbors, setRoles, numTakes));
         
         }//for set nodes
+
+        return setList;
+    }
+
+    // reads data in board.xml, stores it in Set objects, stores those objects in a List and returns List
+    public List<Set> parseBoardData(Document d) {
+        List<Set> setList = new ArrayList<Set>(); /* List of all board tiles */
+        Element root = d.getDocumentElement();
+
+        /* Parse office data */
+        setList.add(getOfficeData(root));
+
+        /* Parse trailer data */
+        setList.add(getTrailerData(root));
+
+        /* Parse normal Set data */
+        setList = addSets(root, setList);
 
         return setList;
 
@@ -349,7 +363,7 @@ public class XMLParser {
         Card cardObj;
         Role role = new Role();
         List<Card> cardDeck = new ArrayList<Card>();
-        List<Role> cardRoles = new ArrayList<Role>(); //
+        List<Role> cardRoles = new ArrayList<Role>();
 
         // Declare vars for Role constructor args
         String cardName;
@@ -383,8 +397,7 @@ public class XMLParser {
                     sceneNumber = scene.getAttributes().getNamedItem("number").getNodeValue();
                     sceneDescription = scene.getTextContent();
                 } else if ("part".equals(cardListSub.getNodeName())) {
-                    role =  handlePartData(role, cardListSub);
-                    cardRoles.add(role);
+                    cardRoles.add(getPartData(role, cardListSub));
                 } //for part nodes
 
             } //for card childnodes
