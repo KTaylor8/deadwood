@@ -1,3 +1,14 @@
+Remaining tasks:
+- handle ties -- Katie (implemented something *untested*)
+- test upgrading works
+- test that the game will reset at the end of the day 
+- test that acting awards the correct amounts at the end of it
+- go through classes and make some public stuff private
+- clean stuff up and add comments
+If time:
+- make board singleton
+
+
 Deadwood:Lilu
 - create board
 - prompt how many players
