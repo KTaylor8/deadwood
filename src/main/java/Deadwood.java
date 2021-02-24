@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Deadwood{
@@ -55,21 +56,31 @@ public class Deadwood{
             System.out.println("Its the end of the day! " + numDays + " days remain");
             board.resetBoard();
         }
-    System.out.println("Calculating winner...");
-    Player winner = calcWinner();
-    System.out.println(winner.playerName + " wins with " + winner.calcFinalScore() + "!");
+        System.out.println("Calculating winner...");
+        List<Player> winners = calcWinner();
+        if (winners.size() > 1) {
+            System.out.println("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
+            for (Player p : winners) {
+                System.out.println(p.playerName);
+            }
+        } else {
+            System.out.println(winners.get(0).playerName + " wins with " + winners.get(0).calcFinalScore() + "!");
+        }
         
-
     }
+
     //figure out something for ties
-    public static Player calcWinner(){
-        Player winner = new Player("Big Loser", -100, 0);
-        for(Player p: players){
-            if(p.calcFinalScore() > winner.calcFinalScore()){
-                winner = p;
+    public static List<Player> calcWinner(){
+        List<Player> winners = new ArrayList<Player>();
+        // Player's compareTo() method should sort in descending order by calcFinalScore()
+        Arrays.sort(winners); 
+        int winningScore = winners.get(0).calcFinalScore();
+        for (int i = winners.size()-1; i > 0; i--) { // remove starting from end, excluding 0
+            if (winners.get(i).calcFinalScore() < winningScore) {
+                winners.remove(i);
             }
         }
-        return winner;
+        return winners;
     }
 
     public static Queue<Player> addPlayers(int numPlayers){
