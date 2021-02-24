@@ -63,6 +63,9 @@ public class Set{
     }
 
     public void resetSet(Card newCard){
+        for(int i = 0; i < offCardRoles.size(); i++ ){
+            (offCardRoles.get(i)).occupied = false;
+        }
         this.currentCard = newCard;
         this.currentTakes = finalTakes;
         flipStage = 0;

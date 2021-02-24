@@ -44,8 +44,7 @@ public class Deadwood{
 
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
-            System.out.println(board.sceneNum());
-            while(board.sceneNum() > 1){
+            while(board.sceneNum() > 9){
                 currentPlayer = players.peek();
                 players.add(players.remove());
                 playerTurn(currentPlayer);
@@ -53,7 +52,13 @@ public class Deadwood{
             numDays--;
             System.out.println("Its the end of the day! " + numDays + " days remain");
             board.resetBoard();
+            for(int i = 0; i < players.size(); i++){
+                (players.peek()).resetRole();
+                (players.peek()).changePos("trailer");
+                players.add(players.remove());
+            }
         }
+
         System.out.println("Calculating winner...");
         List<Player> winners = calcWinner();
         if (winners.size() > 1) {
@@ -138,7 +143,6 @@ public class Deadwood{
             }
             numDays = 3;
         }
-        scan.close();
 
         return p;
     }
@@ -248,15 +252,21 @@ public class Deadwood{
                     else if(input.contains("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            int[] d = board.getDollarC();
-                            if(d[desiredLevel-1] > currentPlayer.dollar){
-                                System.out.println("You do not have enough dollars for this upgrade");
+                            if(desiredLevel > currentPlayer.level)
+                            {
+                                int[] d = board.getDollarC();
+                                if(d[desiredLevel-1] > currentPlayer.dollar){
+                                    System.out.println("You do not have enough dollars for this upgrade");
+                                }
+                                else{
+                                    System.out.println("You are now level " + desiredLevel);
+                                    currentPlayer.setLevel(desiredLevel);
+                                    currentPlayer.incDollar((-1*d[desiredLevel-2]));
+                                    System.out.println("And you have " + currentPlayer.dollar + " remaining");
+                                }
                             }
                             else{
-                                System.out.println("You are now level " + desiredLevel);
-                                currentPlayer.setLevel(desiredLevel);
-                                currentPlayer.incDollar((-1*d[desiredLevel-1]));
-                                System.out.println("And you have " + currentPlayer.dollar + " remaining");
+                                System.out.println("Pick a level higher than you! Unless you want to give me money....");
                             }
                         }
                         else{
@@ -267,15 +277,21 @@ public class Deadwood{
                     else if(input.contains("upgrade c ")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            int[] c = board.getCreditC();
-                            if(c[desiredLevel-1] > currentPlayer.credit){
-                                System.out.println("You do not have enough credits for this upgrade");
+                            if(desiredLevel > currentPlayer.level)
+                            {
+                                int[] c = board.getCreditC();
+                                if(c[desiredLevel-1] > currentPlayer.credit){
+                                    System.out.println("You do not have enough credits for this upgrade");
+                                }
+                                else{
+                                    System.out.println("You are now level " + desiredLevel);
+                                    currentPlayer.setLevel(desiredLevel);
+                                    currentPlayer.incCred((-1*c[desiredLevel-2]));
+                                    System.out.println("And you have " + currentPlayer.credit + " remaining");
+                                }
                             }
                             else{
-                                System.out.println("You are now level " + desiredLevel);
-                                currentPlayer.setLevel(desiredLevel);
-                                currentPlayer.incCred((-1*c[desiredLevel-1]));
-                                System.out.println("And you have " + currentPlayer.credit + " remaining");
+                                System.out.println("Pick a level higher than you! Unless you want to give me money....");
                             }
                         }
                         else{
@@ -317,13 +333,17 @@ public class Deadwood{
                         //if player is employed
                         if(currentPlayer.employed){
                             //and if the player does not have the max number of tokens already
-                            if(currentPlayer.level + currentPlayer.rehearseToken == 6)
-                            {
-                                System.out.println("You have reached the max for rehearsal and only have the option to act. Its a garunteed success though!");
+                            if(!hasPlayed){
+                                if(currentPlayer.rehearseToken == 5)
+                                {
+                                    System.out.println("You have reached the max for rehearsal and only have the option to act. Its a garunteed success though!");
+                                }
+                                else{
+                                    currentPlayer.incToken();
+                                    hasPlayed = true;
+                                }
                             }
-                            else{
-                                currentPlayer.incToken();
-                            }
+
                         }
                         else{
                             System.out.println("You're not employed? What are you going to rehearse for??");
@@ -337,7 +357,6 @@ public class Deadwood{
                         System.out.println("unknown command, try again");
                     }
                 }
-        scan.close();
     }
 
     public static void act(Player curPlayer){

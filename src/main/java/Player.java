@@ -4,8 +4,8 @@ public class Player implements Comparable<Player>{
 
     public String playerName;
     public int level = 1;
-    public int dollar = 200;
-    public int credit = 300;
+    public int dollar = 0;
+    public int credit = 0;
     public boolean employed = false; 
     public int rehearseToken = 0;
     public String position = "";
@@ -14,14 +14,14 @@ public class Player implements Comparable<Player>{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        level = 3;
+        level = 4;
     }
 
     public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
         position = "trailer";
-        level = 3;
+        level = 4;
     }
 
     public int compareTo(Player p) {
@@ -46,7 +46,7 @@ public class Player implements Comparable<Player>{
 
     public void giveRole(String rn){
         this.roleName = rn;
-        this.employed = !this.employed;
+        this.employed = true;
     }
 
     public void incToken(){
@@ -56,7 +56,7 @@ public class Player implements Comparable<Player>{
     public void resetRole(){
         roleName = "";
         this.rehearseToken = 0;
-        this.employed = !this.employed;
+        this.employed = false;
     }
 
     public void changePos(String newPos){
