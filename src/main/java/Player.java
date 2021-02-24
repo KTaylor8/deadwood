@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Player{
+public class Player implements Comparable<Player>{
 
     public String playerName;
     public int level = 1;
@@ -21,7 +21,11 @@ public class Player{
         playerName = p;
         level = sl;
         position = "trailer";
-        level = 3;
+    }
+
+    public int compareTo(Player p) {
+        // sorts in descending order
+        return Integer.compare(p.calcFinalScore(), this.calcFinalScore()); 
     }
 
     public void setName(String s){
