@@ -50,8 +50,8 @@ public class Board{
         /* Assign cards to sets */
         Collections.shuffle(cardDeck);
 
-        for(Set s: boardSets){
-            s.resetSet(cardDeck.remove(cardDeck.size()-1));
+        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
+            boardSets.get(i).resetSet(cardDeck.remove(cardDeck.size()-1));
         }
     }
     
@@ -148,12 +148,14 @@ public class Board{
                         free += "\nOff card role: " + ((s.offCardRoles).get(i)).name +" must be level: " + ((s.offCardRoles).get(i)).level;
                     }
                 }
-                for(int i = 0; i < ((s.currentCard).roles).size(); i++){
-                    if(!(((s.currentCard).roles).get(i)).occupied){
-                        free += "\nOn card role: " + (((s.currentCard).roles).get(i)).name +" must be level: " + (((s.currentCard).roles).get(i)).level + "";
-                        
+                if (s.currentCard != null) {
+                    for(int i = 0; i < ((s.currentCard).roles).size(); i++){
+                        if(!(((s.currentCard).roles).get(i)).occupied){
+                            free += "\nOn card role: " + (((s.currentCard).roles).get(i)).name +" must be level: " + (((s.currentCard).roles).get(i)).level + "";
+                            
+                        }
                     }
-                }
+                }  
             }
         }
         if(free.equals("")){
