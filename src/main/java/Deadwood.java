@@ -138,6 +138,8 @@ public class Deadwood{
         Scanner scan = new Scanner(System.in);
         String input = "";
         System.out.println("What would you like to do " + currentPlayer.playerName + "?");
+        
+        System.out.println("Scenes remaining before end of day: " + board.sceneNum());
                 while(!input.equals("end")){
                     
                     input = scan.nextLine();
@@ -240,7 +242,7 @@ public class Deadwood{
                         }
 
                     }
-                    else if(input.contains("upgrade c")){
+                    else if(input.contains("upgrade c ")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             int[] c = board.getCreditC();

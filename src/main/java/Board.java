@@ -165,9 +165,11 @@ public class Board{
     public int sceneNum(){
         int numScene = 0;
         for(Set s: boardSets){
-            numScene += s.getScene();
+            if(s.flipStage != 2){
+                numScene++;
+            }
         }
-        return numScene;
+        return numScene - 2;
     }
    
 }
