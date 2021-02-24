@@ -169,7 +169,10 @@ public class Deadwood{
                         }
                     }
                     //if player wants to move
-                    else if(input.contains("move")){
+                    else if(input.equals("move")){
+                        System.out.println("Please enter a place you want to move after \"move\"");
+                    }
+                    else if(input.contains("move ")){
                         //if player is not employed
                         if(!currentPlayer.employed){
                             //if player hasnt moved or acted
@@ -180,7 +183,7 @@ public class Deadwood{
                                     currentPlayer.changePos(split);
                                     hasPlayed = true;
                                 }
-                                //else
+                                else
                                 {
                                     System.out.println("invalid place to move to");
                                 }
@@ -200,16 +203,18 @@ public class Deadwood{
                    
                     //if player wants to take roll and are not employed, let them
                     else if(input.contains("take role") && currentPlayer.employed == false){
-                        if(board.employ(currentPlayer.position, input.substring(10))) //also make return bool
+                        System.out.println("Substring: " + input.substring(11));
+                        if(board.employ(currentPlayer.position, input.substring(11))) //also make return bool
                         {
-                            currentPlayer.giveRole(input.substring(10));
+                            currentPlayer.giveRole(input.substring(11));
+                            System.out.println("You are now employed as: " + currentPlayer.roleName);
                         }
                         else{
                             System.out.println("This role does not exist where you are currently, other options are " + board.freeRoles(currentPlayer.position));
                         }
                     }
                     //if player wants to upgrade
-                    else if(input.equals("upgrade d")){
+                    else if(input.contains("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             int[] d = board.getDollarC();
@@ -228,7 +233,7 @@ public class Deadwood{
                         }
 
                     }
-                    else if(input.equals("upgrade c")){
+                    else if(input.contains("upgrade c")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             int[] c = board.getCreditC();
@@ -295,8 +300,6 @@ public class Deadwood{
                         System.out.println("unknown command, try again");
                     }
                 }
-    
-        scan.close();
 
     }
 
@@ -356,17 +359,10 @@ public class Deadwood{
     public static void bonuses(Set s){
         int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
         System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
-        for (int i = 0; i < dice.length; i++) {
-            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        for(int d: dice){
+            d = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
-
-        // sort array in ascending order and then reverse it
-        Arrays.sort(dice);
-        int[] newDice = new int[dice.length];
-        for(int i = 0; i < dice.length; i++) {
-            newDice[dice.length-1-i] = dice[i];
-        }
-        dice = newDice;
+        //Arrays.sort(dice, Collections.reverseOrder());
 
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);
