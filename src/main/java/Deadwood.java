@@ -118,6 +118,8 @@ public class Deadwood{
             }
             numDays = 3;
         }
+        scan.close();
+
         return p;
     }
 
@@ -309,7 +311,7 @@ public class Deadwood{
                         System.out.println("unknown command, try again");
                     }
                 }
-
+        scan.close();
     }
 
     public static void act(Player curPlayer){
