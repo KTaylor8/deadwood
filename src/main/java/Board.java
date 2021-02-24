@@ -1,12 +1,5 @@
 import java.util.*;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class Board{
     String boardPath, cardPath;
@@ -54,8 +47,12 @@ public class Board{
             return;
         }
 
-        
-        
+        /* Assign cards to sets */
+        Collections.shuffle(cardDeck);
+
+        for(Set s: boardSets){
+            s.resetSet(cardDeck.remove(cardDeck.size()-1));
+        }
     }
 
     public int getBudget(String pos){
