@@ -37,7 +37,7 @@ public class Board{
         return null;
     }
 
-    public List<String> getAdjacent(String pos){
+    public List<String> getNeighbors(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.setName))
             {

@@ -120,7 +120,7 @@ public class Deadwood{
     }
 
     public static boolean moveTo(Player p, String place){
-        List<String> adj = board.getAdjacent(p.position);
+        List<String> adj = board.getNeighbors(p.position);
         for(int i = 0; i < adj.size(); i++){
             if(place.equals(adj.get(i)))
             {
@@ -161,9 +161,9 @@ public class Deadwood{
                         players.add(players.remove());
                     }
                     //prints adjacent tiles to player
-                    else if(input.equals("adjacent")){
-                        List<String> temp = board.getAdjacent(currentPlayer.position);
-                        System.out.println("You are adjacent to: ");
+                    else if(input.equals("neighbors")){
+                        List<String> temp = board.getNeighbors(currentPlayer.position);
+                        System.out.println("Your neighbors are: ");
                         for(int i = 0; i < temp.size(); i++){
                             System.out.println("- " + temp.get(i));
                         }
