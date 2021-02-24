@@ -408,10 +408,17 @@ public class Deadwood{
     public static void bonuses(Set s){
         int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
         System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
-        for(int d: dice){
-            d = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
-        //Arrays.sort(dice, Collections.reverseOrder());
+
+        // sort array in ascending order and then reverse it
+        Arrays.sort(dice);
+        int[] newDice = new int[dice.length];
+        for(int i = 0; i < dice.length; i++) {
+            newDice[dice.length-1-i] = dice[i];
+        }
+
 
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);
