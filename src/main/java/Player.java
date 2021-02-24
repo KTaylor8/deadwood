@@ -14,7 +14,6 @@ public class Player{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        //level = 3;
     }
 
     public Player(String p, int sl, int sc){
@@ -46,7 +45,7 @@ public class Player{
 
     public void giveRole(String rn){
         this.roleName = rn;
-        this.employed = !this.employed;
+        this.employed = true;
     }
 
     public void incToken(){
@@ -56,7 +55,7 @@ public class Player{
     public void resetRole(){
         roleName = "";
         this.rehearseToken = 0;
-        this.employed = !this.employed;
+        this.employed = false;
     }
 
     public void changePos(String newPos){
