@@ -77,7 +77,7 @@ public class Deadwood{
         List<Player> winners = new ArrayList<Player>();
         while (players.size() > 0) {
             winners.add(players.remove());
-        } // don't think we need "players" at this point??
+        } // don't think we need "players" at this point?
 
         // scoreSorter's compare() should sort in descending order by calcFinalScore()
         // Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
