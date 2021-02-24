@@ -5,11 +5,11 @@ x test that the game will reset at the end of the day -- Katie
 x test that acting awards the correct amounts at the end of it 
 - go through classes and make some public stuff private
   X Deadwood
-  - Board
-  - Player
-  - Card
-  - Set
-  - Role
+  x Board
+  x Player
+  x Card
+  x Set
+  x Role
 x clean stuff up and add comments
 If time:
 - make board singleton
