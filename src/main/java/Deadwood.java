@@ -178,7 +178,6 @@ public class Deadwood{
         String input = "";
         System.out.println("What would you like to do " + currentPlayer.playerName + "?");
         
-        System.out.println("Scenes remaining before end of day: " + board.sceneNum());
         //while the player doesnt say they want their turn to end
                 while(!input.equals("end")){
                     
@@ -225,7 +224,7 @@ public class Deadwood{
                                 if(moveTo(currentPlayer, split)) 
                                 {
                                     currentPlayer.changePos(split);
-                                    hasPlayed = true;
+                                    //hasPlayed = true;
                                 }
                                 else
                                 {
@@ -267,14 +266,17 @@ public class Deadwood{
                         //check to make sure player is in office
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            if(desiredLevel > currentPlayer.level)
-                            {
-                                //get the 
+                            //make sure the level is creater than current level and in the upgrades list
+                            
+                                //get the upgrade prices
                                 int[] d = board.getDollarC();
+                                if(desiredLevel > currentPlayer.level && desiredLevel  <= d.length +1 )
+                            {
                                 if(d[desiredLevel-2] > currentPlayer.dollar){
                                     System.out.println("You do not have enough dollars for this upgrade");
                                 }
                                 else{
+                                    //change level
                                     System.out.println("You are now level " + desiredLevel);
                                     currentPlayer.setLevel(desiredLevel);
                                     currentPlayer.incDollar((-1*d[desiredLevel-2]));
@@ -282,7 +284,7 @@ public class Deadwood{
                                 }
                             }
                             else{
-                                System.out.println("Pick a level higher than you! Unless you want to give me money....");
+                                System.out.println("Not a valid level!!!!");
                             }
                         }
                         else{
@@ -290,16 +292,22 @@ public class Deadwood{
                         }
 
                     }
+                    //if player wants to upgrade using credits
                     else if(input.contains("upgrade c ")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            if(desiredLevel > currentPlayer.level)
-                            {
+                            //make sure desired level is above current level and in the upgrade lists
+                            
+                                //get list of upgrades
                                 int[] c = board.getCreditC();
+                                if(desiredLevel > currentPlayer.level && desiredLevel  <= c.length +1 )
+                            {
+                                //make usre they have enough
                                 if(c[desiredLevel-2] > currentPlayer.credit){
                                     System.out.println("You do not have enough credits for this upgrade");
                                 }
                                 else{
+                                    //upgrade
                                     System.out.println("You are now level " + desiredLevel);
                                     currentPlayer.setLevel(desiredLevel);
                                     currentPlayer.incCred((-1*c[desiredLevel-2]));
@@ -307,7 +315,7 @@ public class Deadwood{
                                 }
                             }
                             else{
-                                System.out.println("Pick a level higher than you! Unless you want to give me money....");
+                                System.out.println("Not a valid level!!!!");
                             }
                         }
                         else{
@@ -315,6 +323,7 @@ public class Deadwood{
                         }
 
                     }
+                    //gets the cost of every upgrade
                     else if(input.equals("upgrade costs")){
                         int[] dd = board.getDollarC();
                         int[] cc = board.getCreditC();
@@ -375,13 +384,18 @@ public class Deadwood{
                 }
     }
 
+    //for letting the player act
     private static void act(Player curPlayer){
+        //make and role a die
         Set sett = board.getSet(curPlayer.position);
         int budget = Integer.valueOf((sett.currentCard).budget);
         int die = 1 + (int)(Math.random() * ((6 - 1) + 1));
 
+
         System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.rehearseToken + " rehearsal tokens");
+        //if the die is higher than the budget
         if(budget > (die + curPlayer.rehearseToken)){
+            //for acting failures on card and off card
             System.out.println("Acting failure!");
             if(onCard(curPlayer.roleName, sett)){
                 System.out.println("Since you had an important role you get nothing!");
@@ -392,6 +406,7 @@ public class Deadwood{
             }
         }
         else{
+            //for acting successes on card and off card
             System.out.println("Acting success!");
             if(onCard(curPlayer.roleName, sett)){
                 System.out.println("Since you were important, you get 2 credits");
@@ -402,8 +417,10 @@ public class Deadwood{
                 curPlayer.incCred(1);
                 curPlayer.incDollar(1);
             }
+            //increment takes
             sett.incTakes();
         }
+        //if it was the last scene and someone was on card hand out bonuses
         if(sett.getScene() == 0){
             if(canBonus(sett)){
                 System.out.println("Oh no! That was the last scene! Everyone gets money!");
@@ -420,6 +437,7 @@ public class Deadwood{
 
     }
 
+    //returns true if someone is on card
     private static boolean canBonus(Set s){
         for(int i = 0; i < ((s.currentCard).roles).size(); i ++){
             if((((s.currentCard).roles).get(i)).occupied){
@@ -429,6 +447,7 @@ public class Deadwood{
         return false;
     }
 
+    //hands out bonuses based on on card and off card people
     private static void bonuses(Set s){
         int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
         System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
@@ -447,17 +466,20 @@ public class Deadwood{
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);
 
+        //hand out bonuses of randomized dice to on card people
         for(int i = 0; i < dice.length; i++){
             (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
             System.out.println((onCardPeople.get(i%(onCardPeople.size()))).playerName + " gets $" + dice[i]);
         }
 
+        //hand out bonuses of rank to off card people
         for(Player p: offCardPeople){
             p.incDollar(getRoleRank(p.roleName, s));
             System.out.println(p.playerName + " gets $" + getRoleRank(p.roleName, s));
         }
     }
 
+    //returns int of the level of the role
     private static int getRoleRank(String roleName, Set s){
         for(Role r: s.offCardRoles){
             if(roleName.equals(r.name)){
@@ -467,6 +489,7 @@ public class Deadwood{
         return 0;
     }
 
+    //returns list of people who are on card for a set
     private static List<Player> findOnCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
@@ -480,6 +503,7 @@ public class Deadwood{
 
     }
 
+    //returns list of people who are off card for a set
     private static List<Player> findOffCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
@@ -493,6 +517,7 @@ public class Deadwood{
 
     }
 
+    //wraps up a set and resets the roles,
     private static void wrapUp(Set s){
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);
@@ -504,10 +529,12 @@ public class Deadwood{
             p.resetRole();
         }
 
+        //make sure the set isnt used again for this day
         s.flipSet();
 
     }
 
+    //returns boolean if the role is on card of a set
     private static boolean onCard(String role, Set s){
         List<Role> tester = s.offCardRoles;
         for(int i = 0; i < tester.size(); i++){

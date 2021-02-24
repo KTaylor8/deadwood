@@ -5,6 +5,12 @@ To run game:
         ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {player number}
 
 To play game:
+    (WARNING: ALL THINGS ARE CASE SENSITIVE, COMMANDS ARE LOWERCASE AND LOCATIONS SHOWN HAVE EXACT SAME CAPITALIZATION
+        ex1: to move:  
+            - "move Secret Hideout"
+            -" take role Sleeping Drunkard
+    Get exact names of roles and neighboring places if you are unsure of capitalization)
+    
     1. Once code is running, you will be prompted to enter names of all of your players, this will also be in the same order that they play.
     2. During a turn you can pick from these options:
         - "end" to end the turn
