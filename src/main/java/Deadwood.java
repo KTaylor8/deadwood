@@ -35,7 +35,7 @@ public class Deadwood{
             System.exit(0);
         }
 
-        System.out.println("baller");
+        System.out.println("Welcome to Deadwood! Start with naming your characters");
         //creates the player queue with diff values according to num players
         //fix to not make ugly ?
         players = addPlayers(numPlayers);
@@ -135,9 +135,9 @@ public class Deadwood{
         boolean hasPlayed = false; 
         Scanner scan = new Scanner(System.in);
         String input = "";
-
+        System.out.println("What would you like to do " + currentPlayer.playerName + "?");
                 while(!input.equals("end")){
-                    System.out.println("What would you like to do " + currentPlayer.playerName + "?");
+                    
                     input = scan.nextLine();
 
                     //prints who's turn and dollar and credits
