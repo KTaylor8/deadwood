@@ -389,7 +389,7 @@ public class Deadwood{
         //make and role a die
         Set sett = board.getSet(curPlayer.position);
         int budget = Integer.valueOf((sett.currentCard).budget);
-        int die = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        int die = 1 + (int)(Math.random() * 6);
 
 
         System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.rehearseToken + " rehearsal tokens");
