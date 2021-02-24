@@ -248,10 +248,7 @@ public class Deadwood{
                     else if(input.contains("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            System.out.println("-1: " + desiredLevel);
                             int[] d = board.getDollarC();
-                            System.out.println("1: " + d[desiredLevel-1] );
-                            System.out.println("2: " + currentPlayer.dollar);
                             if(d[desiredLevel-1] > currentPlayer.dollar){
                                 System.out.println("You do not have enough dollars for this upgrade");
                             }

@@ -4,8 +4,8 @@ public class Player implements Comparable<Player>{
 
     public String playerName;
     public int level = 1;
-    public int dollar = 0;
-    public int credit = 0;
+    public int dollar = 200;
+    public int credit = 300;
     public boolean employed = false; 
     public int rehearseToken = 0;
     public String position = "";
@@ -14,13 +14,14 @@ public class Player implements Comparable<Player>{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        //level = 3;
+        level = 3;
     }
 
     public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
         position = "trailer";
+        level = 3;
     }
 
     public int compareTo(Player p) {
