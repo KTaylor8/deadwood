@@ -18,9 +18,9 @@ public class MyXMLTest {
         try {
             doc = parsing.getDocFromFile("src/main/resources/xml/board.xml"); //path will be passed in as arg
             List<Set> sets = parsing.parseBoardData(doc);
-            for (Set set: sets) { // for testing that all the cards are there
-                set.printInfo();
-            }
+            // for (Set set: sets) { // uncomment to test that all the Sets are there
+            //     set.printInfo();
+            // }
 
         } catch (NullPointerException e) {
             System.out.println("Error = " + e);
@@ -30,20 +30,20 @@ public class MyXMLTest {
             return;
         }
 
-        //parse card data
-        // try {
-        //     doc = parsing.getDocFromFile("src/main/resources/xml/cards.xml"); //path will be passed in as arg
-        //        List<Card> cardDeck = parsing.convertDocToCardDeck(doc);
-        //     // for (Card card: cardDeck) { // for testing that all the cards are there
-        //     //     System.out.println("Name: " + card.name + "; Budget: " + card.budget + " Scene Number: " + card.sceneNumber);
-        //     // }
+        // parse card data
+        try {
+            doc = parsing.getDocFromFile("src/main/resources/xml/cards.xml"); //path will be passed in as arg
+            List<Card> cardDeck = parsing.convertDocToCardDeck(doc);
+            // for (Card card: cardDeck) { // uncomment to test that all the Cards are there
+            //     card.printInfo();
+            // }
 
-        // } catch (NullPointerException e) {
-        //     System.out.println("Error = " + e);
-        //     return;
-        // } catch (Exception e) {
-        //     System.out.println("Error = " + e);
-        //     return;
-        // }
+        } catch (NullPointerException e) {
+            System.out.println("Error = " + e);
+            return;
+        } catch (Exception e) {
+            System.out.println("Error = " + e);
+            return;
+        }
     }
 }
