@@ -1,8 +1,8 @@
 Remaining tasks:
 - handle ties -- Katie (implemented something *untested*)
-- test upgrading works -- Lilu
-- test that the game will reset at the end of the day -- Katie
-- test that acting awards the correct amounts at the end of it 
+x test upgrading works -- Lilu
+x test that the game will reset at the end of the day -- Katie
+x test that acting awards the correct amounts at the end of it 
 - go through classes and make some public stuff private
   X Deadwood
   - Board
@@ -10,47 +10,47 @@ Remaining tasks:
   - Card
   - Set
   - Role
-- clean stuff up and add comments
+x clean stuff up and add comments
 If time:
 - make board singleton
 
 
-Deadwood:Lilu
-- create board
-- prompt how many players
-- create ^ many players
-- UI
-- fix the absolutely wild if statements for the move condition cause theres def a better way to do that
+Deadwood:
+x create board -Lilu
+x prompt how many players -Lilu
+x create ^ many players
+x UI
+? fix the absolutely wild if statements for the move condition cause theres def a better way to do that
 - figure out something for ties
 -Questions:
-  -did we have act thing in game or board???????? (im making that a problem for later)
+  xdid we have act thing in game or board???????? (im making that a problem for later)
 
 
 
 
 Board:
-- initialize positions
-- reset board
-- initialize sets
-- endDay
-	- counter of how many remaining sets
-- endGame
-- getPlayerPos
+x initialize positions
+x reset board
+x initialize sets
+x endDay
+	x counter of how many remaining sets
+x endGame
+x getPlayerPos
 
 
 Set:
-- initialize set card(role)
-- shuffle sets
-- wrap scene
-	- figure out if end day after wrap scene?
-- calculate bonuses/pay player
-- create get methods
+x initialize set card(role)
+x shuffle sets
+x wrap scene
+	x figure out if end day after wrap scene?
+x calculate bonuses/pay player
+x create get methods
 
 Role:
-- create get methods (level, dialouge, name)
-- on card/off card
-- isOccupied
-- makeOccupied
+x create get methods (level, dialouge, name)
+x on card/off card
+x isOccupied
+x makeOccupied
 
 
 Player:
