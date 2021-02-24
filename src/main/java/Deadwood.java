@@ -224,7 +224,7 @@ public class Deadwood{
                                 if(moveTo(currentPlayer, split)) 
                                 {
                                     currentPlayer.changePos(split);
-                                    hasPlayed = true;
+                                    //hasPlayed = true;
                                 }
                                 else
                                 {
@@ -267,10 +267,11 @@ public class Deadwood{
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             //make sure the level is creater than current level and in the upgrades list
-                            if(desiredLevel > currentPlayer.level && desiredLevel  <= d.length +1 )
-                            {
+                            
                                 //get the upgrade prices
                                 int[] d = board.getDollarC();
+                                if(desiredLevel > currentPlayer.level && desiredLevel  <= d.length +1 )
+                            {
                                 if(d[desiredLevel-2] > currentPlayer.dollar){
                                     System.out.println("You do not have enough dollars for this upgrade");
                                 }
@@ -296,10 +297,11 @@ public class Deadwood{
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             //make sure desired level is above current level and in the upgrade lists
-                            if(desiredLevel > currentPlayer.level && desiredLevel  <= c.length +1 )
-                            {
+                            
                                 //get list of upgrades
                                 int[] c = board.getCreditC();
+                                if(desiredLevel > currentPlayer.level && desiredLevel  <= c.length +1 )
+                            {
                                 //make usre they have enough
                                 if(c[desiredLevel-2] > currentPlayer.credit){
                                     System.out.println("You do not have enough credits for this upgrade");
@@ -313,7 +315,7 @@ public class Deadwood{
                                 }
                             }
                             else{
-                                System.out.println("Pick a level higher than you! Unless you want to give me money....");
+                                System.out.println("Not a valid level!!!!");
                             }
                         }
                         else{
