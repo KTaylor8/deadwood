@@ -46,7 +46,6 @@ public class Set{
     //     for (int i = 0; i < adjacent.size(); i++) {
     //         setInfo += ("\nSet name: " + adjacent[i]);
     //     }
-
     //     if (setName == "Office") {
     //         setInfo += "\nUpgrade costs in dollars: ";
     //         for (int i = 0; i < upgradeCostDollars.length; i++) {
