@@ -75,7 +75,7 @@ public class Set{
     }
 
     public void flipSet(){
-        flipStage++;
+        flipStage = 2;
     }
 
     public int[] getUpgradeCD(){

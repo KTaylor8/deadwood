@@ -120,9 +120,9 @@ public class Deadwood{
     }
 
     public static boolean moveTo(Player p, String place){
-        Stack<String> adj = board.getAdjacent(p.position);
+        List<String> adj = board.getAdjacent(p.position);
         for(int i = 0; i < adj.size(); i++){
-            if(place.equals(adj.pop()))
+            if(place.equals(adj.get(i)))
             {
                 return true;
             }
@@ -162,10 +162,10 @@ public class Deadwood{
                     }
                     //prints adjacent tiles to player
                     else if(input.equals("adjacent")){
-                        Stack<String> temp = board.getAdjacent(currentPlayer.position);
+                        List<String> temp = board.getAdjacent(currentPlayer.position);
                         System.out.println("You are adjacent to: ");
-                        while(temp.peek()!= null){
-                            System.out.println("- " + temp.pop());
+                        for(int i = 0; i < temp.size(); i++){
+                            System.out.println("- " + temp.get(i));
                         }
                     }
                     //if player wants to move
@@ -212,7 +212,7 @@ public class Deadwood{
                     else if(input.equals("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            int[] d = board.getDollarD();
+                            int[] d = board.getDollarC();
                             if(d[desiredLevel-1] > currentPlayer.dollar){
                                 System.out.println("You do not have enough dollars for this upgrade");
                             }
@@ -231,14 +231,14 @@ public class Deadwood{
                     else if(input.equals("upgrade c")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            int[] c = board.getDollarC();
+                            int[] c = board.getCreditC();
                             if(c[desiredLevel-1] > currentPlayer.credit){
                                 System.out.println("You do not have enough credits for this upgrade");
                             }
                             else{
                                 System.out.println("You are now level " + desiredLevel);
                                 currentPlayer.setLevel(desiredLevel);
-                                currentPlayer.incCred((-1*d[desiredLevel-1]));
+                                currentPlayer.incCred((-1*c[desiredLevel-1]));
                                 System.out.println("And you have " + currentPlayer.credit + " remaining");
                             }
                         }
@@ -248,15 +248,15 @@ public class Deadwood{
 
                     }
                     else if(input.equals("upgrade costs")){
-                        int[] d = board.getDollarC();
-                        int[] c = board.getCreditC();
+                        int[] dd = board.getDollarC();
+                        int[] cc = board.getCreditC();
                         System.out.println("Upgrade costs if using dollars:");
-                        for(int i = 0; i < d.length; i++){
-                            System.out.println("Level " + (i+2) +": " d[i]);
+                        for(int i = 0; i < dd.length; i++){
+                            System.out.println("Level " + (i+2) + ": " + dd[i]);
                         }
                         System.out.println("Upgrade costs if using credits:");
-                        for(int i = 0; i < c.length; i++){
-                            System.out.println("Level " + (i+2) +": " c[i]);
+                        for(int i = 0; i < cc.length; i++){
+                            System.out.println("Level " + (i+2) +": " + cc[i]);
                         }
                     }
                     //if player wants to act
@@ -300,7 +300,7 @@ public class Deadwood{
 
     public static void act(Player curPlayer){
         Set sett = board.getSet(curPlayer.position);
-        int budget = Integer.valueOF((sett.currentCard).budget);
+        int budget = Integer.valueOf((sett.currentCard).budget);
         int die = 1 + (int)(Math.random() * ((6 - 1) + 1));
 
         System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.rehearseToken + " rehearsal tokens");
@@ -342,9 +342,9 @@ public class Deadwood{
 
     }
 
-    public static void canBonus(Set s){
+    public static boolean canBonus(Set s){
         for(int i = 0; i < ((s.currentCard).roles).size(); i ++){
-            if(((s.currentCard).roles).occupied){
+            if((((s.currentCard).roles).get(i)).occupied){
                 return true;
             }
         }
@@ -352,27 +352,81 @@ public class Deadwood{
     }
 
     public static void bonuses(Set s){
-        int[] dice = new int[Integer.valueOf((sett.currentCard).budget)];
-        System.out.println("Rolling " + (sett.currentCard).budget + " dice");
+        int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
+        System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
         for(int d: dice){
             d = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
-        Player[] onCardPeople = findOnCardPeople(s);
-        Player[] offCardPeopel = findOffCardPeople(s);
+        //Arrays.sort(dice, Collections.reverseOrder());
+
+        List<Player> onCardPeople = findOnCardPeople(s);
+        List<Player> offCardPeople = findOffCardPeople(s);
+
+        for(int i = 0; i < dice.length; i++){
+            (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
+        }
+
+        for(Player p: offCardPeople){
+            p.incDollar(getRoleRank(p.roleName, s));
+        }
+    }
+
+    public static int getRoleRank(String roleName, Set s){
+        for(Role r: s.offCardRoles){
+            if(roleName.equals(r.name)){
+                return Integer.valueOf(r.level);
+            }
+        }
+        return 0;
+    }
+
+    public static List<Player> findOnCardPeople(Set s){
+        List<Player> pl = new ArrayList<Player>();
+        for(Player p: players){
+            for(Role r: ((s.currentCard).roles)){
+                if((r.name).equals(p.roleName)){
+                    pl.add(0, p);
+                }
+            }
+        }
+        return pl;
 
     }
 
-    public static Player[] findOnCardPeople(Set s){
+    public static List<Player> findOffCardPeople(Set s){
+        List<Player> pl = new ArrayList<Player>();
+        for(Player p: players){
+            for(Role r: (s.offCardRoles)){
+                if((r.name).equals(p.roleName)){
+                    pl.add(0, p);
+                }
+            }
+        }
+        return pl;
+
+    }
+
+    public static void wrapUp(Set s){
+        List<Player> onCardPeople = findOnCardPeople(s);
+        List<Player> offCardPeople = findOffCardPeople(s);
+
+        for(Player p: onCardPeople){
+            p.resetRole();
+        }
+        for(Player p: offCardPeople){
+            p.resetRole();
+        }
+
+        s.flipSet();
 
     }
 
     public static boolean onCard(String role, Set s){
-        Stack<Role> tester = s.offCardRoles;
+        List<Role> tester = s.offCardRoles;
         for(int i = 0; i < tester.size(); i++){
-            if(role.equals(tester.name)){
+            if(role.equals((tester.get(i)).name)){
                 return false;
             }
-            tester.add(tester.pop());
         }
         return true;
     }
