@@ -10,7 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class Board{
     String boardPath, cardPath;
-    Stack<Card> cardDeck = new Stack<Card>();
+    List<Card> cardDeck = new Stack<Card>();
     List<Set> boardSets = new ArrayList<Set>();
 
     public Board(String b, String c){
@@ -20,8 +20,25 @@ public class Board{
     }
 
     public void setBoard(){
+        /* Parse XML */
         Document doc = null;
         XMLParser parsing = new XMLParser();
+
+        try {
+            doc = parsing.getDocFromFile(cardPath); // static path: "src/main/resources/xml/cards.xml"
+            cardDeck = parsing.convertDocToCardDeck(doc);
+            // for (Card card: cardDeck) { // uncomment to test that all the Cards are there
+            //     card.printInfo();
+            // }
+
+        } catch (NullPointerException e) {
+            System.out.println("Error = " + e);
+            return;
+        } catch (Exception e) {
+            System.out.println("Error = " + e);
+            return;
+        }
+
         try {
             doc = parsing.getDocFromFile(boardPath); // static path: "src/main/resources/xml/board.xml"
             boardSets = parsing.parseBoardData(doc);
@@ -36,6 +53,9 @@ public class Board{
             System.out.println("Error = " + e);
             return;
         }
+
+        
+        
     }
 
     public int getBudget(String pos){
