@@ -129,8 +129,6 @@ public class Deadwood{
             }
             numDays = 3;
         }
-        scan.close();
-
         return p;
     }
 
@@ -239,7 +237,10 @@ public class Deadwood{
                     else if(input.contains("upgrade d")){
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
+                            System.out.println("-1: " + desiredLevel);
                             int[] d = board.getDollarC();
+                            System.out.println("1: " + d[desiredLevel-1] );
+                            System.out.println("2: " + currentPlayer.dollar);
                             if(d[desiredLevel-1] > currentPlayer.dollar){
                                 System.out.println("You do not have enough dollars for this upgrade");
                             }
@@ -288,13 +289,19 @@ public class Deadwood{
                     }
                     //if player wants to act
                     else if(input.equals("act")){
-                        if(currentPlayer.employed){
-                            act(currentPlayer);
-                            hasPlayed = true;
+                        if(!hasPlayed){
+                            if(currentPlayer.employed){
+                                act(currentPlayer);
+                                hasPlayed = true;
+                            }
+                            else{
+                                System.out.println("You are currently not employed");
+                            }
                         }
                         else{
-                            System.out.println("You are currently not employed");
+                            System.out.println("You have already acted this");
                         }
+                        
 
                     }
                     //if player wants to rehearse 
@@ -322,7 +329,7 @@ public class Deadwood{
                         System.out.println("unknown command, try again");
                     }
                 }
-        scan.close();
+
     }
 
     public static void act(Player curPlayer){
@@ -382,16 +389,10 @@ public class Deadwood{
     public static void bonuses(Set s){
         int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
         System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
-        for (int i = 0; i < dice.length; i++) {
-            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        for(int d: dice){
+            d = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
-
-        // sort array in ascending order and then reverse it
-        Arrays.sort(dice);
-        int[] newDice = new int[dice.length];
-        for(int i = 0; i < dice.length; i++) {
-            newDice[dice.length-1-i] = dice[i];
-        }
+        //Arrays.sort(dice, Collections.reverseOrder());
 
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);

@@ -14,7 +14,7 @@ public class Player implements Comparable<Player>{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        level = 3;
+        //level = 3;
     }
 
     public Player(String p, int sl, int sc){
