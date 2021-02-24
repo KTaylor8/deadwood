@@ -14,14 +14,14 @@ public class Player{
     public Player(String p){
         playerName = p;
         position = "trailer";
-        level = 3;
+        //level = 3;
     }
 
     public Player(String p, int sl, int sc){
         playerName = p;
         level = sl;
         position = "trailer";
-        level = 3;
+        //level = 3;
     }
 
     public void setName(String s){
