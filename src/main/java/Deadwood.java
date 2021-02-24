@@ -377,12 +377,12 @@ public class Deadwood{
 
         for(int i = 0; i < dice.length; i++){
             (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
-            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).name + " gets $" + dice[i]);
+            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).playerName + " gets $" + dice[i]);
         }
 
         for(Player p: offCardPeople){
             p.incDollar(getRoleRank(p.roleName, s));
-            System.out.println(p.name + " gets $" + getRoleRank(p.roleName, s));
+            System.out.println(p.playerName + " gets $" + getRoleRank(p.roleName, s));
         }
     }
 
