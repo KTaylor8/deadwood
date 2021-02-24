@@ -45,8 +45,7 @@ public class Deadwood{
         players = addPlayers(numPlayers);
 
         
-        //figure out how to create board here
-
+        //iterates through the day
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
             while(board.sceneNum() > 1){
@@ -54,6 +53,7 @@ public class Deadwood{
                 players.add(players.remove());
                 playerTurn(currentPlayer);
             }
+            //decrement days and reset the roles and board
             numDays--;
             System.out.println("Its the end of the day! " + numDays + " days remain");
             board.resetBoard();
@@ -64,6 +64,7 @@ public class Deadwood{
             }
         }
 
+        //calculate winner
         System.out.println("Calculating winner...");
         winners = calcWinner();
         if (winners.size() > 1) {
@@ -76,13 +77,15 @@ public class Deadwood{
         }
         
     }
-
+    
+    //for finding ties
     static private class ScoreSorter implements Comparator<Player> {
         public int compare(Player p1, Player p2) {
             return p2.calcFinalScore() - p1.calcFinalScore();
         }
     }
 
+    //to calculate winner
     static private List<Player> calcWinner(){
         winners = new ArrayList<Player>();
         while (players.size() > 0) {
@@ -102,12 +105,14 @@ public class Deadwood{
         return winners;
     }
 
+    //to add players to the game based on input and returns queue of players
     static private Queue<Player> addPlayers(int numPlayers){
         
         Queue<Player> p = new LinkedList<Player>();
         Scanner scan = new Scanner(System.in);
         String input = "";
 
+        //changes player vals according to number of players
         if(numPlayers > 6){
             numDays = 4;
             for(int i = 1; i <= numPlayers; i++){
@@ -151,9 +156,12 @@ public class Deadwood{
         return p;
     }
 
+    //to move a player to a neighbor
     private static boolean moveTo(Player p, String place){
+        //get list of neighbors
         List<String> adj = board.getNeighbors(p.position);
         for(int i = 0; i < adj.size(); i++){
+            //if the designated neighbor exists return true
             if(place.equals(adj.get(i)))
             {
                 return true;
@@ -162,6 +170,7 @@ public class Deadwood{
         return false;
     }
 
+    //big boi method for each players turn
     private static void playerTurn(Player currentPlayer){
                 
         boolean hasPlayed = false; 
@@ -170,6 +179,7 @@ public class Deadwood{
         System.out.println("What would you like to do " + currentPlayer.playerName + "?");
         
         System.out.println("Scenes remaining before end of day: " + board.sceneNum());
+        //while the player doesnt say they want their turn to end
                 while(!input.equals("end")){
                     
                     input = scan.nextLine();
@@ -212,7 +222,7 @@ public class Deadwood{
                             //if player hasnt moved or acted
                             if(!hasPlayed){
                                 String split = input.substring(5);
-                                if(moveTo(currentPlayer, split)) //make return a bool
+                                if(moveTo(currentPlayer, split)) 
                                 {
                                     currentPlayer.changePos(split);
                                     hasPlayed = true;
@@ -252,14 +262,16 @@ public class Deadwood{
                         }
                         
                     }
-                    //if player wants to upgrade
+                    //if player wants to upgrade using dollars
                     else if(input.contains("upgrade d")){
+                        //check to make sure player is in office
                         if((currentPlayer.position).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             if(desiredLevel > currentPlayer.level)
                             {
+                                //get the 
                                 int[] d = board.getDollarC();
-                                if(d[desiredLevel-1] > currentPlayer.dollar){
+                                if(d[desiredLevel-2] > currentPlayer.dollar){
                                     System.out.println("You do not have enough dollars for this upgrade");
                                 }
                                 else{
@@ -284,7 +296,7 @@ public class Deadwood{
                             if(desiredLevel > currentPlayer.level)
                             {
                                 int[] c = board.getCreditC();
-                                if(c[desiredLevel-1] > currentPlayer.credit){
+                                if(c[desiredLevel-2] > currentPlayer.credit){
                                     System.out.println("You do not have enough credits for this upgrade");
                                 }
                                 else{
