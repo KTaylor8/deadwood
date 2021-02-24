@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Deadwood{
     //make queue??
-    static int numDays;
+    static private int numDays;
     
-    static Queue<Player> players = new LinkedList<Player>();
-    static Board board;
+    static private Queue<Player> players = new LinkedList<Player>();
+    static private Board board;
 
     static private Player currentPlayer;
     static private int numPlayers;
