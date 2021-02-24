@@ -1,6 +1,4 @@
 import java.util.*;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Deadwood{
     //make queue??
@@ -69,28 +67,22 @@ public class Deadwood{
         
     }
 
-    class scoreSorter implements Comparator<Player> {
-        @Override  
+    static class ScoreSorter implements Comparator<Player> {
         public int compare(Player p1, Player p2) {
             return p2.calcFinalScore() - p1.calcFinalScore();
         }
     }
 
     public static List<Player> calcWinner(){
-        // Object[] winnersPre = players.toArray();
+        List<Player> winners = new ArrayList<Player>();
+        while (players.size() > 0) {
+            winners.add(players.remove());
+        } // don't think we need "players" at this point??
 
-        List<Player> winners = players;
-        for () {
+        // scoreSorter's compare() should sort in descending order by calcFinalScore()
+        // Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
+        Collections.sort(winners, new ScoreSorter());
 
-        }
-
-        // Player's compareTo() method should sort in descending order by calcFinalScore()
-        Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
-
-        // convert array to ArrayList to remove elements easily
-        // List<Player> winners = Arrays.asList(winnersPre);
-
-        // SortedSet<Player> winners = new TreeSet<Player>(new scoreSorter());
         int winningScore = winners.get(0).calcFinalScore();
         for (int i = winners.size()-1; i > 0; i--) { // remove non-ties starting from end, excluding 0
             if (winners.get(i).calcFinalScore() < winningScore) {
