@@ -152,7 +152,7 @@ public class XMLParser {
     }//handlePartData() method
 
     // reads data in board.xml, stores it in Set objects, stores those objects in a stack and returns stack
-    public Set[] parseBoardData(Document d) {
+    public List<Set> parseBoardData(Document d) {
         Node office; /* Element with tag name "office" */
         Node trailer; /* Element with tag name "trailer" */
         NodeList sets; /* NodeList of elements with tag name "set" */
@@ -161,10 +161,10 @@ public class XMLParser {
         Set setObj;
         Role role = new Role();
 
-        Set[] setArr = new Set[1];
-        Stack<Role> setRoles = new Stack<Role>();
+        List<Set> setList = new ArrayList<Set>();
+        List<Role> setRoles = new ArrayList<Role>();
 
-        Stack<String> neighborStack = new Stack<String>();
+        List<String> neighbors = new ArrayList<String>();
 
         Element root = d.getDocumentElement();
 
@@ -200,7 +200,7 @@ public class XMLParser {
 
             if ("neighbors".equals(officeChildSub.getNodeName())) {
                 //read/parse  neighbor children
-                neighborStack = handleNeighborData(officeChildSub.getChildNodes());
+                neighbors = handleNeighborData(officeChildSub.getChildNodes());
             } else if ("area".equals(officeChildSub.getChildNodes())) {
                 // officeArea = handleAreaData(officeChildSub); // uncomment for GUI
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
@@ -241,14 +241,13 @@ public class XMLParser {
                 //     }
                 // }
 
-
             }
             // don't use an else block
 
         } //for office childnodes
 
-        setObj = new Set("Office", neighborStack, upgradeD, upgradeC);
-        setArr[0] = setObj;
+        setObj = new Set("Office", neighbors, upgradeD, upgradeC);
+        setList.add(setObj);
 
         // parse trailer Node and append it to setArr
         System.out.println("Parsing data for trailer");
@@ -266,14 +265,14 @@ public class XMLParser {
 
             if ("neighbors".equals(trailerChildSub.getNodeName())) {
                 //read/parse  neighbor children
-                neighborStack = handleNeighborData(trailerChildSub.getChildNodes());
+                neighbors = handleNeighborData(trailerChildSub.getChildNodes());
             } else if ("area".equals(trailerChildSub.getChildNodes())) {
                 // trailerArea = handleAreaData(trailerChildSub); // uncomment for GUI
             }
         }
 
-        setObj = new Set("Trailer", neighborStack);
-        setArr = appendSet(setArr, setObj);
+        setObj = new Set("Trailer", neighbors);
+        setList.add(setObj);
 
         // parse set Nodes and append them to setArr
         sets = root.getElementsByTagName("set");
@@ -289,7 +288,7 @@ public class XMLParser {
             Node take;
             int numTakes = 0;
 
-            setRoles = new Stack<Role>(); // want a new stack each time, don't try to clear and reuse the same one
+            setRoles = new ArrayList<Role>(); // want a new stack each time, don't try to clear and reuse the same one
 
             System.out.println("Parsing data for set " + (i + 1));
 
@@ -311,7 +310,7 @@ public class XMLParser {
 
                 if ("neighbors".equals(setChildSub.getNodeName())) {
                     //read/parse  neighbor children
-                    neighborStack = handleNeighborData(setChildSub.getChildNodes());
+                    neighbors = handleNeighborData(setChildSub.getChildNodes());
 
                     // System.out.println("\n");
                 } else if ("area".equals(setChildSub.getNodeName())) {
@@ -350,19 +349,19 @@ public class XMLParser {
 
                         if ("part".equals(partListSub.getNodeName())) {
                             role = handlePartData(role, partListSub);
-                            setRoles.push(role);
+                            setRoles.add(role);
                         }
                     }
                 } //for part nodes
                 // don't use an else block                
 
             } //for set childnodes
-            setObj = new Set(setName, neighborStack, setRoles, numTakes);
-            setArr = appendSet(setArr, setObj);
+            setObj = new Set(setName, neighbors, setRoles, numTakes);
+            setList.add(setObj);
         
         }//for set nodes
 
-        return setArr;
+        return setList;
 
     }//readBoardData() method
 
