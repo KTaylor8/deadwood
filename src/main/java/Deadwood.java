@@ -6,6 +6,12 @@ public class Deadwood{
     
     static Queue<Player> players = new LinkedList<Player>();
     static Board board;
+
+    static private Player currentPlayer;
+    static private int numPlayers;
+    static private String boardPath;
+    static private String cardPath;
+    static private List<Player> winners = new ArrayList<Player>();
     public static void main(String[] args){
 
         //Ask how many players
@@ -22,10 +28,9 @@ public class Deadwood{
         
         //calcfinalScore
         
-        Player currentPlayer;    
-        int numPlayers = Integer.valueOf(args[2]);
-        String boardPath = args[0];
-        String cardPath = args[1];
+        numPlayers = Integer.valueOf(args[2]); 
+        boardPath = args[0];
+        cardPath = args[1];
         //  intro statement
         board = new Board(boardPath, cardPath);
         //make sure user enters valid number
@@ -55,7 +60,7 @@ public class Deadwood{
             board.resetBoard();
         }
         System.out.println("Calculating winner...");
-        List<Player> winners = calcWinner();
+        winners = calcWinner();
         if (winners.size() > 1) {
             System.out.println("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
             for (Player p : winners) {
@@ -67,14 +72,14 @@ public class Deadwood{
         
     }
 
-    static class ScoreSorter implements Comparator<Player> {
+    static private class ScoreSorter implements Comparator<Player> {
         public int compare(Player p1, Player p2) {
             return p2.calcFinalScore() - p1.calcFinalScore();
         }
     }
 
-    public static List<Player> calcWinner(){
-        List<Player> winners = new ArrayList<Player>();
+    static private List<Player> calcWinner(){
+        winners = new ArrayList<Player>();
         while (players.size() > 0) {
             winners.add(players.remove());
         } // don't think we need "players" at this point?
@@ -92,7 +97,7 @@ public class Deadwood{
         return winners;
     }
 
-    public static Queue<Player> addPlayers(int numPlayers){
+    static private Queue<Player> addPlayers(int numPlayers){
         
         Queue<Player> p = new LinkedList<Player>();
         Scanner scan = new Scanner(System.in);
@@ -141,7 +146,7 @@ public class Deadwood{
         return p;
     }
 
-    public static boolean moveTo(Player p, String place){
+    private static boolean moveTo(Player p, String place){
         List<String> adj = board.getNeighbors(p.position);
         for(int i = 0; i < adj.size(); i++){
             if(place.equals(adj.get(i)))
@@ -152,7 +157,7 @@ public class Deadwood{
         return false;
     }
 
-    public static void playerTurn(Player currentPlayer){
+    private static void playerTurn(Player currentPlayer){
                 
         boolean hasPlayed = false; 
         Scanner scan = new Scanner(System.in);
@@ -340,7 +345,7 @@ public class Deadwood{
                 }
     }
 
-    public static void act(Player curPlayer){
+    private static void act(Player curPlayer){
         Set sett = board.getSet(curPlayer.position);
         int budget = Integer.valueOf((sett.currentCard).budget);
         int die = 1 + (int)(Math.random() * ((6 - 1) + 1));
@@ -385,7 +390,7 @@ public class Deadwood{
 
     }
 
-    public static boolean canBonus(Set s){
+    private static boolean canBonus(Set s){
         for(int i = 0; i < ((s.currentCard).roles).size(); i ++){
             if((((s.currentCard).roles).get(i)).occupied){
                 return true;
@@ -394,7 +399,7 @@ public class Deadwood{
         return false;
     }
 
-    public static void bonuses(Set s){
+    private static void bonuses(Set s){
         int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
         System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
         for (int i = 0; i < dice.length; i++) {
@@ -423,7 +428,7 @@ public class Deadwood{
         }
     }
 
-    public static int getRoleRank(String roleName, Set s){
+    private static int getRoleRank(String roleName, Set s){
         for(Role r: s.offCardRoles){
             if(roleName.equals(r.name)){
                 return Integer.valueOf(r.level);
@@ -432,7 +437,7 @@ public class Deadwood{
         return 0;
     }
 
-    public static List<Player> findOnCardPeople(Set s){
+    private static List<Player> findOnCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: ((s.currentCard).roles)){
@@ -445,7 +450,7 @@ public class Deadwood{
 
     }
 
-    public static List<Player> findOffCardPeople(Set s){
+    private static List<Player> findOffCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: (s.offCardRoles)){
@@ -458,7 +463,7 @@ public class Deadwood{
 
     }
 
-    public static void wrapUp(Set s){
+    private static void wrapUp(Set s){
         List<Player> onCardPeople = findOnCardPeople(s);
         List<Player> offCardPeople = findOffCardPeople(s);
 
@@ -473,7 +478,7 @@ public class Deadwood{
 
     }
 
-    public static boolean onCard(String role, Set s){
+    private static boolean onCard(String role, Set s){
         List<Role> tester = s.offCardRoles;
         for(int i = 0; i < tester.size(); i++){
             if(role.equals((tester.get(i)).name)){
