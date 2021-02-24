@@ -29,7 +29,7 @@ public class Board{
     }
 
     public Set getSet(String pos){
-        for(Set s: BoardSets){
+        for(Set s: boardSets){
             if(pos.equals(s.setName)){
                 return s;
             }
@@ -41,7 +41,7 @@ public class Board{
         for(Set s: boardSets){
             if(pos.equals(s.setName))
             {
-                return s.adjacent;
+                return s.neighbors;
             }
         }
         return null;
@@ -50,7 +50,7 @@ public class Board{
     public int[] getDollarC(){
         for(Set s: boardSets){
             if((s.setName).equals("office")){
-                return (s.getUpgradeCD);
+                return (s.getUpgradeCD());
             }
         }
         return null;
@@ -59,7 +59,7 @@ public class Board{
     public int[] getCreditC(){
         for(Set s: boardSets){
             if((s.setName).equals("office")){
-                return (s.getUpgradeCC);
+                return (s.getUpgradeCC());
             }
         }
         return null;
@@ -69,22 +69,16 @@ public class Board{
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
                 for(int i = 0; i < (s.offCardRoles).size(); i++){
-                    if(pos.equals(((s.offCardRoles).peek()).name) && !((s.offCardRoles).peek()).occupied){
-                        Role temp = (s.offCardRoles).pop();
-                        temp.occupy();
-                        (s.offCardRoles).push(temp);
+                    if(pos.equals(((s.offCardRoles).get(i)).name) && !((s.offCardRoles).get(i)).occupied){
+                        ((s.offCardRoles).get(i)).occupy();
                         return true;
                     }
-                    (s.offCardRoles).push((s.offCardRoles).pop());
                 }
                 for(int i = 0; i < ((s.currentCard).roles).size(); i++){
-                    if(pos.equals((((s.currentCard).roles).peek()).name) && !((s.currentCard).roles).peek().occupied){
-                        Role temp = ((s.currentCard).roles).pop();
-                        temp.occupy();
-                        (s.currentCard.roles).push(temp);
+                    if(pos.equals((((s.currentCard).roles).get(i)).name) && !((s.currentCard).roles).get(i).occupied){
+                        ((s.currentCard.roles).get(i)).occupy();
                         return true;
                     }
-                    ((s.currentCard).roles).push(((s.currentCard).roles).pop());
                 }
             }
         }
@@ -96,17 +90,15 @@ public class Board{
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
                 for(int i = 0; i < (s.offCardRoles).size(); i++){
-                    if(!((s.offCardRoles).peek()).occupied){
-                        free += "\nOff card role: " + ((s.offCardRoles).peek()).name +" must be level: " + ((s.offCardRoles).peek()).level;
+                    if(!((s.offCardRoles).get(i)).occupied){
+                        free += "\nOff card role: " + ((s.offCardRoles).get(i)).name +" must be level: " + ((s.offCardRoles).get(i)).level;
                     }
-                    (s.offCardRoles).push((s.offCardRoles).pop());
                 }
                 for(int i = 0; i < ((s.currentCard).roles).size(); i++){
-                    if(!((s.currentCard).roles).peek().occupied){
-                        free += "\nOn card role: " + ((s.currentCard).roles).peek().name +" must be level: " + (((s.currentCard).roles).peek()).level + "";
+                    if(!(((s.currentCard).roles).get(i)).occupied){
+                        free += "\nOn card role: " + (((s.currentCard).roles).get(i)).name +" must be level: " + (((s.currentCard).roles).get(i)).level + "";
                         
                     }
-                    ((s.currentCard).roles).push(((s.currentCard).roles).pop());
                 }
             }
         }
