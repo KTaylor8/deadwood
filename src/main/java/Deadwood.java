@@ -148,10 +148,6 @@ public class Deadwood{
             }
             numDays = 3;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> d7807a4d41099bda423e61ace7721bfa566ed3f9
         return p;
     }
 
