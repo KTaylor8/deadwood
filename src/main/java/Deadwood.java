@@ -69,13 +69,30 @@ public class Deadwood{
         
     }
 
-    //figure out something for ties
+    class scoreSorter implements Comparator<Player> {
+        @Override  
+        public int compare(Player p1, Player p2) {
+            return p2.calcFinalScore() - p1.calcFinalScore();
+        }
+    }
+
     public static List<Player> calcWinner(){
-        List<Player> winners = new ArrayList<Player>();
+        // Object[] winnersPre = players.toArray();
+
+        List<Player> winners = players;
+        for () {
+
+        }
+
         // Player's compareTo() method should sort in descending order by calcFinalScore()
-        Arrays.sort(winners); 
+        Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
+
+        // convert array to ArrayList to remove elements easily
+        // List<Player> winners = Arrays.asList(winnersPre);
+
+        // SortedSet<Player> winners = new TreeSet<Player>(new scoreSorter());
         int winningScore = winners.get(0).calcFinalScore();
-        for (int i = winners.size()-1; i > 0; i--) { // remove starting from end, excluding 0
+        for (int i = winners.size()-1; i > 0; i--) { // remove non-ties starting from end, excluding 0
             if (winners.get(i).calcFinalScore() < winningScore) {
                 winners.remove(i);
             }
