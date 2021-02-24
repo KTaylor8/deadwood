@@ -45,6 +45,7 @@ public class Deadwood{
 
         while(numDays != 0){
             System.out.println("Placing all players in trailers");
+            System.out.println(board.sceneNum());
             while(board.sceneNum() > 1){
                 currentPlayer = players.peek();
                 players.add(players.remove());
@@ -52,6 +53,7 @@ public class Deadwood{
             }
             numDays--;
             System.out.println("Its the end of the day! " + numDays + " days remain");
+            board.resetBoard();
         }
     System.out.println("Calculating winner...");
     Player winner = calcWinner();
@@ -142,7 +144,7 @@ public class Deadwood{
 
                     //prints who's turn and dollar and credits
                     if(input.equals("who")){
-                        System.out.println(currentPlayer.playerName + "($" + currentPlayer.dollar + ", " + currentPlayer.credit + "cr)");
+                        System.out.println(currentPlayer.playerName + "($" + currentPlayer.dollar + ", " + currentPlayer.credit + "cr) working as a " + currentPlayer.roleName + " with " + currentPlayer.rehearseToken + " rehersal tokens.");
                     }
                     //prints where current player is
                     else if(input.equals("where")){
@@ -203,15 +205,20 @@ public class Deadwood{
                    
                     //if player wants to take roll and are not employed, let them
                     else if(input.contains("take role") && currentPlayer.employed == false){
-                        System.out.println("Substring: " + input.substring(11));
-                        if(board.employ(currentPlayer.position, input.substring(11))) //also make return bool
-                        {
-                            currentPlayer.giveRole(input.substring(11));
-                            System.out.println("You are now employed as: " + currentPlayer.roleName);
+                        if(!board.alreadyDone(currentPlayer.position)){
+                            if(currentPlayer.level >= board.employ(currentPlayer.position, input.substring(10))) //also make return bool
+                            {
+                                currentPlayer.giveRole(input.substring(10));
+                                System.out.println("You are now employed as: " + currentPlayer.roleName);
+                            }
+                            else{
+                                System.out.println("This role does not exist where you are currently or you are not a high enough level, other options are " + board.freeRoles(currentPlayer.position));
+                            }
                         }
                         else{
-                            System.out.println("This role does not exist where you are currently, other options are " + board.freeRoles(currentPlayer.position));
+                            System.out.println("This set was already finished!");
                         }
+                        
                     }
                     //if player wants to upgrade
                     else if(input.contains("upgrade d")){
@@ -316,6 +323,7 @@ public class Deadwood{
             }
             else{
                 System.out.println("Since you weren't that important you will get 1 dollar, out of pity");
+                curPlayer.incDollar(1);
             }
         }
         else{
@@ -369,10 +377,12 @@ public class Deadwood{
 
         for(int i = 0; i < dice.length; i++){
             (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
+            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).name + " gets $" + dice[i]);
         }
 
         for(Player p: offCardPeople){
             p.incDollar(getRoleRank(p.roleName, s));
+            System.out.println(p.name + " gets $" + getRoleRank(p.roleName, s));
         }
     }
 

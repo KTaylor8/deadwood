@@ -54,6 +54,23 @@ public class Board{
             s.resetSet(cardDeck.remove(cardDeck.size()-1));
         }
     }
+    
+    public void resetBoard(){
+        for(Set s: boardSets){
+            s.resetSet(cardDeck.remove(cardDeck.size()-1));
+        }
+    }
+
+    public boolean alreadyDone(String pos){
+        for(Set s: boardSets){
+            if(pos.equals(s.setName)){
+                if(s.flipStage == 2){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public int getBudget(String pos){
         for(Set s: boardSets){
@@ -101,24 +118,25 @@ public class Board{
         return null;
     }
 
-    public boolean employ(String pos, String roll){
+    public int employ(String pos, String roll){
         for(Set s: boardSets){
             if((s.setName).equals(pos)){
                 for(int i = 0; i < (s.offCardRoles).size(); i++){
-                    if(pos.equals(((s.offCardRoles).get(i)).name) && !((s.offCardRoles).get(i)).occupied){
+                    if(roll.equals(((s.offCardRoles).get(i)).name) && !((s.offCardRoles).get(i)).occupied){
                         ((s.offCardRoles).get(i)).occupy();
-                        return true;
+                        return Integer.valueOf(((s.offCardRoles).get(i)).level);
                     }
                 }
                 for(int i = 0; i < ((s.currentCard).roles).size(); i++){
-                    if(pos.equals((((s.currentCard).roles).get(i)).name) && !((s.currentCard).roles).get(i).occupied){
+                    if(roll.equals((((s.currentCard).roles).get(i)).name) && !((s.currentCard).roles).get(i).occupied){
+                        
                         ((s.currentCard.roles).get(i)).occupy();
-                        return true;
+                        return Integer.valueOf((((s.currentCard).roles).get(i)).level);
                     }
                 }
             }
         }
-        return false;
+        return 1000;
     }
 
     public String freeRoles(String pos){

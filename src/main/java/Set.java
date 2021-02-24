@@ -6,7 +6,7 @@ public class Set{
     public List<Role> offCardRoles = new ArrayList<Role>();
     public Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
-    int flipStage;
+    public int flipStage;
     private int finalTakes = 0;
     private int currentTakes; // field should be private if other classes use a getter method to access them, right?
     
