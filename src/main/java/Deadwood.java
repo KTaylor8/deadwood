@@ -200,12 +200,21 @@ public class Deadwood{
                    
                     //if player wants to take roll and are not employed, let them
                     else if(input.contains("take role") && currentPlayer.employed == false){
-                        if(board.employ(currentPlayer.position, input.substring(10))) //also make return bool
-                        {
-                            currentPlayer.giveRole(input.substring(10));
-                        }
-                        else{
-                            System.out.println("This role does not exist where you are currently, other options are " + board.freeRoles(currentPlayer.position));
+                        if (input.split(" ").length == 3) {
+                            if(board.employ(currentPlayer.position, input.split(" ")[3])) //also make return bool
+                            {
+                                if (currentPlayer.level >= ) {
+                                    currentPlayer.giveRole(input.split(" ")[3]);
+                                }
+                                else {
+                                    System.out.println("Player level insufficient to take role.");
+                                }
+                            }
+                            else{
+                                System.out.println("This role does not exist where you are currently, other options are " + board.freeRoles(currentPlayer.position));
+                            }
+                        } else {
+                            System.out.println("Unable to take role due to incorrect command syntax. Please refer to the README.md");
                         }
                     }
                     //if player wants to upgrade
