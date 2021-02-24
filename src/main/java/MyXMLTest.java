@@ -17,8 +17,8 @@ public class MyXMLTest {
         //parse board data
         try {
             doc = parsing.getDocFromFile("src/main/resources/xml/board.xml"); //path will be passed in as arg
-            List<Set> sets = parsing.parseBoardData(doc);
-            // for (Set set: sets) { // uncomment to test that all the Sets are there
+            List<Set> boardSets = parsing.parseBoardData(doc);
+            // for (Set set: boardSets) { // uncomment to test that all the Sets are there
             //     set.printInfo();
             // }
 

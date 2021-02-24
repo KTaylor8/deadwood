@@ -3,11 +3,11 @@ import java.util.*;
 public class Set{
     public String setName;
     public List<String> neighbors;
-    public List<Role> offCardRoles;
+    public List<Role> offCardRoles = new ArrayList<Role>();
     public Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
     int flipStage;
-    private int finalTakes;
+    private int finalTakes = 0;
     private int currentTakes; // field should be private if other classes use a getter method to access them, right?
     
     public int[] upgradeCostDollars;
@@ -18,7 +18,6 @@ public class Set{
         this.setName = s;
         this.neighbors = n;
         this.offCardRoles = r;
-
         this.finalTakes = t;
     }
 
@@ -26,7 +25,6 @@ public class Set{
     Set(String s, List<String> n, int[] upgradeD, int[] upgradeC){
         this.setName = s;
         this.neighbors = n;
-        // this.finalTakes = 0;
         upgradeCostDollars = upgradeD;
         upgradeCostCredits = upgradeC;
     }
@@ -35,7 +33,6 @@ public class Set{
     Set(String s, List<String> n){
         this.setName = s;
         this.neighbors = n;
-        // this.finalTakes = 0;
     }
 
     public void printInfo() {
