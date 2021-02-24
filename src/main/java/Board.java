@@ -50,14 +50,12 @@ public class Board{
         /* Assign cards to sets */
         Collections.shuffle(cardDeck);
 
-        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
-            boardSets.get(i).resetSet(cardDeck.remove(cardDeck.size()-1));
-        }
+        resetBoard();
     }
     
     public void resetBoard(){
-        for(Set s: boardSets){
-            s.resetSet(cardDeck.remove(cardDeck.size()-1));
+        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
+            boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
         }
     }
 
