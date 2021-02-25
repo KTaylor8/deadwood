@@ -23,6 +23,16 @@ public class Card{
         return onCardRoles;
     }
 
+    public boolean hasRole(String roleName) {
+        boolean hasRole = false;
+        for (Role r : onCardRoles) {
+            if (roleName.equals(r.getName())) {
+                hasRole = true;
+            }
+        }
+        return hasRole;
+    }
+
     public void printInfo() {
         String cardInfo = "";
         cardInfo += ("\nCard name: " + cardName);

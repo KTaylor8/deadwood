@@ -60,7 +60,7 @@ public class Deadwood{
             board.resetBoard();
             for(int i = 0; i < players.size(); i++){
                 (players.peek()).resetRole();
-                (players.peek()).setPosition(board.getSet("trailer"));
+                (players.peek()).setLocation(board.getSet("trailer"));
                 players.add(players.remove());
             }
         }
@@ -79,34 +79,6 @@ public class Deadwood{
             System.out.println(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
         
-    }
-    
-
-    //to calculate winner
-    static private List<Player> calcWinner(Queue<Player> players){
-        //for finding ties
-        class ScoreSorter implements Comparator<Player> {
-            public int compare(Player p1, Player p2) {
-                return p2.calcFinalScore() - p1.calcFinalScore();
-            }
-        }
-
-        winners = new ArrayList<Player>();
-        while (players.size() > 0) {
-            winners.add(players.remove());
-        } // don't think we need "players" at this point?
-
-        // scoreSorter's compare() should sort in descending order by calcFinalScore()
-        // Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
-        Collections.sort(winners, new ScoreSorter());
-
-        int winningScore = winners.get(0).calcFinalScore();
-        for (int i = winners.size()-1; i > 0; i--) { // remove non-ties starting from end, excluding 0
-            if (winners.get(i).calcFinalScore() < winningScore) {
-                winners.remove(i);
-            }
-        }
-        return winners;
     }
 
     //to add players to the game based on input and returns queue of players
@@ -159,33 +131,90 @@ public class Deadwood{
         return p;
     }
 
+    //to calculate winner
+    static private List<Player> calcWinner(Queue<Player> players){
+        //for finding ties
+        class ScoreSorter implements Comparator<Player> {
+            public int compare(Player p1, Player p2) {
+                return p2.calcFinalScore() - p1.calcFinalScore();
+            }
+        }
+
+        winners = new ArrayList<Player>();
+        while (players.size() > 0) {
+            winners.add(players.remove());
+        } // don't think we need "players" at this point?
+
+        // scoreSorter's compare() should sort in descending order by calcFinalScore()
+        // Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(
+        Collections.sort(winners, new ScoreSorter());
+
+        int winningScore = winners.get(0).calcFinalScore();
+        for (int i = winners.size()-1; i > 0; i--) { // remove non-ties starting from end, excluding 0
+            if (winners.get(i).calcFinalScore() < winningScore) {
+                winners.remove(i);
+            }
+        }
+        return winners;
+    }
+
+    //returns list of people who are on card for a set
+    private static List<Player> findOnCardPlayers(){
+        List<Player> pl = new ArrayList<Player>();
+        for(Player p: players){
+            for(Role r: (currentPlayer.getLocation().getOnCardRoles())){
+                if((r.getName()).equals(p.getRoleName())){
+                    pl.add(0, p);
+                }
+            }
+        }
+        return pl;
+    }
+
+    //returns list of people who are off card for a set
+    private static List<Player> findOffCardPlayers(){
+        List<Player> pl = new ArrayList<Player>();
+        for(Player p: players){
+            for(Role r: (currentPlayer.getLocation().getOffCardRoles())){
+                if((r.getName()).equals(p.getRoleName())){
+                    pl.add(0, p);
+                }
+            }
+        }
+        return pl;
+    }
+
     //big boi method for each players turn
     private static void playerTurn(Player currentPlayer){
                 
         boolean hasPlayed = false; 
         String input = "";
-        System.out.println("What would you like to do " + currentPlayer.getName() + "?");
+        System.out.println("What would you like to do, " + currentPlayer.getName() + "?");
         
         //while the player doesn't say they want their turn to end
         while(!input.equals("end")){
             
             input = scan.nextLine().trim();
 
+            if (input.equals("end")) {
+                break;
+            }
             //prints whose turn and dollar and credits
-            if(input.equals("who")){
+            else if(input.equals("who")){
                 System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
             }
             //prints where current player is
             else if(input.equals("where")){
-                System.out.println(currentPlayer.getPosition().getName());
+                System.out.println(currentPlayer.getLocation().getName());
             }
             //prints where all players are
             else if(input.equals("where all")){
                 //print current player first
-                System.out.println("Current player " + currentPlayer.getName() + " position: " + currentPlayer.getPosition().getName());
+                System.out.println("Current player " + currentPlayer.getName() + " location: " + currentPlayer.getLocation().getName());
                 //print the remaining players 
                 for(int i = 0; i < players.size() - 1; i++){
-                    System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getPosition().getName());
+                    System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getLocation().getName());
+                    //make sure current player is place back at last in queue
                     players.add(players.remove());
                 }
                 //make sure current player is place back at last in queue
@@ -193,26 +222,26 @@ public class Deadwood{
             }
             //prints adjacent tiles to player
             else if(input.equals("neighbors")){
-                List<String> temp = board.getNeighbors(currentPlayer.getPosition().getName());
+                List<String> n = board.getNeighbors(currentPlayer.getLocation().getName());
                 System.out.println("Your neighbors are: ");
-                for(int i = 0; i < temp.size(); i++){
-                    System.out.println("- " + temp.get(i));
+                for(int i = 0; i < n.size(); i++){
+                    System.out.println("- " + n.get(i));
                 }
             }
             else if(input.equals("available roles")){
-                System.out.println(board.freeRoles(currentPlayer.getPosition().getName()));
+                System.out.println(board.freeRoles(currentPlayer.getLocation().getName()));
             }
             
             //if player wants to take role and are not employed, let them
             else if(input.contains("take role") && currentPlayer.isEmployed() == false){
-                if(!board.alreadyDone(currentPlayer.getPosition().getName())){
-                    if(currentPlayer.getRank() >= board.employ(currentPlayer.getPosition().getName(), input.substring(10))) //also make return bool
+                if(!board.alreadyDone(currentPlayer.getLocation().getName())){
+                    if(currentPlayer.getRank() >= board.employ(currentPlayer.getLocation().getName(), input.substring(10))) //also make return bool
                     {
                         currentPlayer.giveRole(input.substring(10));
-                        System.out.println("You are now employed as: " + currentPlayer.getRoleName());
+                        System.out.println("You are now employed as: " + currentPlayer.getRoleName() + ". You can rehearse or act in this role on your next turn");
                     }
                     else{
-                        System.out.println("This role does not exist where you are currently or you are not a high enough level, other role options are " + board.freeRoles(currentPlayer.getPosition().getName()));
+                        System.out.println("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(currentPlayer.getLocation().getName()));
                     }
                 }
                 else{
@@ -223,13 +252,13 @@ public class Deadwood{
             //if player wants to upgrade using dollars
             else if(input.contains("upgrade d")){
                 //check to make sure player is in office
-                if((currentPlayer.getPosition().getName()).equals("office")){
+                if((currentPlayer.getLocation().getName()).equals("office")){
                     int desiredLevel = Integer.valueOf(input.substring(10));
                     //make sure the level is greater than current level and in the upgrades list
                     
                         //get the upgrade prices
                         int[] d = board.getDollarC();
-                        if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= d.length +1 )
+                        if(desiredLevel > currentPlayer.getRank() && desiredLevel <= d.length + 1 )
                     {
                         if(d[desiredLevel-2] > currentPlayer.getDollars()){
                             System.out.println("You do not have enough dollars for this upgrade");
@@ -253,7 +282,7 @@ public class Deadwood{
             }
             //if player wants to upgrade using credits
             else if(input.contains("upgrade c ")){
-                if((currentPlayer.getPosition().getName()).equals("office")){
+                if((currentPlayer.getLocation().getName()).equals("office")){
                     int desiredLevel = Integer.valueOf(input.substring(10));
                     //make sure desired level is above current level and in the upgrade lists
                     
@@ -302,49 +331,33 @@ public class Deadwood{
             //if player wants to move
             else if(input.contains("move")){
                 if (hasPlayed) {
-                    System.out.println("You can't move");
+                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
                     continue;
                 }
                 else if(input.equals("move")){
                     System.out.println("Please enter a place you want to move after \"move\"");
                 } else {
-                    currentPlayer.moveTo(board.getSet(input.substring(5)));
+                    hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)));
                 }
             }
             //if player wants to act
             else if(input.equals("act")){
                 if(!hasPlayed){
-                    if(currentPlayer.isEmployed()){
-                        act(currentPlayer);
-                        hasPlayed = true;
-                    }
-                    else{
-                        System.out.println("You are currently not employed");
-                    }
+                    hasPlayed = currentPlayer.act(findOnCardPlayers(), findOffCardPlayers());
                 }
                 else{
-                    System.out.println("You have already moved, rehearsed or acted this turn");
+                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
                 }
             }
             //if player wants to rehearse 
             else if(input.equals("rehearse")){
-                //if player is employed
-                if(currentPlayer.isEmployed()){
-                    //and if the player does not have the max number of tokens already
-                    if(!hasPlayed){
-                        if(currentPlayer.getRehearseTokens() == 5)
-                        {
-                            System.out.println("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
-                        }
-                        else{
-                            currentPlayer.incToken();
-                            hasPlayed = true;
-                        }
-                    }
-
+                //if player hasn't played yet this turn
+                if(!hasPlayed){
+                    hasPlayed = currentPlayer.rehearse();
                 }
                 else{
-                    System.out.println("You're not employed? What are you going to rehearse for??");
+                    
+                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
                 }
             }
 
@@ -355,164 +368,4 @@ public class Deadwood{
         }
     }
 
-    //for letting the player act
-    private static void act(Player curPlayer){
-        //make and role a die
-        Set sett = board.getSet(curPlayer.getPosition().getName());
-        int budget = Integer.valueOf((sett.getCard()).getBudget());
-        int die = 1 + (int)(Math.random() * 6);
-
-
-        System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.getRehearseTokens() + " rehearsal tokens");
-        //if the die is higher than the budget
-        if(budget > (die + curPlayer.getRehearseTokens())){
-            //for acting failures on card and off card
-            System.out.println("Acting failure!");
-            if(onCard(curPlayer.getRoleName(), sett)){
-                System.out.println("Since you had an important role you get nothing!");
-            }
-            else{
-                System.out.println("Since you weren't that important you will get 1 dollar, out of pity");
-                curPlayer.incDollar(1);
-            }
-        }
-        else{
-            //for acting successes on card and off card
-            System.out.println("Acting success!");
-            if(onCard(curPlayer.getRoleName(), sett)){
-                System.out.println("Since you were important, you get 2 credits");
-                curPlayer.incCred(2);
-            }
-            else{
-                System.out.println("Since you weren't that important you get 1 credit and 1 dollar");
-                curPlayer.incCred(1);
-                curPlayer.incDollar(1);
-            }
-            //increment takes
-            sett.decTakesLeft();
-        }
-        //if it was the last scene and someone was on card hand out bonuses
-        if(sett.getTakesLeft() == 0){
-            if(canBonus(sett)){
-                System.out.println("Oh no! That was the last scene! Everyone gets money!");
-                bonuses(sett);
-            }
-            else{
-                System.out.println("That was the last scene, but no ones on card so no one gets money! Aha!");
-            }
-            wrapUp(sett);
-        }
-        else{
-            System.out.println("There are only " + sett.getTakesLeft() + " scenes left!");
-        }
-
-    }
-
-    //returns true if someone is on card
-    private static boolean canBonus(Set s){
-        for(int i = 0; i < ((s.getCard()).getOnCardRoles()).size(); i ++){
-            if((((s.getCard()).getOnCardRoles()).get(i)).isOccupied()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //hands out bonuses based on on card and off card people
-    private static void bonuses(Set s){
-        int[] dice = new int[Integer.valueOf((s.getCard()).getBudget())];
-        System.out.println("Rolling " + ((s.getCard()).getBudget()) + " dice");
-        for (int i = 0; i < dice.length; i++) {
-            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
-        }
-
-        // sort array in ascending order and then reverse it
-        Arrays.sort(dice);
-        int[] newDice = new int[dice.length];
-        for(int i = 0; i < dice.length; i++) {
-            newDice[dice.length-1-i] = dice[i];
-        }
-
-
-        List<Player> onCardPeople = findOnCardPeople(s);
-        List<Player> offCardPeople = findOffCardPeople(s);
-
-        //hand out bonuses of randomized dice to on card people
-        for(int i = 0; i < dice.length; i++){
-            (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
-            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).getName() + " gets $" + dice[i]);
-        }
-
-        //hand out bonuses of rank to off card people
-        for(Player p: offCardPeople){
-            p.incDollar(getRoleRank(p.getRoleName(), s));
-            System.out.println(p.getName() + " gets $" + getRoleRank(p.getRoleName(), s));
-        }
-    }
-
-    //returns int of the level of the role
-    private static int getRoleRank(String roleName, Set s){
-        for(Role r: s.getOffCardRoles()){
-            if(roleName.equals(r.getName())){
-                return Integer.valueOf(r.getLevel());
-            }
-        }
-        return 0;
-    }
-
-    //returns list of people who are on card for a set
-    private static List<Player> findOnCardPeople(Set s){
-        List<Player> pl = new ArrayList<Player>();
-        for(Player p: players){
-            for(Role r: ((s.getCard()).getOnCardRoles())){
-                if((r.getName()).equals(p.getRoleName())){
-                    pl.add(0, p);
-                }
-            }
-        }
-        return pl;
-
-    }
-
-    //returns list of people who are off card for a set
-    private static List<Player> findOffCardPeople(Set s){
-        List<Player> pl = new ArrayList<Player>();
-        for(Player p: players){
-            for(Role r: (s.getOffCardRoles())){
-                if((r.getName()).equals(p.getRoleName())){
-                    pl.add(0, p);
-                }
-            }
-        }
-        return pl;
-
-    }
-
-    //wraps up a set and resets the roles,
-    private static void wrapUp(Set s){
-        List<Player> onCardPeople = findOnCardPeople(s);
-        List<Player> offCardPeople = findOffCardPeople(s);
-
-        for(Player p: onCardPeople){
-            p.resetRole();
-        }
-        for(Player p: offCardPeople){
-            p.resetRole();
-        }
-
-        //make sure the set isn't used again for this day
-        s.flipSet();
-
-    }
-
-    //returns boolean if the role is on card of a set
-    private static boolean onCard(String role, Set s){
-        List<Role> tester = s.getOffCardRoles();
-        for(int i = 0; i < tester.size(); i++){
-            if(role.equals((tester.get(i)).getName())){
-                return false;
-            }
-        }
-        return true;
-    }
 }

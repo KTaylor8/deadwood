@@ -61,6 +61,9 @@ public class Set{
         return isNeighbor;
     }
 
+    public List<Role> getOnCardRoles() {
+        return currentCard.getOnCardRoles();
+    }
     public List<Role> getOffCardRoles() {
         return offCardRoles;
     }
@@ -91,6 +94,68 @@ public class Set{
 
     public int[] getUpgradeCC(){
         return upgradeCostCredits;
+    }
+
+    //returns true if someone is on card
+    public boolean canBonus(){
+        for(int i = 0; i < ((this.getCard()).getOnCardRoles()).size(); i ++){
+            if((((this.getCard()).getOnCardRoles()).get(i)).isOccupied()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //returns int of the level of the role
+    private int getRoleRank(String roleName){
+        for(Role r: offCardRoles){
+            if(roleName.equals(r.getName())){
+                return Integer.valueOf(r.getLevel());
+            }
+        }
+        return 0;
+    }
+
+    //hands out bonuses based on on card and off card people
+    public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
+
+        int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
+        System.out.println("Rolling " + (this.currentCard.getBudget()) + " dice");
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        }
+
+        // sort array in ascending order and then reverse it
+        Arrays.sort(dice);
+        int[] newDice = new int[dice.length];
+        for(int i = 0; i < dice.length; i++) {
+            newDice[dice.length-1-i] = dice[i];
+        }
+
+        //hand out bonuses of randomized dice to on card people
+        for(int i = 0; i < dice.length; i++){
+            (onCardPlayers.get(i%(onCardPlayers.size()))).incDollar(dice[i]);
+            System.out.println((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
+        }
+
+        //hand out bonuses of rank to off card people
+        for(Player p: offCardPlayers){
+            p.incDollar(getRoleRank(p.getRoleName()));
+            System.out.println(p.getName() + " gets $" + getRoleRank(p.getRoleName()));
+        }
+    }
+
+    //wraps up a set and resets the roles,
+    public void wrapUp(List<Player> onCardPlayers, List<Player> offCardPlayers){
+        for(Player p: onCardPlayers){
+            p.resetRole();
+        }
+        for(Player p: offCardPlayers){
+            p.resetRole();
+        }
+
+        //make sure the set isn't used again for this day
+        this.flipSet();
     }
 
     public void printInfo() {
