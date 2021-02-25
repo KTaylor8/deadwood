@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 public class Board{
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
+    private UI ui = new UI();
 
     public Board(String boardPath, String cardPath){
         /* Parse XML */
@@ -18,10 +19,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         } catch (Exception e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         }
 
@@ -33,10 +34,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         } catch (Exception e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         }
 

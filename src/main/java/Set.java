@@ -13,6 +13,8 @@ public class Set{
     private int[] upgradeCostDollars;
     private int[] upgradeCostCredits;
 
+    private UI ui = new UI();
+
     // regular set constructor
     Set(String s, List<String> n, List<Role> r, int t){
         this.setName = s;
@@ -125,7 +127,7 @@ public class Set{
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
 
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
-        System.out.println("Rolling " + (this.currentCard.getBudget()) + " dice");
+        ui.print("Rolling " + (this.currentCard.getBudget()) + " dice");
         for (int i = 0; i < dice.length; i++) {
             dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
@@ -140,13 +142,13 @@ public class Set{
         //hand out bonuses of randomized dice to on card people
         for(int i = 0; i < dice.length; i++){
             (onCardPlayers.get(i%(onCardPlayers.size()))).incDollar(dice[i]);
-            System.out.println((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
+            ui.print((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
         }
 
         //hand out bonuses of rank to off card people
         for(Player p: offCardPlayers){
             p.incDollar(getRoleRank(p.getRoleName()));
-            System.out.println(p.getName() + " gets $" + getRoleRank(p.getRoleName()));
+            ui.print(p.getName() + " gets $" + getRoleRank(p.getRoleName()));
         }
     }
 
@@ -187,6 +189,6 @@ public class Set{
                 setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).getLine();
             }
         } 
-        System.out.println(setInfo);
+        ui.print(setInfo);
     }
 }

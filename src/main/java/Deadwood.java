@@ -9,6 +9,8 @@ public class Deadwood{
     static private UI ui;
     static private String input;
     static private Set startLocation;
+    static private int startRank;
+    static private int startCredits;
 
     static private Player currentPlayer;
     static private String boardPath;
@@ -38,50 +40,52 @@ public class Deadwood{
 
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
-            System.out.println("Invalid input, please enter a player number from 2 to 8");
+            ui.print("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
 
         //  intro statement
-        System.out.println("Welcome to Deadwood! Start with naming your characters");
+        ui.print("Welcome to Deadwood! Start with naming your characters");
+        
         //creates the player queue with diff values according to num players
-        //fix to not make ugly ?
-
-            
-        input = ui.readInput();
-        numDays = 4;
         startLocation = board.getSet("trailer");
+        startRank = 1;
+        startCredits = 0;
+        numDays = 4;
 
         //changes player values according to number of players
-        if (numPlayers > 6){
-            initPlayers(new Player(startLocation, input, 2, 0), numPlayers, numDays);
+        if (numPlayers >= 7){
+            startRank = 2;
+            startCredits = 0;
         }
         else if (numPlayers == 6){
-            initPlayers(new Player(startLocation, input, 0, 4), numPlayers, numDays);
+            startRank = 0;
+            startCredits = 4;
         }
         else if (numPlayers == 5){
-            initPlayers(new Player(startLocation, input, 0, 2), numPlayers, numDays);
+            startRank = 0;
+            startCredits = 2;
         }
         else if (numPlayers == 4){
-            initPlayers(new Player(startLocation, input), numPlayers, numDays);
         }
         else {
             numDays = 3;
-            initPlayers(new Player(startLocation, input), numPlayers, numDays);
         }
+
+        players = initPlayers(startLocation, startRank, startCredits, numPlayers, numDays);
 
         
         //iterates through the day
         while(numDays != 0){
-            System.out.println("Placing all players in trailers");
+            ui.print("Placing all players in trailers");
             while(board.sceneNum() > 1){
                 currentPlayer = players.peek();
                 players.add(players.remove());
-                playerTurn(currentPlayer);
+                ui.interact(currentPlayer, board, players);
             }
             //decrement days and reset the roles and board
             numDays--;
-            System.out.println("Its the end of the day! " + numDays + " days remain");
+            ui.print("Its the end of the day! " + numDays + " days remain");
             board.resetBoard();
             for(int i = 0; i < players.size(); i++){
                 (players.peek()).resetRole();
@@ -91,24 +95,31 @@ public class Deadwood{
         }
 
         //calculate winner
-        System.out.println("Calculating winner...");
+        ui.print("Calculating winner...");
         winners = calcWinner(players);
         if (winners.size() > 1) {
-            System.out.println("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
+            ui.print("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
             for (Player p : winners) {
-                System.out.println(p.getName());
+                ui.print(p.getName());
             }
         } else {
-            System.out.println(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            ui.print(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
         ui.closeScanner();
     }
 
-    private static Queue<Player> initPlayers(Player p, int np,  int nd) {
+    private static Queue<Player> initPlayers(Set sl, int sr, int sc, int np,  int nd) {
         Queue<Player> players = new LinkedList<Player>();
+        Player p;
 
         for(int i = 1; i <= np; i++){
-            System.out.println("What is the name of player " + i +"?");
+            ui.print("What is the name of player " + i +"?");
+            input = ui.readInput();
+            if (np >= 5) {
+                p = new Player(sl, input, sr, sc);
+            } else {
+                p = new Player(sl, input);
+            }
             players.add(p);
         }
 
@@ -140,157 +151,6 @@ public class Deadwood{
             }
         }
         return winners;
-    }
-
-    //returns list of people who are on card for a set
-    private static List<Player> findOnCardPlayers(){
-        List<Player> pl = new ArrayList<Player>();
-        for(Player p: players){
-            for(Role r: (currentPlayer.getLocation().getOnCardRoles())){
-                if((r.getName()).equals(p.getRoleName())){
-                    pl.add(0, p);
-                }
-            }
-        }
-        return pl;
-    }
-
-    //returns list of people who are off card for a set
-    private static List<Player> findOffCardPlayers(){
-        List<Player> pl = new ArrayList<Player>();
-        for(Player p: players){
-            for(Role r: (currentPlayer.getLocation().getOffCardRoles())){
-                if((r.getName()).equals(p.getRoleName())){
-                    pl.add(0, p);
-                }
-            }
-        }
-        return pl;
-    }
-
-    //big boi method for each players turn
-    private static void playerTurn(Player currentPlayer){
-                
-        boolean hasPlayed = false; 
-        String input = "";
-        System.out.println("What would you like to do, " + currentPlayer.getName() + "?");
-        
-        //while the player doesn't say they want their turn to end
-        while(!input.equals("end")){
-            
-            input = scan.nextLine().trim();
-
-            if (input.equals("end")) {
-                break;
-            }
-            //prints whose turn and dollar and credits
-            else if(input.equals("who")){
-                System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
-            }
-            //prints where current player is
-            else if(input.equals("where")){
-                System.out.println(currentPlayer.getLocation().getName());
-            }
-            //prints where all players are
-            else if(input.equals("where all")){
-                //print current player first
-                System.out.println("Current player " + currentPlayer.getName() + " location: " + currentPlayer.getLocation().getName());
-                //print the remaining players 
-                for(int i = 0; i < players.size() - 1; i++){
-                    System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getLocation().getName());
-                    //make sure current player is place back at last in queue
-                    players.add(players.remove());
-                }
-                //make sure current player is place back at last in queue
-                players.add(players.remove());
-            }
-            //prints adjacent tiles to player
-            else if(input.equals("neighbors")){
-                List<String> n = board.getNeighbors(currentPlayer.getLocation().getName());
-                System.out.println("Your neighbors are: ");
-                for(int i = 0; i < n.size(); i++){
-                    System.out.println("- " + n.get(i));
-                }
-            }
-            else if(input.equals("available roles")){
-                System.out.println(board.freeRoles(currentPlayer.getLocation().getName()));
-            }
-            
-            //if player wants to take role and are not employed, let them
-            else if(input.contains("take role")){
-                if (currentPlayer.isEmployed() == false) {
-                    currentPlayer.employ(board, input.substring(10));
-                } else {
-                    System.out.println("You're already employed, so you can't take another role until you finish this one");
-                }                
-            }
-            //if player wants to upgrade using dollars
-            else if(input.contains("upgrade d")){
-                currentPlayer.upgrade(
-                    board.getDollarCost(), 
-                    currentPlayer.getDollars(), 
-                    Integer.valueOf(input.substring(10))
-                );
-            }
-            //if player wants to upgrade using credits
-            else if(input.contains("upgrade c ")){
-                currentPlayer.upgrade(
-                    board.getCreditCost(), 
-                    currentPlayer.getCredits(), 
-                    Integer.valueOf(input.substring(10))
-                );
-            }
-            //gets the cost of every upgrade
-            else if(input.equals("upgrade costs")){
-                int[] dd = board.getDollarCost();
-                int[] cc = board.getCreditCost();
-                System.out.println("Upgrade costs if using dollars:");
-                for(int i = 0; i < dd.length; i++){
-                    System.out.println("Level " + (i+2) + ": $" + dd[i]);
-                }
-                System.out.println("Upgrade costs if using credits:");
-                for(int i = 0; i < cc.length; i++){
-                    System.out.println("Level " + (i+2) +": " + cc[i] + " credits");
-                }
-            }
-            //if player wants to move
-            else if(input.contains("move")){
-                if (hasPlayed) {
-                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-                    continue;
-                }
-                else if(input.equals("move")){
-                    System.out.println("Please enter a place you want to move after \"move\"");
-                } else {
-                    hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)));
-                }
-            }
-            //if player wants to act
-            else if(input.equals("act")){
-                if(!hasPlayed){
-                    hasPlayed = currentPlayer.act(findOnCardPlayers(), findOffCardPlayers()); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
-                }
-                else{
-                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-                }
-            }
-            //if player wants to rehearse 
-            else if(input.equals("rehearse")){
-                //if player hasn't played yet this turn
-                if(!hasPlayed){
-                    hasPlayed = currentPlayer.rehearse();
-                }
-                else{
-                    
-                    System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-                }
-            }
-
-            //catch bad things
-            else{
-                System.out.println("unknown command, try again");
-            }
-        }
     }
 
 }

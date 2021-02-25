@@ -6,6 +6,7 @@ public class Card{
     private String sceneNumber;
     private String sceneDescription;
     private List<Role> onCardRoles;
+    private UI ui = new UI();
 
     Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles) {
         this.cardName = name;
@@ -45,7 +46,7 @@ public class Card{
             cardInfo += "\n\t\tOn-card role level: " + onCardRoles.get(i).getLevel();
             cardInfo += "\n\t\tOn-card role line: " + onCardRoles.get(i).getLine();
         }
-        System.out.println(cardInfo);
+        ui.print(cardInfo);
     }
 
 }

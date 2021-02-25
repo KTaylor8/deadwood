@@ -10,15 +10,16 @@ public class Player{
     private int rehearseTokens = 0;
     private Set location;
     private String roleName;
+    private UI ui = new UI();
 
     public Player(Set s, String p){
         playerName = p;
         location = s;
     }
 
-    public Player(Set s, String p, int sl, int sc){
+    public Player(Set s, String p, int sr, int sc){
         playerName = p;
-        rank = sl;
+        rank = sr;
         location = s;
     }
 
@@ -59,22 +60,22 @@ public class Player{
             if(desiredLevel > rank && desiredLevel <= costs.length + 1 )
             {
                 if(costs[desiredLevel-2] > currency){
-                    System.out.println("You do not have enough dollars for this upgrade");
+                    ui.print("You do not have enough dollars for this upgrade");
                 }
                 else{
                     //change level
-                    System.out.println("You are now level " + desiredLevel);
+                    ui.print("You are now level " + desiredLevel);
                     this.setLevel(desiredLevel);
                     this.incDollar((-1*costs[desiredLevel-2]));
-                    System.out.println("And you have " + currency + " remaining");
+                    ui.print("And you have " + currency + " remaining");
                 }
             }
             else{
-                System.out.println("Not a valid level!!!!");
+                ui.print("Not a valid level!!!!");
             }
         }
         else{
-            System.out.println("You are not on the casting office, so you can't upgrade");
+            ui.print("You are not on the casting office, so you can't upgrade");
         }
     }
 
@@ -119,22 +120,22 @@ public class Player{
             try { // this might not be the best way to handle this error...
                 destName = dest.getName(); // null if not a valid Set name
             } catch (NullPointerException e){
-                System.out.println("The place you tried to move to isn't a valid set name. Try again..or don't.");
+                ui.print("The place you tried to move to isn't a valid set name. Try again..or don't.");
                 return successfulMove;
             }
 
             if (location.checkNeighbor(destName) ) {
                 location = dest;
-                System.out.println("You're now located in " + destName);
+                ui.print("You're now located in " + destName);
                 successfulMove = true;
             }
             else
             {
-                System.out.println("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
+                ui.print("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
             }
         }
         else{
-            System.out.println("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+            ui.print("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
         }
 
         return successfulMove;
@@ -155,14 +156,14 @@ public class Player{
             if(rank >= board.employ(location.getName(), role)) //also make return bool
             {
                 this.giveRole(role);
-                System.out.println("You are now employed as: " + role + ". You can rehearse or act in this role on your next turn");
+                ui.print("You are now employed as: " + role + ". You can rehearse or act in this role on your next turn");
             }
             else{
-                System.out.println("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(location.getName()));
+                ui.print("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(location.getName()));
             }
         }
         else{
-            System.out.println("This set was already finished!");
+            ui.print("This set was already finished!");
         }
     }
 
@@ -173,28 +174,28 @@ public class Player{
             int budget = Integer.valueOf((location.getCard()).getBudget());
             int die = 1 + (int)(Math.random() * 6);
 
-            System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + rehearseTokens + " rehearsal tokens");
+            ui.print("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + rehearseTokens + " rehearsal tokens");
             //if the die is higher than the budget
             if(budget > (die + rehearseTokens)){
                 //for acting failures on card and off card
-                System.out.println("Acting failure!");
+                ui.print("Acting failure!");
                 if(location.getCard().hasRole(roleName)){
-                    System.out.println("Since you had an important role you get nothing!");
+                    ui.print("Since you had an important role you get nothing!");
                 }
                 else{
-                    System.out.println("Since you weren't that important you will get 1 dollar, out of pity");
+                    ui.print("Since you weren't that important you will get 1 dollar, out of pity");
                     this.incDollar(1);
                 }
             }
             else{
                 //for acting successes on card and off card
-                System.out.println("Acting success!");
+                ui.print("Acting success!");
                 if(location.getCard().hasRole(roleName)){
-                    System.out.println("Since you were important, you get 2 credits");
+                    ui.print("Since you were important, you get 2 credits");
                     this.incCred(2);
                 }
                 else{
-                    System.out.println("Since you weren't that important you get 1 credit and 1 dollar");
+                    ui.print("Since you weren't that important you get 1 credit and 1 dollar");
                     this.incCred(1);
                     this.incDollar(1);
                 }
@@ -206,22 +207,22 @@ public class Player{
             if(location.getTakesLeft() == 0){
                 
                 if(location.canBonus()){
-                    System.out.println("Oh no! That was the last scene! Everyone gets money!");
+                    ui.print("Oh no! That was the last scene! Everyone gets money!");
                     location.bonuses(onCardPlayers, offCardPlayers);
                 }
                 else{
-                    System.out.println("That was the last scene, but no ones on card so no one gets money! Aha!");
+                    ui.print("That was the last scene, but no ones on card so no one gets money! Aha!");
                 }
                 location.wrapUp(onCardPlayers, offCardPlayers);
             }
             else{
-                System.out.println("There are only " + location.getTakesLeft() + " takes left in this scene!");
+                ui.print("There are only " + location.getTakesLeft() + " takes left in this scene!");
             }
 
             successfulActing = true;
         }
         else{
-            System.out.println("You are currently not employed");
+            ui.print("You are currently not employed");
         }
 
         return successfulActing;
@@ -235,13 +236,13 @@ public class Player{
             //and if the player does not have the max number of tokens already
             if(rehearseTokens < 5) {
                 this.incToken();
-                System.out.println("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
+                ui.print("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
                 successfulRehearsal = true;
             } else {
-                System.out.println("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
+                ui.print("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
             }
         } else {
-            System.out.println("You're not employed? What are you going to rehearse for??");
+            ui.print("You're not employed? What are you going to rehearse for??");
         }
 
         return successfulRehearsal;
