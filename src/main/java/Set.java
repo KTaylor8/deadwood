@@ -51,6 +51,15 @@ public class Set{
     public List<String> getNeighbors() {
         return neighbors;
     }
+    public boolean checkNeighbor(String s) {
+        boolean isNeighbor = false;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (s.equals(neighbors.get(i))) {
+                isNeighbor = true;
+            }
+        }
+        return isNeighbor;
+    }
 
     public List<Role> getOffCardRoles() {
         return offCardRoles;

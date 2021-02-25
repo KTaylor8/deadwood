@@ -11,6 +11,8 @@ public class Deadwood{
     static private String boardPath;
     static private String cardPath;
     static private List<Player> winners = new ArrayList<Player>();
+
+    static private Scanner scan = new Scanner(System.in);
     public static void main(String[] args){
 
         //Ask how many players
@@ -63,9 +65,11 @@ public class Deadwood{
             }
         }
 
+        scan.close();
+
         //calculate winner
         System.out.println("Calculating winner...");
-        winners = calcWinner();
+        winners = calcWinner(players);
         if (winners.size() > 1) {
             System.out.println("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
             for (Player p : winners) {
@@ -77,15 +81,16 @@ public class Deadwood{
         
     }
     
-    //for finding ties
-    static private class ScoreSorter implements Comparator<Player> {
-        public int compare(Player p1, Player p2) {
-            return p2.calcFinalScore() - p1.calcFinalScore();
-        }
-    }
 
     //to calculate winner
-    static private List<Player> calcWinner(){
+    static private List<Player> calcWinner(Queue<Player> players){
+        //for finding ties
+        class ScoreSorter implements Comparator<Player> {
+            public int compare(Player p1, Player p2) {
+                return p2.calcFinalScore() - p1.calcFinalScore();
+            }
+        }
+
         winners = new ArrayList<Player>();
         while (players.size() > 0) {
             winners.add(players.remove());
@@ -108,7 +113,6 @@ public class Deadwood{
     static private Queue<Player> addPlayers(int numPlayers){
         
         Queue<Player> p = new LinkedList<Player>();
-        Scanner scan = new Scanner(System.in);
         String input = "";
 
         //changes player values according to number of players
@@ -155,25 +159,10 @@ public class Deadwood{
         return p;
     }
 
-    //to move a player to a neighbor
-    private static boolean moveTo(Player p, String place){
-        //get list of neighbors
-        List<String> adj = board.getNeighbors(p.getPosition());
-        for(int i = 0; i < adj.size(); i++){
-            //if the designated neighbor exists return true
-            if(place.equals(adj.get(i)))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     //big boi method for each players turn
     private static void playerTurn(Player currentPlayer){
                 
         boolean hasPlayed = false; 
-        Scanner scan = new Scanner(System.in);
         String input = "";
         System.out.println("What would you like to do " + currentPlayer.getName() + "?");
         
@@ -211,19 +200,17 @@ public class Deadwood{
                         }
                     }
                     //if player wants to move
-                    else if(input.equals("move")){
-                        System.out.println("Please enter a place you want to move after \"move\"");
-                    }
                     else if(input.contains("move ")){
+                        if(input.equals("move")){
+                            System.out.println("Please enter a place you want to move after \"move\"");
+                        }
                         //if player is not employed
                         if(!currentPlayer.isEmployed()){
                             //if player hasn't moved or acted
                             if(!hasPlayed){
-                                String split = input.substring(5);
-                                if(moveTo(currentPlayer, split)) 
-                                {
-                                    currentPlayer.setPosition(split);
-                                    //hasPlayed = true;
+                                String dest = input.substring(5);
+                                if (board.getSet(currentPlayer.getPosition()).checkNeighbor(dest) ) {
+                                    currentPlayer.setPosition(dest);
                                 }
                                 else
                                 {

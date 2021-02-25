@@ -1,4 +1,4 @@
-// import java.util.*;
+import java.util.*;
 
 public class Player{
 
@@ -70,6 +70,17 @@ public class Player{
     }
     public void setPosition(String newPos){
         this.position = newPos;
+    }
+    //to move a player to a neighbor
+    public static boolean canMoveTo(String dest, List<String> neighbors){
+        for(int i = 0; i < neighbors.size(); i++){
+            //if the designated neighbor exists return true
+            if(dest.equals(neighbors.get(i)))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     public String getRoleName() {
