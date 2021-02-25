@@ -118,7 +118,7 @@ public class Board{
     }
 
     //returns the int of the value of the given role and occupies a designated role
-    public int employ(String pos, String roll){
+    public int fillRole(String pos, String roll){
         for(Set s: boardSets){
             //finds the set
             if((s.getName()).equals(pos)){

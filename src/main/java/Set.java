@@ -114,7 +114,7 @@ public class Set{
     }
 
     //returns int of the level of the role
-    private int getRoleRank(String roleName){
+    public int getRoleRank(String roleName){
         for(Role r: offCardRoles){
             if(roleName.equals(r.getName())){
                 return Integer.valueOf(r.getLevel());

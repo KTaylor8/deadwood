@@ -153,9 +153,10 @@ public class Player{
     public void employ(Board board, String role) {
         // or could pass 2 board-referenced values in as args instead of the whole board
         if(!location.isClosed()){
-            if(rank >= board.employ(location.getName(), role)) //also make return bool
+            if(rank >= location.getRoleRank(role))
             {
                 this.giveRole(role);
+                board.fillRole(location.getName(), role); // <-- this method needs to be simplified later; it's hard to follow currently
                 ui.print("You are now employed as: " + role + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
             }
             else{
