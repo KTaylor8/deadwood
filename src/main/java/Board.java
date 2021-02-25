@@ -68,7 +68,7 @@ public class Board{
     public int getBudget(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.getSetName())){
-                return Integer.valueOf((s.getCard()).budget);
+                return Integer.valueOf((s.getCard()).getBudget());
             }
         }
         return 0;
@@ -129,12 +129,12 @@ public class Board{
                     }
                 }
                 //checks if role is on card
-                for(int i = 0; i < ((s.getCard()).roles).size(); i++){
+                for(int i = 0; i < ((s.getCard()).getOnCardRoles()).size(); i++){
                     //occupy and return level if equals
-                    if(roll.equals((((s.getCard()).roles).get(i)).getName()) && !((s.getCard()).roles).get(i).isOccupied()){
+                    if(roll.equals((((s.getCard()).getOnCardRoles()).get(i)).getName()) && !((s.getCard()).getOnCardRoles()).get(i).isOccupied()){
                         
-                        ((s.getCard().roles).get(i)).occupy();
-                        return Integer.valueOf((((s.getCard()).roles).get(i)).getLevel());
+                        ((s.getCard().getOnCardRoles()).get(i)).occupy();
+                        return Integer.valueOf((((s.getCard()).getOnCardRoles()).get(i)).getLevel());
                     }
                 }
             }
@@ -157,9 +157,9 @@ public class Board{
                 }
                 //add the on card roles to the string
                 if (s.getCard() != null) {
-                    for(int i = 0; i < ((s.getCard()).roles).size(); i++){
-                        if(!(((s.getCard()).roles).get(i)).isOccupied()){
-                            free += "\nOn card role: " + (((s.getCard()).roles).get(i)).getName() +" must be level: " + (((s.getCard()).roles).get(i)).getLevel() + "";
+                    for(int i = 0; i < ((s.getCard()).getOnCardRoles()).size(); i++){
+                        if(!(((s.getCard()).getOnCardRoles()).get(i)).isOccupied()){
+                            free += "\nOn card role: " + (((s.getCard()).getOnCardRoles()).get(i)).getName() +" must be level: " + (((s.getCard()).getOnCardRoles()).get(i)).getLevel() + "";
                             
                         }
                     }
