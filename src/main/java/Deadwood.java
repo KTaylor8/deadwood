@@ -82,7 +82,7 @@ public class Deadwood{
     }
 
     //to add players to the game based on input and returns queue of players
-    static private Queue<Player> addPlayers(int numPlayers){
+    private static Queue<Player> addPlayers(int numPlayers){
         
         Queue<Player> p = new LinkedList<Player>();
         String input = "";
@@ -132,7 +132,7 @@ public class Deadwood{
     }
 
     //to calculate winner
-    static private List<Player> calcWinner(Queue<Player> players){
+    private static List<Player> calcWinner(Queue<Player> players){
         //for finding ties
         class ScoreSorter implements Comparator<Player> {
             public int compare(Player p1, Player p2) {
@@ -284,7 +284,7 @@ public class Deadwood{
             //if player wants to act
             else if(input.equals("act")){
                 if(!hasPlayed){
-                    hasPlayed = currentPlayer.act(findOnCardPlayers(), findOffCardPlayers());
+                    hasPlayed = currentPlayer.act(findOnCardPlayers(), findOffCardPlayers()); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
                 }
                 else{
                     System.out.println("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
