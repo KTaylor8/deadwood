@@ -12,7 +12,7 @@ x test that acting awards the correct amounts at the end of it
   x Role
 x clean stuff up and add comments
 If time:
-- make board singleton
+- make board singleton -- this might actually be hard w/ the args...
 
 
 Deadwood:
