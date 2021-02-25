@@ -156,7 +156,7 @@ public class Player{
             if(rank >= board.employ(location.getName(), role)) //also make return bool
             {
                 this.giveRole(role);
-                ui.print("You are now employed as: " + role + ". You can rehearse or act in this role on your next turn");
+                ui.print("You are now employed as: " + role + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
             }
             else{
                 ui.print("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(location.getName()));
