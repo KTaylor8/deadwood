@@ -4,15 +4,16 @@ public class Deadwood{
     static private int numDays;
     
     static private Queue<Player> players = new LinkedList<Player>();
+    static private int numPlayers;
     static private Board board;
+    static private UI ui;
+    static private String input;
+    static private Set startLocation;
 
     static private Player currentPlayer;
-    static private int numPlayers;
     static private String boardPath;
     static private String cardPath;
     static private List<Player> winners = new ArrayList<Player>();
-
-    static private Scanner scan = new Scanner(System.in);
     public static void main(String[] args){
 
         //Ask how many players
@@ -32,18 +33,42 @@ public class Deadwood{
         numPlayers = Integer.valueOf(args[2]); 
         boardPath = args[0];
         cardPath = args[1];
-        //  intro statement
         board = new Board(boardPath, cardPath);
+        ui = new UI();
+
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             System.out.println("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
 
+        //  intro statement
         System.out.println("Welcome to Deadwood! Start with naming your characters");
         //creates the player queue with diff values according to num players
         //fix to not make ugly ?
-        players = addPlayers(numPlayers);
+
+            
+        input = ui.readInput();
+        numDays = 4;
+        startLocation = board.getSet("trailer");
+
+        //changes player values according to number of players
+        if (numPlayers > 6){
+            initPlayers(new Player(startLocation, input, 2, 0), numPlayers, numDays);
+        }
+        else if (numPlayers == 6){
+            initPlayers(new Player(startLocation, input, 0, 4), numPlayers, numDays);
+        }
+        else if (numPlayers == 5){
+            initPlayers(new Player(startLocation, input, 0, 2), numPlayers, numDays);
+        }
+        else if (numPlayers == 4){
+            initPlayers(new Player(startLocation, input), numPlayers, numDays);
+        }
+        else {
+            numDays = 3;
+            initPlayers(new Player(startLocation, input), numPlayers, numDays);
+        }
 
         
         //iterates through the day
@@ -65,8 +90,6 @@ public class Deadwood{
             }
         }
 
-        scan.close();
-
         //calculate winner
         System.out.println("Calculating winner...");
         winners = calcWinner(players);
@@ -78,57 +101,18 @@ public class Deadwood{
         } else {
             System.out.println(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
-        
+        ui.closeScanner();
     }
 
-    //to add players to the game based on input and returns queue of players
-    private static Queue<Player> addPlayers(int numPlayers){
-        
-        Queue<Player> p = new LinkedList<Player>();
-        String input = "";
+    private static Queue<Player> initPlayers(Player p, int np,  int nd) {
+        Queue<Player> players = new LinkedList<Player>();
 
-        //changes player values according to number of players
-        if(numPlayers > 6){
-            for(int i = 1; i <= numPlayers; i++){
-                System.out.println("What is the name of player " + i +"?");
-                input = scan.nextLine();
-                p.add(new Player(board.getSet("trailer"), input, 2, 0));
-            }
-            numDays = 4;
+        for(int i = 1; i <= np; i++){
+            System.out.println("What is the name of player " + i +"?");
+            players.add(p);
         }
-        else if (numPlayers == 6) {
-            for(int i = 1; i <= numPlayers; i++){
-                System.out.println("What is the name of player " + i +"?");
-                input = scan.nextLine();
-                p.add(new Player(board.getSet("trailer"), input, 0, 4));
-            }
-            numDays = 4;
-        }
-        else if (numPlayers == 5) {
-            for(int i = 1; i <= numPlayers; i++){
-                System.out.println("What is the name of player " + i +"?");
-                input = scan.nextLine();
-                p.add(new Player(board.getSet("trailer"), input, 0, 2));
-            }
-            numDays = 4;
-        }
-        else if (numPlayers == 4) {
-            for(int i = 1; i <= numPlayers; i++){
-                System.out.println("What is the name of player " + i +"?");
-                input = scan.nextLine();
-                p.add(new Player(board.getSet("trailer"), input));
-            }
-            numDays = 4;
-        }
-        else {
-            for(int i = 1; i <= numPlayers; i++){
-                System.out.println("What is the name of player " + i +"?");
-                input = scan.nextLine();
-                p.add(new Player(board.getSet("trailer"), input));
-            }
-            numDays = 3;
-        }
-        return p;
+
+        return players;
     }
 
     //to calculate winner
