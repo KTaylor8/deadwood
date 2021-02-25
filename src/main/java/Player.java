@@ -3,7 +3,7 @@
 public class Player{
 
     private String playerName;
-    private int playerLevel = 1;
+    private int rank = 1;
     private int dollars = 0;
     private int credits = 0;
     private boolean employed = false; 
@@ -18,7 +18,7 @@ public class Player{
 
     public Player(String p, int sl, int sc){
         playerName = p;
-        playerLevel = sl;
+        rank = sl;
         position = "trailer";
     }
 
@@ -29,11 +29,11 @@ public class Player{
         this.playerName = s;
     }
 
-    public int getLevel(){
-        return playerLevel;
+    public int getRank(){
+        return rank;
     }
     public void setLevel(int level){
-        this.playerLevel = level;
+        this.rank = level;
     }
 
     public int getDollars(){
@@ -82,6 +82,6 @@ public class Player{
     }
 
     public int calcFinalScore(){
-        return (dollars + credits + (5 * playerLevel));
+        return (dollars + credits + (5 * rank));
     }
 }

@@ -246,7 +246,7 @@ public class Deadwood{
                     //if player wants to take roll and are not employed, let them
                     else if(input.contains("take role") && currentPlayer.isEmployed() == false){
                         if(!board.alreadyDone(currentPlayer.getPosition())){
-                            if(currentPlayer.getLevel() >= board.employ(currentPlayer.getPosition(), input.substring(10))) //also make return bool
+                            if(currentPlayer.getRank() >= board.employ(currentPlayer.getPosition(), input.substring(10))) //also make return bool
                             {
                                 currentPlayer.giveRole(input.substring(10));
                                 System.out.println("You are now employed as: " + currentPlayer.getRoleName());
@@ -269,7 +269,7 @@ public class Deadwood{
                             
                                 //get the upgrade prices
                                 int[] d = board.getDollarC();
-                                if(desiredLevel > currentPlayer.getLevel() && desiredLevel  <= d.length +1 )
+                                if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= d.length +1 )
                             {
                                 if(d[desiredLevel-2] > currentPlayer.getDollars()){
                                     System.out.println("You do not have enough dollars for this upgrade");
@@ -299,7 +299,7 @@ public class Deadwood{
                             
                                 //get list of upgrades
                                 int[] c = board.getCreditC();
-                                if(desiredLevel > currentPlayer.getLevel() && desiredLevel  <= c.length +1 )
+                                if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= c.length +1 )
                             {
                                 //make sure they have enough
                                 if(c[desiredLevel-2] > currentPlayer.getCredits()){
