@@ -25,7 +25,7 @@ public class Deadwood{
 
         //numDays--
         
-        //calcfinalScore
+        //calc final Score
         
         numPlayers = Integer.valueOf(args[2]); 
         boardPath = args[0];
@@ -111,7 +111,7 @@ public class Deadwood{
         Scanner scan = new Scanner(System.in);
         String input = "";
 
-        //changes player vals according to number of players
+        //changes player values according to number of players
         if(numPlayers > 6){
             numDays = 4;
             for(int i = 1; i <= numPlayers; i++){
@@ -184,7 +184,7 @@ public class Deadwood{
 
                     //prints whose turn and dollar and credits
                     if(input.equals("who")){
-                        System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehersal tokens.");
+                        System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
                     }
                     //prints where current player is
                     else if(input.equals("where")){
@@ -217,7 +217,7 @@ public class Deadwood{
                     else if(input.contains("move ")){
                         //if player is not employed
                         if(!currentPlayer.isEmployed()){
-                            //if player hasnt moved or acted
+                            //if player hasn't moved or acted
                             if(!hasPlayed){
                                 String split = input.substring(5);
                                 if(moveTo(currentPlayer, split)) 
@@ -265,7 +265,7 @@ public class Deadwood{
                         //check to make sure player is in office
                         if((currentPlayer.getPosition()).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
-                            //make sure the level is creater than current level and in the upgrades list
+                            //make sure the level is greater than current level and in the upgrades list
                             
                                 //get the upgrade prices
                                 int[] d = board.getDollarC();
@@ -301,7 +301,7 @@ public class Deadwood{
                                 int[] c = board.getCreditC();
                                 if(desiredLevel > currentPlayer.getLevel() && desiredLevel  <= c.length +1 )
                             {
-                                //make usre they have enough
+                                //make sure they have enough
                                 if(c[desiredLevel-2] > currentPlayer.getCredits()){
                                     System.out.println("You do not have enough credits for this upgrade");
                                 }
@@ -360,7 +360,7 @@ public class Deadwood{
                             if(!hasPlayed){
                                 if(currentPlayer.getRehearseTokens() == 5)
                                 {
-                                    System.out.println("You have reached the max for rehearsal and only have the option to act. Its a garunteed success though!");
+                                    System.out.println("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
                                 }
                                 else{
                                     currentPlayer.incToken();
@@ -528,7 +528,7 @@ public class Deadwood{
             p.resetRole();
         }
 
-        //make sure the set isnt used again for this day
+        //make sure the set isn't used again for this day
         s.flipSet();
 
     }

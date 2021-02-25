@@ -124,7 +124,7 @@ public class XMLParser {
                 partLine = partChildrenSub.getTextContent();
             }
 
-        } //for part childnodes
+        } //for part child nodes
 
         // roleObj = new Role(partName, partLevel, partArea, partLine); // uncomment for GUI
         roleObj = new Role(partName, partLevel, partLine);
@@ -203,7 +203,7 @@ public class XMLParser {
             }
             // don't use an else block
 
-        } //for office childnodes
+        } //for office child nodes
 
         return new Set("office", neighbors, upgradeDollars, upgradeCredits);
     }
@@ -324,7 +324,7 @@ public class XMLParser {
                 } //for part nodes
                 // don't use an else block                
 
-            } //for set childnodes
+            } //for set child nodes
             setList.add(new Set(setName, neighbors, setRoles, numTakes));
         
         }//for set nodes
@@ -400,7 +400,7 @@ public class XMLParser {
                     cardRoles.add(getPartData(role, cardListSub));
                 } //for part nodes
 
-            } //for card childnodes
+            } //for card child nodes
 
             // init card obj w/ parsed data and add it to cardDeck
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
