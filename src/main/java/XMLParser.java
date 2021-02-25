@@ -97,7 +97,7 @@ public class XMLParser {
      * @param part accepts a single Node part
      * @return
      */
-    private static Role getPartData(Role roleObj, Node part){
+    private Role getPartData(Role roleObj, Node part){
         // Declare vars for part data handling
         NodeList partChildren;
         Node partChildrenSub;
@@ -138,7 +138,7 @@ public class XMLParser {
      * @param root -- document root
      * @return
      */
-    private static Set getOfficeData(Element root){
+    private Set getOfficeData(Element root){
         // Declare vars for office data handling
         Node office; /* Element with tag name "office" */
         NodeList officeChildren;
@@ -210,7 +210,7 @@ public class XMLParser {
 
 
     /* Parse trailer data into Set */
-    private static Set getTrailerData(Element root){
+    private Set getTrailerData(Element root){
         // Declare vars for trailer data handling
         Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
