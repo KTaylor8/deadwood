@@ -30,7 +30,7 @@
         - "upgrade costs" to get the cost of each upgrade from both credits and dollars
         - "act" when employed to act
         - "rehearse" to add a rehearse token to the current player
-        Note: You are allowed to do any of these things any amount of times, but you can only do one of:
+        Note: You are allowed to many of these things any amount of times, but you can only do one of the following (once) per turn:
             act
             move
             rehearse
