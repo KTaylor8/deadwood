@@ -117,40 +117,13 @@ public class Board{
         return null;
     }
 
-    //returns the int of the value of the given role and occupies a designated role
-    public int fillRole(String pos, String roleName){
-        List<Role> offCardRoles;
-        List<Role> onCardRoles; 
-        Role role;
-
-        for(Set s: boardSets){
-            offCardRoles = s.getOffCardRoles();
-            onCardRoles = s.getCard().getOnCardRoles();
-
-            //finds the set
-            if( s.getName().equals(pos) ){
-                //checks if role is in off cards
-                for(int i = 0; i < offCardRoles.size(); i++){
-                    role = offCardRoles.get(i);
-                    //occupy and return level if equals
-                    if( roleName.equals(role.getName()) && !(role.isOccupied()) ){
-                        (role).occupy();
-                        return Integer.valueOf(role.getLevel());
-                    }
-                }
-                //checks if role is on card
-                for(int i = 0; i < onCardRoles.size(); i++){
-                    role = onCardRoles.get(i);
-                    //occupy and return level if equals
-                    if( roleName.equals(role.getName()) && !(role.isOccupied()) ){
-                        role.occupy();
-                        return Integer.valueOf(role.getLevel());
-                    }
-                }
-            }
+    //occupies a designated role
+    public void fillRole(Set location, Role role){
+        if( !(role.isOccupied()) ){
+            role.occupy();
+        } else {
+            ui.print("Can't fill role: role not empty.");
         }
-        //returns really high level just incase of failure
-        return 1000;
     }
 
     //returns a string that is a list of free roles card and off card

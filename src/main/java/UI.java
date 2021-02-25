@@ -83,6 +83,7 @@ public class UI{
             //if player wants to take role and are not employed, let them
             else if(input.contains("take role")){
                 if (currentPlayer.isEmployed() == false) {
+                    // LATER: THE METHOD CALLED NEEDS REFACTORING
                     currentPlayer.employ(board, input.substring(10));
                 } else {
                     this.print("You're already employed, so you can't take another role until you finish this one");
