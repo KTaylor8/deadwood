@@ -98,7 +98,7 @@ public class UI{
                 );
             }
             //if player wants to upgrade using credits
-            else if(input.contains("upgrade c")){
+            else if(input.contains("upgrade c ")){
                 currentPlayer.upgrade(
                     board.getCreditCost(), 
                     currentPlayer.getCredits(), 
