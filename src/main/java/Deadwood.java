@@ -328,11 +328,11 @@ public class Deadwood{
                         int[] cc = board.getCreditC();
                         System.out.println("Upgrade costs if using dollars:");
                         for(int i = 0; i < dd.length; i++){
-                            System.out.println("Level " + (i+2) + ": " + dd[i]);
+                            System.out.println("Level " + (i+2) + ": $" + dd[i]);
                         }
                         System.out.println("Upgrade costs if using credits:");
                         for(int i = 0; i < cc.length; i++){
-                            System.out.println("Level " + (i+2) +": " + cc[i]);
+                            System.out.println("Level " + (i+2) +": " + cc[i] + " credits");
                         }
                     }
                     //if player wants to act
