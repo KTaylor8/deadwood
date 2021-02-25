@@ -118,25 +118,33 @@ public class Board{
     }
 
     //returns the int of the value of the given role and occupies a designated role
-    public int fillRole(String pos, String roll){
+    public int fillRole(String pos, String roleName){
+        List<Role> offCardRoles;
+        List<Role> onCardRoles; 
+        Role role;
+
         for(Set s: boardSets){
+            offCardRoles = s.getOffCardRoles();
+            onCardRoles = s.getCard().getOnCardRoles();
+
             //finds the set
-            if((s.getName()).equals(pos)){
+            if( s.getName().equals(pos) ){
                 //checks if role is in off cards
-                for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
+                for(int i = 0; i < offCardRoles.size(); i++){
+                    role = offCardRoles.get(i);
                     //occupy and return level if equals
-                    if(roll.equals(((s.getOffCardRoles()).get(i)).getName()) && !((s.getOffCardRoles()).get(i)).isOccupied()){
-                        ((s.getOffCardRoles()).get(i)).occupy();
-                        return Integer.valueOf(((s.getOffCardRoles()).get(i)).getLevel());
+                    if( roleName.equals(role.getName()) && !(role.isOccupied()) ){
+                        (role).occupy();
+                        return Integer.valueOf(role.getLevel());
                     }
                 }
                 //checks if role is on card
-                for(int i = 0; i < ((s.getCard()).getOnCardRoles()).size(); i++){
+                for(int i = 0; i < onCardRoles.size(); i++){
+                    role = onCardRoles.get(i);
                     //occupy and return level if equals
-                    if(roll.equals((((s.getCard()).getOnCardRoles()).get(i)).getName()) && !((s.getCard()).getOnCardRoles()).get(i).isOccupied()){
-                        
-                        ((s.getCard().getOnCardRoles()).get(i)).occupy();
-                        return Integer.valueOf((((s.getCard()).getOnCardRoles()).get(i)).getLevel());
+                    if( roleName.equals(role.getName()) && !(role.isOccupied()) ){
+                        role.occupy();
+                        return Integer.valueOf(role.getLevel());
                     }
                 }
             }
