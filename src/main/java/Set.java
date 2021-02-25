@@ -96,6 +96,11 @@ public class Set{
         return upgradeCostCredits;
     }
 
+    // returns boolean stating if THIS set is closed
+    public boolean isClosed() {
+        return (flipStage == 2);
+    }
+
     //returns true if someone is on card
     public boolean canBonus(){
         for(int i = 0; i < ((this.getCard()).getOnCardRoles()).size(); i ++){

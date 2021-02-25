@@ -50,6 +50,34 @@ public class Player{
         this.credits += credit;
     }
 
+    public void upgrade(int[] costs, int currency, int desiredLevel) {
+        //check to make sure player is in office
+        if((location.getName()).equals("office")){
+            //make sure the level is greater than current level and in the upgrades list
+            
+            //get the upgrade prices
+            if(desiredLevel > rank && desiredLevel <= costs.length + 1 )
+            {
+                if(costs[desiredLevel-2] > currency){
+                    System.out.println("You do not have enough dollars for this upgrade");
+                }
+                else{
+                    //change level
+                    System.out.println("You are now level " + desiredLevel);
+                    this.setLevel(desiredLevel);
+                    this.incDollar((-1*costs[desiredLevel-2]));
+                    System.out.println("And you have " + currency + " remaining");
+                }
+            }
+            else{
+                System.out.println("Not a valid level!!!!");
+            }
+        }
+        else{
+            System.out.println("You are not on the casting office, so you can't upgrade");
+        }
+    }
+
     public boolean isEmployed() {
         return employed;
     }
@@ -119,6 +147,23 @@ public class Player{
         roleName = "";
         this.rehearseTokens = 0;
         this.employed = false;
+    }
+
+    public void employ(Board board, String role) {
+        // or could pass 2 board-referenced values in as args instead of the whole board
+        if(!location.isClosed()){
+            if(rank >= board.employ(location.getName(), role)) //also make return bool
+            {
+                this.giveRole(role);
+                System.out.println("You are now employed as: " + role + ". You can rehearse or act in this role on your next turn");
+            }
+            else{
+                System.out.println("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(location.getName()));
+            }
+        }
+        else{
+            System.out.println("This set was already finished!");
+        }
     }
 
     public boolean act(List<Player> onCardPlayers, List<Player> offCardPlayers) {
