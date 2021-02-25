@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class Deadwood{
-    //make queue??
     static private int numDays;
     
     static private Queue<Player> players = new LinkedList<Player>();
@@ -59,7 +58,7 @@ public class Deadwood{
             board.resetBoard();
             for(int i = 0; i < players.size(); i++){
                 (players.peek()).resetRole();
-                (players.peek()).changePos("trailer");
+                (players.peek()).setPosition("trailer");
                 players.add(players.remove());
             }
         }
@@ -70,10 +69,10 @@ public class Deadwood{
         if (winners.size() > 1) {
             System.out.println("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
             for (Player p : winners) {
-                System.out.println(p.playerName);
+                System.out.println(p.getName());
             }
         } else {
-            System.out.println(winners.get(0).playerName + " wins with " + winners.get(0).calcFinalScore() + "!");
+            System.out.println(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
         
     }
@@ -159,7 +158,7 @@ public class Deadwood{
     //to move a player to a neighbor
     private static boolean moveTo(Player p, String place){
         //get list of neighbors
-        List<String> adj = board.getNeighbors(p.position);
+        List<String> adj = board.getNeighbors(p.getPosition());
         for(int i = 0; i < adj.size(); i++){
             //if the designated neighbor exists return true
             if(place.equals(adj.get(i)))
@@ -176,28 +175,28 @@ public class Deadwood{
         boolean hasPlayed = false; 
         Scanner scan = new Scanner(System.in);
         String input = "";
-        System.out.println("What would you like to do " + currentPlayer.playerName + "?");
+        System.out.println("What would you like to do " + currentPlayer.getName() + "?");
         
-        //while the player doesnt say they want their turn to end
+        //while the player doesn't say they want their turn to end
                 while(!input.equals("end")){
                     
                     input = scan.nextLine();
 
-                    //prints who's turn and dollar and credits
+                    //prints whose turn and dollar and credits
                     if(input.equals("who")){
-                        System.out.println(currentPlayer.playerName + "($" + currentPlayer.dollar + ", " + currentPlayer.credit + "cr) working as a " + currentPlayer.roleName + " with " + currentPlayer.rehearseToken + " rehersal tokens.");
+                        System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehersal tokens.");
                     }
                     //prints where current player is
                     else if(input.equals("where")){
-                        System.out.println(currentPlayer.position);
+                        System.out.println(currentPlayer.getPosition());
                     }
                     //prints where all players are
                     else if(input.equals("where all")){
                         //print current player first
-                        System.out.println("Current player " + currentPlayer.playerName + " position: " + currentPlayer.position);
+                        System.out.println("Current player " + currentPlayer.getName() + " position: " + currentPlayer.getPosition());
                         //print the remaining players 
                         for(int i = 0; i < players.size() - 1; i++){
-                            System.out.println((players.peek()).playerName + " is located at: " + (players.peek()).position);
+                            System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getPosition());
                             players.add(players.remove());
                         }
                         //make sure current player is place back at last in queue
@@ -205,7 +204,7 @@ public class Deadwood{
                     }
                     //prints adjacent tiles to player
                     else if(input.equals("neighbors")){
-                        List<String> temp = board.getNeighbors(currentPlayer.position);
+                        List<String> temp = board.getNeighbors(currentPlayer.getPosition());
                         System.out.println("Your neighbors are: ");
                         for(int i = 0; i < temp.size(); i++){
                             System.out.println("- " + temp.get(i));
@@ -217,13 +216,13 @@ public class Deadwood{
                     }
                     else if(input.contains("move ")){
                         //if player is not employed
-                        if(!currentPlayer.employed){
+                        if(!currentPlayer.isEmployed()){
                             //if player hasnt moved or acted
                             if(!hasPlayed){
                                 String split = input.substring(5);
                                 if(moveTo(currentPlayer, split)) 
                                 {
-                                    currentPlayer.changePos(split);
+                                    currentPlayer.setPosition(split);
                                     //hasPlayed = true;
                                 }
                                 else
@@ -241,19 +240,19 @@ public class Deadwood{
                         }
                     }
                     else if(input.equals("available roles")){
-                        System.out.println(board.freeRoles(currentPlayer.position));
+                        System.out.println(board.freeRoles(currentPlayer.getPosition()));
                     }
                    
                     //if player wants to take roll and are not employed, let them
-                    else if(input.contains("take role") && currentPlayer.employed == false){
-                        if(!board.alreadyDone(currentPlayer.position)){
-                            if(currentPlayer.level >= board.employ(currentPlayer.position, input.substring(10))) //also make return bool
+                    else if(input.contains("take role") && currentPlayer.isEmployed() == false){
+                        if(!board.alreadyDone(currentPlayer.getPosition())){
+                            if(currentPlayer.getLevel() >= board.employ(currentPlayer.getPosition(), input.substring(10))) //also make return bool
                             {
                                 currentPlayer.giveRole(input.substring(10));
-                                System.out.println("You are now employed as: " + currentPlayer.roleName);
+                                System.out.println("You are now employed as: " + currentPlayer.getRoleName());
                             }
                             else{
-                                System.out.println("This role does not exist where you are currently or you are not a high enough level, other options are " + board.freeRoles(currentPlayer.position));
+                                System.out.println("This role does not exist where you are currently or you are not a high enough level, other options are " + board.freeRoles(currentPlayer.getPosition()));
                             }
                         }
                         else{
@@ -264,15 +263,15 @@ public class Deadwood{
                     //if player wants to upgrade using dollars
                     else if(input.contains("upgrade d")){
                         //check to make sure player is in office
-                        if((currentPlayer.position).equals("office")){
+                        if((currentPlayer.getPosition()).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             //make sure the level is creater than current level and in the upgrades list
                             
                                 //get the upgrade prices
                                 int[] d = board.getDollarC();
-                                if(desiredLevel > currentPlayer.level && desiredLevel  <= d.length +1 )
+                                if(desiredLevel > currentPlayer.getLevel() && desiredLevel  <= d.length +1 )
                             {
-                                if(d[desiredLevel-2] > currentPlayer.dollar){
+                                if(d[desiredLevel-2] > currentPlayer.getDollars()){
                                     System.out.println("You do not have enough dollars for this upgrade");
                                 }
                                 else{
@@ -280,7 +279,7 @@ public class Deadwood{
                                     System.out.println("You are now level " + desiredLevel);
                                     currentPlayer.setLevel(desiredLevel);
                                     currentPlayer.incDollar((-1*d[desiredLevel-2]));
-                                    System.out.println("And you have " + currentPlayer.dollar + " remaining");
+                                    System.out.println("And you have " + currentPlayer.getDollars() + " remaining");
                                 }
                             }
                             else{
@@ -294,16 +293,16 @@ public class Deadwood{
                     }
                     //if player wants to upgrade using credits
                     else if(input.contains("upgrade c ")){
-                        if((currentPlayer.position).equals("office")){
+                        if((currentPlayer.getPosition()).equals("office")){
                             int desiredLevel = Integer.valueOf(input.substring(10));
                             //make sure desired level is above current level and in the upgrade lists
                             
                                 //get list of upgrades
                                 int[] c = board.getCreditC();
-                                if(desiredLevel > currentPlayer.level && desiredLevel  <= c.length +1 )
+                                if(desiredLevel > currentPlayer.getLevel() && desiredLevel  <= c.length +1 )
                             {
                                 //make usre they have enough
-                                if(c[desiredLevel-2] > currentPlayer.credit){
+                                if(c[desiredLevel-2] > currentPlayer.getCredits()){
                                     System.out.println("You do not have enough credits for this upgrade");
                                 }
                                 else{
@@ -311,7 +310,7 @@ public class Deadwood{
                                     System.out.println("You are now level " + desiredLevel);
                                     currentPlayer.setLevel(desiredLevel);
                                     currentPlayer.incCred((-1*c[desiredLevel-2]));
-                                    System.out.println("And you have " + currentPlayer.credit + " remaining");
+                                    System.out.println("And you have " + currentPlayer.getCredits() + " remaining");
                                 }
                             }
                             else{
@@ -339,7 +338,7 @@ public class Deadwood{
                     //if player wants to act
                     else if(input.equals("act")){
                         if(!hasPlayed){
-                            if(currentPlayer.employed){
+                            if(currentPlayer.isEmployed()){
                                 act(currentPlayer);
                                 hasPlayed = true;
                             }
@@ -356,10 +355,10 @@ public class Deadwood{
                     //if player wants to rehearse 
                     else if(input.equals("rehearse")){
                         //if player is employed
-                        if(currentPlayer.employed){
+                        if(currentPlayer.isEmployed()){
                             //and if the player does not have the max number of tokens already
                             if(!hasPlayed){
-                                if(currentPlayer.rehearseToken == 5)
+                                if(currentPlayer.getRehearseTokens() == 5)
                                 {
                                     System.out.println("You have reached the max for rehearsal and only have the option to act. Its a garunteed success though!");
                                 }
@@ -387,17 +386,17 @@ public class Deadwood{
     //for letting the player act
     private static void act(Player curPlayer){
         //make and role a die
-        Set sett = board.getSet(curPlayer.position);
+        Set sett = board.getSet(curPlayer.getPosition());
         int budget = Integer.valueOf((sett.currentCard).budget);
         int die = 1 + (int)(Math.random() * 6);
 
 
-        System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.rehearseToken + " rehearsal tokens");
+        System.out.println("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + curPlayer.getRehearseTokens() + " rehearsal tokens");
         //if the die is higher than the budget
-        if(budget > (die + curPlayer.rehearseToken)){
+        if(budget > (die + curPlayer.getRehearseTokens())){
             //for acting failures on card and off card
             System.out.println("Acting failure!");
-            if(onCard(curPlayer.roleName, sett)){
+            if(onCard(curPlayer.getRoleName(), sett)){
                 System.out.println("Since you had an important role you get nothing!");
             }
             else{
@@ -408,7 +407,7 @@ public class Deadwood{
         else{
             //for acting successes on card and off card
             System.out.println("Acting success!");
-            if(onCard(curPlayer.roleName, sett)){
+            if(onCard(curPlayer.getRoleName(), sett)){
                 System.out.println("Since you were important, you get 2 credits");
                 curPlayer.incCred(2);
             }
@@ -469,13 +468,13 @@ public class Deadwood{
         //hand out bonuses of randomized dice to on card people
         for(int i = 0; i < dice.length; i++){
             (onCardPeople.get(i%(onCardPeople.size()))).incDollar(dice[i]);
-            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).playerName + " gets $" + dice[i]);
+            System.out.println((onCardPeople.get(i%(onCardPeople.size()))).getName() + " gets $" + dice[i]);
         }
 
         //hand out bonuses of rank to off card people
         for(Player p: offCardPeople){
-            p.incDollar(getRoleRank(p.roleName, s));
-            System.out.println(p.playerName + " gets $" + getRoleRank(p.roleName, s));
+            p.incDollar(getRoleRank(p.getRoleName(), s));
+            System.out.println(p.getName() + " gets $" + getRoleRank(p.getRoleName(), s));
         }
     }
 
@@ -494,7 +493,7 @@ public class Deadwood{
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: ((s.currentCard).roles)){
-                if((r.name).equals(p.roleName)){
+                if((r.name).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
             }
@@ -508,7 +507,7 @@ public class Deadwood{
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: (s.offCardRoles)){
-                if((r.name).equals(p.roleName)){
+                if((r.name).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
             }

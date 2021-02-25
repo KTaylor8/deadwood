@@ -2,14 +2,14 @@ import java.util.*;
 
 public class Player{
 
-    public String playerName;
-    public int level = 1;
-    public int dollar = 0;
-    public int credit = 0;
-    public boolean employed = false; 
-    public int rehearseToken = 0;
-    public String position = "";
-    public String roleName;
+    private String playerName;
+    private int playerLevel = 1;
+    private int dollars = 0;
+    private int credits = 0;
+    private boolean employed = false; 
+    private int rehearseTokens = 0;
+    private String position = "";
+    private String roleName;
 
     public Player(String p){
         playerName = p;
@@ -18,51 +18,70 @@ public class Player{
 
     public Player(String p, int sl, int sc){
         playerName = p;
-        level = sl;
+        playerLevel = sl;
         position = "trailer";
     }
 
-    // @Override
-    // public int compareTo(Player p) {
-    //     // sorts in descending order
-    //     return Integer.compare(p.calcFinalScore(), this.calcFinalScore()); 
-    // }
-
+    public String getName(){
+        return playerName;
+    }
     public void setName(String s){
         this.playerName = s;
     }
+
+    public int getLevel(){
+        return playerLevel;
+    }
     public void setLevel(int level){
-        this.level = level;
+        this.playerLevel = level;
     }
 
+    public int getDollars(){
+        return dollars;
+    }
     public void incDollar(int dollar){
-        this.dollar += dollar;
+        this.dollars += dollar;
     }
 
+    public int getCredits(){
+        return credits;
+    }
     public void incCred(int credit){
-        this.credit += credit;
+        this.credits += credit;
     }
 
+    public boolean isEmployed() {
+        return employed;
+    }
     public void giveRole(String rn){
         this.roleName = rn;
         this.employed = true;
     }
 
+    public int getRehearseTokens() {
+        return rehearseTokens;
+    }
     public void incToken(){
-        this.rehearseToken++;
+        this.rehearseTokens++;
     }
 
+    public String getPosition() {
+        return position;
+    }
+    public void setPosition(String newPos){
+        this.position = newPos;
+    }
+    
+    public String getRoleName() {
+        return roleName;
+    }
     public void resetRole(){
         roleName = "";
-        this.rehearseToken = 0;
+        this.rehearseTokens = 0;
         this.employed = false;
     }
 
-    public void changePos(String newPos){
-        this.position = newPos;
-    }
-
     public int calcFinalScore(){
-        return (dollar + credit + (5 * level));
+        return (dollars + credits + (5 * playerLevel));
     }
 }

@@ -2,9 +2,9 @@ import java.util.*;
 import org.w3c.dom.Document;
 
 public class Board{
-    String boardPath, cardPath;
-    List<Card> cardDeck = new Stack<Card>();
-    List<Set> boardSets = new ArrayList<Set>();
+    private String boardPath, cardPath;
+    private List<Card> cardDeck = new Stack<Card>();
+    private List<Set> boardSets = new ArrayList<Set>();
 
     public Board(String b, String c){
         boardPath = b;
@@ -12,7 +12,7 @@ public class Board{
         setBoard();
     }
 
-    //sets the board acording to the xml file
+    //sets the board according to the xml file
     public void setBoard(){
         /* Parse XML */
         Document doc = null;
