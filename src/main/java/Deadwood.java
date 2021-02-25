@@ -387,7 +387,7 @@ public class Deadwood{
     private static void act(Player curPlayer){
         //make and role a die
         Set sett = board.getSet(curPlayer.getPosition());
-        int budget = Integer.valueOf((sett.currentCard).budget);
+        int budget = Integer.valueOf((sett.getCard()).budget);
         int die = 1 + (int)(Math.random() * 6);
 
 
@@ -417,10 +417,10 @@ public class Deadwood{
                 curPlayer.incDollar(1);
             }
             //increment takes
-            sett.incTakes();
+            sett.decTakesLeft();
         }
         //if it was the last scene and someone was on card hand out bonuses
-        if(sett.getScene() == 0){
+        if(sett.getTakesLeft() == 0){
             if(canBonus(sett)){
                 System.out.println("Oh no! That was the last scene! Everyone gets money!");
                 bonuses(sett);
@@ -431,15 +431,15 @@ public class Deadwood{
             wrapUp(sett);
         }
         else{
-            System.out.println("There are only " + sett.getScene() + " scenes left!");
+            System.out.println("There are only " + sett.getTakesLeft() + " scenes left!");
         }
 
     }
 
     //returns true if someone is on card
     private static boolean canBonus(Set s){
-        for(int i = 0; i < ((s.currentCard).roles).size(); i ++){
-            if((((s.currentCard).roles).get(i)).occupied){
+        for(int i = 0; i < ((s.getCard()).roles).size(); i ++){
+            if((((s.getCard()).roles).get(i)).occupied){
                 return true;
             }
         }
@@ -448,8 +448,8 @@ public class Deadwood{
 
     //hands out bonuses based on on card and off card people
     private static void bonuses(Set s){
-        int[] dice = new int[Integer.valueOf((s.currentCard).budget)];
-        System.out.println("Rolling " + ((s.currentCard).budget) + " dice");
+        int[] dice = new int[Integer.valueOf((s.getCard()).budget)];
+        System.out.println("Rolling " + ((s.getCard()).budget) + " dice");
         for (int i = 0; i < dice.length; i++) {
             dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
@@ -480,7 +480,7 @@ public class Deadwood{
 
     //returns int of the level of the role
     private static int getRoleRank(String roleName, Set s){
-        for(Role r: s.offCardRoles){
+        for(Role r: s.getOffCardRoles()){
             if(roleName.equals(r.name)){
                 return Integer.valueOf(r.level);
             }
@@ -492,7 +492,7 @@ public class Deadwood{
     private static List<Player> findOnCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
-            for(Role r: ((s.currentCard).roles)){
+            for(Role r: ((s.getCard()).roles)){
                 if((r.name).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
@@ -506,7 +506,7 @@ public class Deadwood{
     private static List<Player> findOffCardPeople(Set s){
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
-            for(Role r: (s.offCardRoles)){
+            for(Role r: (s.getOffCardRoles())){
                 if((r.name).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
@@ -535,7 +535,7 @@ public class Deadwood{
 
     //returns boolean if the role is on card of a set
     private static boolean onCard(String role, Set s){
-        List<Role> tester = s.offCardRoles;
+        List<Role> tester = s.getOffCardRoles();
         for(int i = 0; i < tester.size(); i++){
             if(role.equals((tester.get(i)).name)){
                 return false;

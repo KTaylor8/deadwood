@@ -55,8 +55,8 @@ public class Board{
     //returns boolean if the set has already been done
     public boolean alreadyDone(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.setName)){
-                if(s.flipStage == 2){
+            if(pos.equals(s.getSetName())){
+                if(s.getFlipStage() == 2){
                     return true;
                 }
             }
@@ -67,8 +67,8 @@ public class Board{
     //returns in of the budget of designated set
     public int getBudget(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.setName)){
-                return Integer.valueOf((s.currentCard).budget);
+            if(pos.equals(s.getSetName())){
+                return Integer.valueOf((s.getCard()).budget);
             }
         }
         return 0;
@@ -77,7 +77,7 @@ public class Board{
     //returns set with the string name given
     public Set getSet(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.setName)){
+            if(pos.equals(s.getSetName())){
                 return s;
             }
         }
@@ -87,9 +87,9 @@ public class Board{
     //returns list of strings of the neighbors of a given set
     public List<String> getNeighbors(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.setName))
+            if(pos.equals(s.getSetName()))
             {
-                return s.neighbors;
+                return s.getNeighbors();
             }
         }
         return null;
@@ -98,7 +98,7 @@ public class Board{
     //returns the dollar cost of upgrades from the office
     public int[] getDollarC(){
         for(Set s: boardSets){
-            if((s.setName).equals("office")){
+            if((s.getSetName()).equals("office")){
                 return (s.getUpgradeCD());
             }
         }
@@ -108,7 +108,7 @@ public class Board{
     //returns the credit cost of upgrades from the office
     public int[] getCreditC(){
         for(Set s: boardSets){
-            if((s.setName).equals("office")){
+            if((s.getSetName()).equals("office")){
                 return (s.getUpgradeCC());
             }
         }
@@ -119,22 +119,22 @@ public class Board{
     public int employ(String pos, String roll){
         for(Set s: boardSets){
             //finds the set
-            if((s.setName).equals(pos)){
+            if((s.getSetName()).equals(pos)){
                 //checks if role is in off cards
-                for(int i = 0; i < (s.offCardRoles).size(); i++){
+                for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
                     //occupy and return level if equals
-                    if(roll.equals(((s.offCardRoles).get(i)).name) && !((s.offCardRoles).get(i)).occupied){
-                        ((s.offCardRoles).get(i)).occupy();
-                        return Integer.valueOf(((s.offCardRoles).get(i)).level);
+                    if(roll.equals(((s.getOffCardRoles()).get(i)).name) && !((s.getOffCardRoles()).get(i)).occupied){
+                        ((s.getOffCardRoles()).get(i)).occupy();
+                        return Integer.valueOf(((s.getOffCardRoles()).get(i)).level);
                     }
                 }
                 //checks if role is on card
-                for(int i = 0; i < ((s.currentCard).roles).size(); i++){
+                for(int i = 0; i < ((s.getCard()).roles).size(); i++){
                     //occupy and return level if equals
-                    if(roll.equals((((s.currentCard).roles).get(i)).name) && !((s.currentCard).roles).get(i).occupied){
+                    if(roll.equals((((s.getCard()).roles).get(i)).name) && !((s.getCard()).roles).get(i).occupied){
                         
-                        ((s.currentCard.roles).get(i)).occupy();
-                        return Integer.valueOf((((s.currentCard).roles).get(i)).level);
+                        ((s.getCard().roles).get(i)).occupy();
+                        return Integer.valueOf((((s.getCard()).roles).get(i)).level);
                     }
                 }
             }
@@ -148,18 +148,18 @@ public class Board{
         String free = "";
         for(Set s: boardSets){
             //if the set name is equal to the name given
-            if((s.setName).equals(pos)){
+            if((s.getSetName()).equals(pos)){
                 //add off card roles to the string
-                for(int i = 0; i < (s.offCardRoles).size(); i++){
-                    if(!((s.offCardRoles).get(i)).occupied){
-                        free += "\nOff card role: " + ((s.offCardRoles).get(i)).name +" must be level: " + ((s.offCardRoles).get(i)).level;
+                for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
+                    if(!((s.getOffCardRoles()).get(i)).occupied){
+                        free += "\nOff card role: " + ((s.getOffCardRoles()).get(i)).name +" must be level: " + ((s.getOffCardRoles()).get(i)).level;
                     }
                 }
                 //add the on card roles to the string
-                if (s.currentCard != null) {
-                    for(int i = 0; i < ((s.currentCard).roles).size(); i++){
-                        if(!(((s.currentCard).roles).get(i)).occupied){
-                            free += "\nOn card role: " + (((s.currentCard).roles).get(i)).name +" must be level: " + (((s.currentCard).roles).get(i)).level + "";
+                if (s.getCard() != null) {
+                    for(int i = 0; i < ((s.getCard()).roles).size(); i++){
+                        if(!(((s.getCard()).roles).get(i)).occupied){
+                            free += "\nOn card role: " + (((s.getCard()).roles).get(i)).name +" must be level: " + (((s.getCard()).roles).get(i)).level + "";
                             
                         }
                     }
@@ -177,7 +177,7 @@ public class Board{
     public int sceneNum(){
         int numScene = 0;
         for(Set s: boardSets){
-            if(s.flipStage != 2){
+            if(s.getFlipStage() != 2){
                 numScene++;
             }
         }

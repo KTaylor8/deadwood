@@ -1,17 +1,17 @@
 import java.util.*;
 
 public class Set{
-    public String setName;
-    public List<String> neighbors;
-    public List<Role> offCardRoles = new ArrayList<Role>();
-    public Card currentCard;
+    private String setName;
+    private List<String> neighbors;
+    private List<Role> offCardRoles = new ArrayList<Role>();
+    private Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
-    public int flipStage;
+    private int flipStage;
     private int finalTakes = 0;
-    private int currentTakes; // field should be private if other classes use a getter method to access them, right?
+    private int takesLeft; // field should be private if other classes use a getter method to access them, right?
     
-    public int[] upgradeCostDollars;
-    public int[] upgradeCostCredits;
+    private int[] upgradeCostDollars;
+    private int[] upgradeCostCredits;
 
     // regular set constructor
     Set(String s, List<String> n, List<Role> r, int t){
@@ -33,6 +33,55 @@ public class Set{
     Set(String s, List<String> n){
         this.setName = s;
         this.neighbors = n;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public void resetSet(Card newCard){
+        for(int i = 0; i < offCardRoles.size(); i++ ){
+            (offCardRoles.get(i)).occupied = false;
+        }
+        this.currentCard = newCard;
+        this.takesLeft = finalTakes;
+        flipStage = 0;
+    }
+
+    public List<String> getNeighbors() {
+        return neighbors;
+    }
+
+    public List<Role> getOffCardRoles() {
+        return offCardRoles;
+    }
+
+    public Card getCard() {
+        return currentCard;
+    }
+
+    public int getFlipStage() {
+        return flipStage;
+    }
+
+    public void flipSet(){
+        flipStage = 2;
+    }
+
+    public int getTakesLeft(){
+        return takesLeft;
+    }
+
+    public void decTakesLeft(){
+        takesLeft--;
+    }
+
+    public int[] getUpgradeCD(){
+        return upgradeCostDollars;
+    }
+
+    public int[] getUpgradeCC(){
+        return upgradeCostCredits;
     }
 
     public void printInfo() {
@@ -61,34 +110,4 @@ public class Set{
         } 
         System.out.println(setInfo);
     }
-
-    public void resetSet(Card newCard){
-        for(int i = 0; i < offCardRoles.size(); i++ ){
-            (offCardRoles.get(i)).occupied = false;
-        }
-        this.currentCard = newCard;
-        this.currentTakes = finalTakes;
-        flipStage = 0;
-    }
-
-    public void incTakes(){
-        currentTakes--;
-    }
-
-    public void flipSet(){
-        flipStage = 2;
-    }
-
-    public int[] getUpgradeCD(){
-        return upgradeCostDollars;
-    }
-
-    public int[] getUpgradeCC(){
-        return upgradeCostCredits;
-    }
-
-    public int getScene(){
-        return currentTakes;
-    }
-
 }
