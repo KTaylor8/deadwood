@@ -8,18 +8,18 @@ public class Player{
     private int credits = 0;
     private boolean employed = false; 
     private int rehearseTokens = 0;
-    private String position = "";
+    private Set location;
     private String roleName;
 
-    public Player(String p){
+    public Player(Set s, String p){
         playerName = p;
-        position = "trailer";
+        location = s;
     }
 
-    public Player(String p, int sl, int sc){
+    public Player(Set s, String p, int sl, int sc){
         playerName = p;
         rank = sl;
-        position = "trailer";
+        location = s;
     }
 
     public String getName(){
@@ -65,11 +65,11 @@ public class Player{
         this.rehearseTokens++;
     }
 
-    public String getPosition() {
-        return position;
+    public Set getPosition() {
+        return location;
     }
-    public void setPosition(String newPos){
-        this.position = newPos;
+    public void setPosition(Set newPos){ // I don't think this is used anywhere
+        this.location = newPos;
     }
     //to move a player to a neighbor
     public static boolean canMoveTo(String dest, List<String> neighbors){
@@ -81,6 +81,21 @@ public class Player{
             }
         }
         return false;
+    }
+    public void moveTo(Set dest) {
+        //if player is not employed
+        if(!employed){
+            if (location.checkNeighbor(dest.getName()) ) {
+                location = dest;
+            }
+            else
+            {
+                System.out.println("invalid place to move to");
+            }
+        }
+        else{
+            System.out.println("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+        }
     }
     
     public String getRoleName() {

@@ -55,7 +55,7 @@ public class Board{
     //returns boolean if the set has already been done
     public boolean alreadyDone(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.getSetName())){
+            if(pos.equals(s.getName())){
                 if(s.getFlipStage() == 2){
                     return true;
                 }
@@ -67,7 +67,7 @@ public class Board{
     //returns in of the budget of designated set
     public int getBudget(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.getSetName())){
+            if(pos.equals(s.getName())){
                 return Integer.valueOf((s.getCard()).getBudget());
             }
         }
@@ -77,7 +77,7 @@ public class Board{
     //returns set with the string name given
     public Set getSet(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.getSetName())){
+            if(pos.equals(s.getName())){
                 return s;
             }
         }
@@ -87,7 +87,7 @@ public class Board{
     //returns list of strings of the neighbors of a given set
     public List<String> getNeighbors(String pos){
         for(Set s: boardSets){
-            if(pos.equals(s.getSetName()))
+            if(pos.equals(s.getName()))
             {
                 return s.getNeighbors();
             }
@@ -98,7 +98,7 @@ public class Board{
     //returns the dollar cost of upgrades from the office
     public int[] getDollarC(){
         for(Set s: boardSets){
-            if((s.getSetName()).equals("office")){
+            if((s.getName()).equals("office")){
                 return (s.getUpgradeCD());
             }
         }
@@ -108,7 +108,7 @@ public class Board{
     //returns the credit cost of upgrades from the office
     public int[] getCreditC(){
         for(Set s: boardSets){
-            if((s.getSetName()).equals("office")){
+            if((s.getName()).equals("office")){
                 return (s.getUpgradeCC());
             }
         }
@@ -119,7 +119,7 @@ public class Board{
     public int employ(String pos, String roll){
         for(Set s: boardSets){
             //finds the set
-            if((s.getSetName()).equals(pos)){
+            if((s.getName()).equals(pos)){
                 //checks if role is in off cards
                 for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
                     //occupy and return level if equals
@@ -148,7 +148,7 @@ public class Board{
         String free = "";
         for(Set s: boardSets){
             //if the set name is equal to the name given
-            if((s.getSetName()).equals(pos)){
+            if((s.getName()).equals(pos)){
                 //add off card roles to the string
                 for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
                     if(!((s.getOffCardRoles()).get(i)).isOccupied()){

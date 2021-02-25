@@ -22,10 +22,6 @@ x create ^ many players
 x UI
 ? fix the absolutely wild if statements for the move condition cause theres def a better way to do that
 - figure out something for ties
--Questions:
-  xdid we have act thing in game or board???????? (im making that a problem for later)
-
-
 
 
 Board:
@@ -47,7 +43,7 @@ x calculate bonuses/pay player
 x create get methods
 
 Role:
-x create get methods (level, dialouge, name)
+x create get methods (level, dialog, name)
 x on card/off card
 x isOccupied
 x makeOccupied

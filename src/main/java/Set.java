@@ -35,7 +35,7 @@ public class Set{
         this.neighbors = n;
     }
 
-    public String getSetName() {
+    public String getName() {
         return setName;
     }
 

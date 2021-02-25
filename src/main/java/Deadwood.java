@@ -60,7 +60,7 @@ public class Deadwood{
             board.resetBoard();
             for(int i = 0; i < players.size(); i++){
                 (players.peek()).resetRole();
-                (players.peek()).setPosition("trailer");
+                (players.peek()).setPosition(board.getSet("trailer"));
                 players.add(players.remove());
             }
         }
@@ -121,14 +121,14 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                p.add(new Player(input, 2, 0));
+                p.add(new Player(board.getSet("trailer"), input, 2, 0));
             }
         }
         else if (numPlayers == 6) {
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                p.add(new Player(input, 0, 4));
+                p.add(new Player(board.getSet("trailer"), input, 0, 4));
             }
             numDays = 4;
         }
@@ -136,7 +136,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                p.add(new Player(input, 0, 2));
+                p.add(new Player(board.getSet("trailer"), input, 0, 2));
             }
             numDays = 4;
         }
@@ -144,7 +144,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                p.add(new Player(input));
+                p.add(new Player(board.getSet("trailer"), input));
             }
             numDays = 4;
         }
@@ -152,7 +152,7 @@ public class Deadwood{
             for(int i = 1; i <= numPlayers; i++){
                 System.out.println("What is the name of player " + i +"?");
                 input = scan.nextLine();
-                p.add(new Player(input));
+                p.add(new Player(board.getSet("trailer"), input));
             }
             numDays = 3;
         }
@@ -167,213 +167,198 @@ public class Deadwood{
         System.out.println("What would you like to do " + currentPlayer.getName() + "?");
         
         //while the player doesn't say they want their turn to end
-                while(!input.equals("end")){
-                    
-                    input = scan.nextLine();
+        while(!input.equals("end")){
+            
+            input = scan.nextLine().trim();
 
-                    //prints whose turn and dollar and credits
-                    if(input.equals("who")){
-                        System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
+            //prints whose turn and dollar and credits
+            if(input.equals("who")){
+                System.out.println(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
+            }
+            //prints where current player is
+            else if(input.equals("where")){
+                System.out.println(currentPlayer.getPosition().getName());
+            }
+            //prints where all players are
+            else if(input.equals("where all")){
+                //print current player first
+                System.out.println("Current player " + currentPlayer.getName() + " position: " + currentPlayer.getPosition().getName());
+                //print the remaining players 
+                for(int i = 0; i < players.size() - 1; i++){
+                    System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getPosition().getName());
+                    players.add(players.remove());
+                }
+                //make sure current player is place back at last in queue
+                players.add(players.remove());
+            }
+            //prints adjacent tiles to player
+            else if(input.equals("neighbors")){
+                List<String> temp = board.getNeighbors(currentPlayer.getPosition().getName());
+                System.out.println("Your neighbors are: ");
+                for(int i = 0; i < temp.size(); i++){
+                    System.out.println("- " + temp.get(i));
+                }
+            }
+            else if(input.equals("available roles")){
+                System.out.println(board.freeRoles(currentPlayer.getPosition().getName()));
+            }
+            
+            //if player wants to take role and are not employed, let them
+            else if(input.contains("take role") && currentPlayer.isEmployed() == false){
+                if(!board.alreadyDone(currentPlayer.getPosition().getName())){
+                    if(currentPlayer.getRank() >= board.employ(currentPlayer.getPosition().getName(), input.substring(10))) //also make return bool
+                    {
+                        currentPlayer.giveRole(input.substring(10));
+                        System.out.println("You are now employed as: " + currentPlayer.getRoleName());
                     }
-                    //prints where current player is
-                    else if(input.equals("where")){
-                        System.out.println(currentPlayer.getPosition());
-                    }
-                    //prints where all players are
-                    else if(input.equals("where all")){
-                        //print current player first
-                        System.out.println("Current player " + currentPlayer.getName() + " position: " + currentPlayer.getPosition());
-                        //print the remaining players 
-                        for(int i = 0; i < players.size() - 1; i++){
-                            System.out.println((players.peek()).getName() + " is located at: " + (players.peek()).getPosition());
-                            players.add(players.remove());
-                        }
-                        //make sure current player is place back at last in queue
-                        players.add(players.remove());
-                    }
-                    //prints adjacent tiles to player
-                    else if(input.equals("neighbors")){
-                        List<String> temp = board.getNeighbors(currentPlayer.getPosition());
-                        System.out.println("Your neighbors are: ");
-                        for(int i = 0; i < temp.size(); i++){
-                            System.out.println("- " + temp.get(i));
-                        }
-                    }
-                    //if player wants to move
-                    else if(input.contains("move ")){
-                        if(input.equals("move")){
-                            System.out.println("Please enter a place you want to move after \"move\"");
-                        }
-                        //if player is not employed
-                        if(!currentPlayer.isEmployed()){
-                            //if player hasn't moved or acted
-                            if(!hasPlayed){
-                                String dest = input.substring(5);
-                                if (board.getSet(currentPlayer.getPosition()).checkNeighbor(dest) ) {
-                                    currentPlayer.setPosition(dest);
-                                }
-                                else
-                                {
-                                    System.out.println("invalid place to move to");
-                                }
-                            }
-                            else{
-                                System.out.println("You have already moved or acted this turn");
-                            }
-
-                        }
-                        else{
-                            System.out.println("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
-                        }
-                    }
-                    else if(input.equals("available roles")){
-                        System.out.println(board.freeRoles(currentPlayer.getPosition()));
-                    }
-                   
-                    //if player wants to take roll and are not employed, let them
-                    else if(input.contains("take role") && currentPlayer.isEmployed() == false){
-                        if(!board.alreadyDone(currentPlayer.getPosition())){
-                            if(currentPlayer.getRank() >= board.employ(currentPlayer.getPosition(), input.substring(10))) //also make return bool
-                            {
-                                currentPlayer.giveRole(input.substring(10));
-                                System.out.println("You are now employed as: " + currentPlayer.getRoleName());
-                            }
-                            else{
-                                System.out.println("This role does not exist where you are currently or you are not a high enough level, other options are " + board.freeRoles(currentPlayer.getPosition()));
-                            }
-                        }
-                        else{
-                            System.out.println("This set was already finished!");
-                        }
-                        
-                    }
-                    //if player wants to upgrade using dollars
-                    else if(input.contains("upgrade d")){
-                        //check to make sure player is in office
-                        if((currentPlayer.getPosition()).equals("office")){
-                            int desiredLevel = Integer.valueOf(input.substring(10));
-                            //make sure the level is greater than current level and in the upgrades list
-                            
-                                //get the upgrade prices
-                                int[] d = board.getDollarC();
-                                if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= d.length +1 )
-                            {
-                                if(d[desiredLevel-2] > currentPlayer.getDollars()){
-                                    System.out.println("You do not have enough dollars for this upgrade");
-                                }
-                                else{
-                                    //change level
-                                    System.out.println("You are now level " + desiredLevel);
-                                    currentPlayer.setLevel(desiredLevel);
-                                    currentPlayer.incDollar((-1*d[desiredLevel-2]));
-                                    System.out.println("And you have " + currentPlayer.getDollars() + " remaining");
-                                }
-                            }
-                            else{
-                                System.out.println("Not a valid level!!!!");
-                            }
-                        }
-                        else{
-                            System.out.println("You are not on the casting office");
-                        }
-
-                    }
-                    //if player wants to upgrade using credits
-                    else if(input.contains("upgrade c ")){
-                        if((currentPlayer.getPosition()).equals("office")){
-                            int desiredLevel = Integer.valueOf(input.substring(10));
-                            //make sure desired level is above current level and in the upgrade lists
-                            
-                                //get list of upgrades
-                                int[] c = board.getCreditC();
-                                if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= c.length +1 )
-                            {
-                                //make sure they have enough
-                                if(c[desiredLevel-2] > currentPlayer.getCredits()){
-                                    System.out.println("You do not have enough credits for this upgrade");
-                                }
-                                else{
-                                    //upgrade
-                                    System.out.println("You are now level " + desiredLevel);
-                                    currentPlayer.setLevel(desiredLevel);
-                                    currentPlayer.incCred((-1*c[desiredLevel-2]));
-                                    System.out.println("And you have " + currentPlayer.getCredits() + " remaining");
-                                }
-                            }
-                            else{
-                                System.out.println("Not a valid level!!!!");
-                            }
-                        }
-                        else{
-                            System.out.println("You are not on the casting office");
-                        }
-
-                    }
-                    //gets the cost of every upgrade
-                    else if(input.equals("upgrade costs")){
-                        int[] dd = board.getDollarC();
-                        int[] cc = board.getCreditC();
-                        System.out.println("Upgrade costs if using dollars:");
-                        for(int i = 0; i < dd.length; i++){
-                            System.out.println("Level " + (i+2) + ": $" + dd[i]);
-                        }
-                        System.out.println("Upgrade costs if using credits:");
-                        for(int i = 0; i < cc.length; i++){
-                            System.out.println("Level " + (i+2) +": " + cc[i] + " credits");
-                        }
-                    }
-                    //if player wants to act
-                    else if(input.equals("act")){
-                        if(!hasPlayed){
-                            if(currentPlayer.isEmployed()){
-                                act(currentPlayer);
-                                hasPlayed = true;
-                            }
-                            else{
-                                System.out.println("You are currently not employed");
-                            }
-                        }
-                        else{
-                            System.out.println("You have already acted this");
-                        }
-                        
-
-                    }
-                    //if player wants to rehearse 
-                    else if(input.equals("rehearse")){
-                        //if player is employed
-                        if(currentPlayer.isEmployed()){
-                            //and if the player does not have the max number of tokens already
-                            if(!hasPlayed){
-                                if(currentPlayer.getRehearseTokens() == 5)
-                                {
-                                    System.out.println("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
-                                }
-                                else{
-                                    currentPlayer.incToken();
-                                    hasPlayed = true;
-                                }
-                            }
-
-                        }
-                        else{
-                            System.out.println("You're not employed? What are you going to rehearse for??");
-                        }
-                    }
-                    //if the player wants to end, let them end
-                    else if(input.equals("end")){
-                    }
-                    //catch bad things
                     else{
-                        System.out.println("unknown command, try again");
+                        System.out.println("This role does not exist where you are currently or you are not a high enough level, other role options are " + board.freeRoles(currentPlayer.getPosition().getName()));
                     }
                 }
+                else{
+                    System.out.println("This set was already finished!");
+                }
+                
+            }
+            //if player wants to upgrade using dollars
+            else if(input.contains("upgrade d")){
+                //check to make sure player is in office
+                if((currentPlayer.getPosition().getName()).equals("office")){
+                    int desiredLevel = Integer.valueOf(input.substring(10));
+                    //make sure the level is greater than current level and in the upgrades list
+                    
+                        //get the upgrade prices
+                        int[] d = board.getDollarC();
+                        if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= d.length +1 )
+                    {
+                        if(d[desiredLevel-2] > currentPlayer.getDollars()){
+                            System.out.println("You do not have enough dollars for this upgrade");
+                        }
+                        else{
+                            //change level
+                            System.out.println("You are now level " + desiredLevel);
+                            currentPlayer.setLevel(desiredLevel);
+                            currentPlayer.incDollar((-1*d[desiredLevel-2]));
+                            System.out.println("And you have " + currentPlayer.getDollars() + " remaining");
+                        }
+                    }
+                    else{
+                        System.out.println("Not a valid level!!!!");
+                    }
+                }
+                else{
+                    System.out.println("You are not on the casting office");
+                }
+
+            }
+            //if player wants to upgrade using credits
+            else if(input.contains("upgrade c ")){
+                if((currentPlayer.getPosition().getName()).equals("office")){
+                    int desiredLevel = Integer.valueOf(input.substring(10));
+                    //make sure desired level is above current level and in the upgrade lists
+                    
+                        //get list of upgrades
+                        int[] c = board.getCreditC();
+                        if(desiredLevel > currentPlayer.getRank() && desiredLevel  <= c.length +1 )
+                    {
+                        //make sure they have enough
+                        if(c[desiredLevel-2] > currentPlayer.getCredits()){
+                            System.out.println("You do not have enough credits for this upgrade");
+                        }
+                        else{
+                            //upgrade
+                            System.out.println("You are now level " + desiredLevel);
+                            currentPlayer.setLevel(desiredLevel);
+                            currentPlayer.incCred((-1*c[desiredLevel-2]));
+                            System.out.println("And you have " + currentPlayer.getCredits() + " remaining");
+                        }
+                    }
+                    else{
+                        System.out.println("Not a valid level!!!!");
+                    }
+                }
+                else{
+                    System.out.println("You are not on the casting office");
+                }
+
+            }
+            //gets the cost of every upgrade
+            else if(input.equals("upgrade costs")){
+                int[] dd = board.getDollarC();
+                int[] cc = board.getCreditC();
+                System.out.println("Upgrade costs if using dollars:");
+                for(int i = 0; i < dd.length; i++){
+                    System.out.println("Level " + (i+2) + ": $" + dd[i]);
+                }
+                System.out.println("Upgrade costs if using credits:");
+                for(int i = 0; i < cc.length; i++){
+                    System.out.println("Level " + (i+2) +": " + cc[i] + " credits");
+                }
+            }
+            // 
+            // else if (!hasPlayed) {
+
+            // }
+            //if player wants to move
+            else if(input.contains("move")){
+                if (hasPlayed) {
+                    System.out.println("You can't move");
+                    continue;
+                }
+                else if(input.equals("move")){
+                    System.out.println("Please enter a place you want to move after \"move\"");
+                } else {
+                    currentPlayer.moveTo(board.getSet(input.substring(5)));
+                }
+            }
+            //if player wants to act
+            else if(input.equals("act")){
+                if(!hasPlayed){
+                    if(currentPlayer.isEmployed()){
+                        act(currentPlayer);
+                        hasPlayed = true;
+                    }
+                    else{
+                        System.out.println("You are currently not employed");
+                    }
+                }
+                else{
+                    System.out.println("You have already moved, rehearsed or acted this turn");
+                }
+            }
+            //if player wants to rehearse 
+            else if(input.equals("rehearse")){
+                //if player is employed
+                if(currentPlayer.isEmployed()){
+                    //and if the player does not have the max number of tokens already
+                    if(!hasPlayed){
+                        if(currentPlayer.getRehearseTokens() == 5)
+                        {
+                            System.out.println("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
+                        }
+                        else{
+                            currentPlayer.incToken();
+                            hasPlayed = true;
+                        }
+                    }
+
+                }
+                else{
+                    System.out.println("You're not employed? What are you going to rehearse for??");
+                }
+            }
+
+            //catch bad things
+            else{
+                System.out.println("unknown command, try again");
+            }
+        }
     }
 
     //for letting the player act
     private static void act(Player curPlayer){
         //make and role a die
-        Set sett = board.getSet(curPlayer.getPosition());
+        Set sett = board.getSet(curPlayer.getPosition().getName());
         int budget = Integer.valueOf((sett.getCard()).getBudget());
         int die = 1 + (int)(Math.random() * 6);
 
