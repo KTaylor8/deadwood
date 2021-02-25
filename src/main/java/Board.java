@@ -52,17 +52,18 @@ public class Board{
         }
     }
 
-    //returns boolean if the set has already been done
-    public boolean alreadyDone(String pos){
-        for(Set s: boardSets){
-            if(pos.equals(s.getName())){
-                if(s.getFlipStage() == 2){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    // //returns boolean if the set has already been done
+    // // obsoleted by Set's isClosed()
+    // public boolean setClosed(String pos){
+    //     for(Set s: boardSets){
+    //         if(pos.equals(s.getName())){
+    //             if(s.getFlipStage() == 2){
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 
     //returns in of the budget of designated set
     public int getBudget(String pos){
@@ -96,7 +97,7 @@ public class Board{
     }
 
     //returns the dollar cost of upgrades from the office
-    public int[] getDollarC(){
+    public int[] getDollarCost(){
         for(Set s: boardSets){
             if((s.getName()).equals("office")){
                 return (s.getUpgradeCD());
@@ -106,7 +107,7 @@ public class Board{
     }
 
     //returns the credit cost of upgrades from the office
-    public int[] getCreditC(){
+    public int[] getCreditCost(){
         for(Set s: boardSets){
             if((s.getName()).equals("office")){
                 return (s.getUpgradeCC());
