@@ -2,18 +2,10 @@ import java.util.*;
 import org.w3c.dom.Document;
 
 public class Board{
-    private String boardPath, cardPath;
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
 
-    public Board(String b, String c){
-        boardPath = b;
-        cardPath = c;
-        setBoard();
-    }
-
-    //sets the board according to the xml file
-    public void setBoard(){
+    public Board(String boardPath, String cardPath){
         /* Parse XML */
         Document doc = null;
         XMLParser parsing = new XMLParser();
@@ -92,7 +84,7 @@ public class Board{
         return null;
     }
 
-    //reutnrs list of strings of the neighbors of a given set
+    //returns list of strings of the neighbors of a given set
     public List<String> getNeighbors(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.setName))
@@ -113,7 +105,7 @@ public class Board{
         return null;
     }
 
-    //reutnrs the credit cost of upgrades from the office
+    //returns the credit cost of upgrades from the office
     public int[] getCreditC(){
         for(Set s: boardSets){
             if((s.setName).equals("office")){
