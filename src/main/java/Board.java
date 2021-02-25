@@ -123,18 +123,18 @@ public class Board{
                 //checks if role is in off cards
                 for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
                     //occupy and return level if equals
-                    if(roll.equals(((s.getOffCardRoles()).get(i)).name) && !((s.getOffCardRoles()).get(i)).occupied){
+                    if(roll.equals(((s.getOffCardRoles()).get(i)).getName()) && !((s.getOffCardRoles()).get(i)).isOccupied()){
                         ((s.getOffCardRoles()).get(i)).occupy();
-                        return Integer.valueOf(((s.getOffCardRoles()).get(i)).level);
+                        return Integer.valueOf(((s.getOffCardRoles()).get(i)).getLevel());
                     }
                 }
                 //checks if role is on card
                 for(int i = 0; i < ((s.getCard()).roles).size(); i++){
                     //occupy and return level if equals
-                    if(roll.equals((((s.getCard()).roles).get(i)).name) && !((s.getCard()).roles).get(i).occupied){
+                    if(roll.equals((((s.getCard()).roles).get(i)).getName()) && !((s.getCard()).roles).get(i).isOccupied()){
                         
                         ((s.getCard().roles).get(i)).occupy();
-                        return Integer.valueOf((((s.getCard()).roles).get(i)).level);
+                        return Integer.valueOf((((s.getCard()).roles).get(i)).getLevel());
                     }
                 }
             }
@@ -151,15 +151,15 @@ public class Board{
             if((s.getSetName()).equals(pos)){
                 //add off card roles to the string
                 for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
-                    if(!((s.getOffCardRoles()).get(i)).occupied){
-                        free += "\nOff card role: " + ((s.getOffCardRoles()).get(i)).name +" must be level: " + ((s.getOffCardRoles()).get(i)).level;
+                    if(!((s.getOffCardRoles()).get(i)).isOccupied()){
+                        free += "\nOff card role: " + ((s.getOffCardRoles()).get(i)).getName() +" must be level: " + ((s.getOffCardRoles()).get(i)).getLevel();
                     }
                 }
                 //add the on card roles to the string
                 if (s.getCard() != null) {
                     for(int i = 0; i < ((s.getCard()).roles).size(); i++){
-                        if(!(((s.getCard()).roles).get(i)).occupied){
-                            free += "\nOn card role: " + (((s.getCard()).roles).get(i)).name +" must be level: " + (((s.getCard()).roles).get(i)).level + "";
+                        if(!(((s.getCard()).roles).get(i)).isOccupied()){
+                            free += "\nOn card role: " + (((s.getCard()).roles).get(i)).getName() +" must be level: " + (((s.getCard()).roles).get(i)).getLevel() + "";
                             
                         }
                     }

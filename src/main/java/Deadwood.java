@@ -439,7 +439,7 @@ public class Deadwood{
     //returns true if someone is on card
     private static boolean canBonus(Set s){
         for(int i = 0; i < ((s.getCard()).roles).size(); i ++){
-            if((((s.getCard()).roles).get(i)).occupied){
+            if((((s.getCard()).roles).get(i)).isOccupied()){
                 return true;
             }
         }
@@ -481,8 +481,8 @@ public class Deadwood{
     //returns int of the level of the role
     private static int getRoleRank(String roleName, Set s){
         for(Role r: s.getOffCardRoles()){
-            if(roleName.equals(r.name)){
-                return Integer.valueOf(r.level);
+            if(roleName.equals(r.getName())){
+                return Integer.valueOf(r.getLevel());
             }
         }
         return 0;
@@ -493,7 +493,7 @@ public class Deadwood{
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: ((s.getCard()).roles)){
-                if((r.name).equals(p.getRoleName())){
+                if((r.getName()).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
             }
@@ -507,7 +507,7 @@ public class Deadwood{
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
             for(Role r: (s.getOffCardRoles())){
-                if((r.name).equals(p.getRoleName())){
+                if((r.getName()).equals(p.getRoleName())){
                     pl.add(0, p);
                 }
             }
@@ -537,7 +537,7 @@ public class Deadwood{
     private static boolean onCard(String role, Set s){
         List<Role> tester = s.getOffCardRoles();
         for(int i = 0; i < tester.size(); i++){
-            if(role.equals((tester.get(i)).name)){
+            if(role.equals((tester.get(i)).getName())){
                 return false;
             }
         }

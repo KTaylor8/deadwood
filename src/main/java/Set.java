@@ -41,7 +41,7 @@ public class Set{
 
     public void resetSet(Card newCard){
         for(int i = 0; i < offCardRoles.size(); i++ ){
-            (offCardRoles.get(i)).occupied = false;
+            (offCardRoles.get(i)).unoccupy();
         }
         this.currentCard = newCard;
         this.takesLeft = finalTakes;
@@ -103,9 +103,9 @@ public class Set{
         } else if (setName != "trailer") {
             for (int i = 0; i < offCardRoles.size(); i++) {
                 setInfo += "\n\tOff-card role #" + (i+1) + ":";
-                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).name;
-                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).level;
-                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).line;
+                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).getName();
+                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).getLevel();
+                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).getLine();
             }
         } 
         System.out.println(setInfo);
