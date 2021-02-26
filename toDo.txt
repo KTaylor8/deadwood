@@ -16,7 +16,7 @@ If time:
 
 Written stuff:
 X READ.ME with instructions on how to compile and run the code -- Lilu
-- update assignment 3 doc and charts and upload it as repo design.pdf
+- update assignment 3 doc class diagram and upload it as repo design.pdf
   - keep a brief change log as we go (a brief description of what you changed and why)
   - add the change log to the document
 - design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
@@ -90,3 +90,13 @@ Other:
   - loads cards' parts/roles into their cards -- Katie
   - at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
   - this needs to be updated on the design.pdf
+
+
+
+For A5:
+- Player gets Role obj instead of String roleName
+  - make getRole() method in Player
+  - address the comment that has the word CONVOLUTED
+- implement singleton design pattern in Game 
+- clean up freeRoles() in Board
+- clean up logic flow between objects for employ()
