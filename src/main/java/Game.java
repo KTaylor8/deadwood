@@ -27,7 +27,7 @@ public class Game{
         ui.print("Welcome to Deadwood! Start with naming your characters");
         
         //creates the player queue with diff values according to num players
-        initPlayers();
+        players = initPlayers();
         
         //iterates through the day
         while(numDays != 0){
