@@ -148,7 +148,7 @@ public class Set{
 
         //hand out bonuses of randomized dice to on card people
         for(int i = 0; i < dice.length; i++){
-            (onCardPlayers.get(i%(onCardPlayers.size()))).incDollar(dice[i]);
+            (onCardPlayers.get(i%(onCardPlayers.size()))).incDollars(dice[i]);
             ui.print((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
         }
 
@@ -156,7 +156,7 @@ public class Set{
         for(Player p: offCardPlayers){
             // SORRY THIS IS CONVOLUTED. NEED TO MAKE (BOARD?) METHOD THAT RETURNS ROLE OBJ/ROLE RANK GIVEN PLAYER
             int playerRoleRank = Integer.parseInt(p.getLocation().getRole(p.getRoleName()).getLevel());
-            p.incDollar(playerRoleRank);
+            p.incDollars(playerRoleRank);
             ui.print(p.getName() + " gets $" + playerRoleRank);
         }
     }
