@@ -8,7 +8,7 @@ public class Card{
     private List<Role> onCardRoles;
     private UI ui = new UI();
 
-    Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles) {
+    public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles) {
         this.cardName = name;
         this.budget = budget;
         this.sceneNumber = sceneNumber;

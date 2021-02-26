@@ -16,7 +16,7 @@ public class Set{
     private UI ui = new UI();
 
     // regular set constructor
-    Set(String s, List<String> n, List<Role> r, int t){
+    public Set(String s, List<String> n, List<Role> r, int t){
         this.setName = s;
         this.neighbors = n;
         this.offCardRoles = r;
@@ -24,7 +24,7 @@ public class Set{
     }
 
     // office constructor
-    Set(String s, List<String> n, int[] upgradeD, int[] upgradeC){
+    public Set(String s, List<String> n, int[] upgradeD, int[] upgradeC){
         this.setName = s;
         this.neighbors = n;
         upgradeCostDollars = upgradeD;
@@ -32,7 +32,7 @@ public class Set{
     }
 
     // trailers constructor
-    Set(String s, List<String> n){
+    public Set(String s, List<String> n){
         this.setName = s;
         this.neighbors = n;
     }
