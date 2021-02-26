@@ -33,7 +33,7 @@ public class Player{
     public int getRank(){
         return rank;
     }
-    public void setLevel(int level){
+    public void setRank(int level){
         this.rank = level;
     }
 
@@ -65,7 +65,7 @@ public class Player{
                 else{
                     //change level
                     ui.print("You are now level " + desiredLevel);
-                    this.setLevel(desiredLevel);
+                    this.setRank(desiredLevel);
                     this.incDollar((-1*costs[desiredLevel-2]));
                     ui.print("And you have " + currency + " remaining");
                 }
