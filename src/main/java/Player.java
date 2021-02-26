@@ -40,14 +40,14 @@ public class Player{
     public int getDollars(){
         return dollars;
     }
-    public void incDollar(int dollar){
+    public void incDollars(int dollar){
         this.dollars += dollar;
     }
 
     public int getCredits(){
         return credits;
     }
-    public void incCred(int credit){
+    public void incCredits(int credit){
         this.credits += credit;
     }
 
@@ -66,7 +66,7 @@ public class Player{
                     //change level
                     ui.print("You are now level " + desiredLevel);
                     this.setRank(desiredLevel);
-                    this.incDollar((-1*costs[desiredLevel-2]));
+                    this.incDollars((-1*costs[desiredLevel-2]));
                     ui.print("And you have " + currency + " remaining");
                 }
             }
@@ -90,7 +90,7 @@ public class Player{
     public int getRehearseTokens() {
         return rehearseTokens;
     }
-    public void incToken(){
+    public void incTokens(){
         this.rehearseTokens++;
     }
 
@@ -194,7 +194,7 @@ public class Player{
                 }
                 else{
                     ui.print("Since you weren't that important you will get 1 dollar, out of pity");
-                    this.incDollar(1);
+                    this.incDollars(1);
                 }
             }
             else{
@@ -202,12 +202,12 @@ public class Player{
                 ui.print("Acting success!");
                 if(location.getCard().hasRole(roleName)){
                     ui.print("Since you were important, you get 2 credits");
-                    this.incCred(2);
+                    this.incCredits(2);
                 }
                 else{
                     ui.print("Since you weren't that important you get 1 credit and 1 dollar");
-                    this.incCred(1);
-                    this.incDollar(1);
+                    this.incCredits(1);
+                    this.incDollars(1);
                 }
                 //increment takes
                 location.decTakesLeft();
@@ -245,7 +245,7 @@ public class Player{
         if (employed) {
             //and if the player does not have the max number of tokens already
             if(rehearseTokens < 5) {
-                this.incToken();
+                this.incTokens();
                 ui.print("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
                 successfulRehearsal = true;
             } else {
