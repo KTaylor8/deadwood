@@ -150,17 +150,26 @@ public class Player{
         this.employed = false;
     }
 
-    public void employ(Board board, String role) {
+    public void employ(Board board, String roleName) {
         // or could pass 2 board-referenced values in as args instead of the whole board
+        Role role; 
+        int roleLevel;
+
         if(!location.isClosed()){
-            if(rank >= location.getRoleRank(role))
-            {
-                this.giveRole(role);
-                board.fillRole(location.getName(), role); // <-- this method needs to be simplified later; it's hard to follow currently
-                ui.print("You are now employed as: " + role + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
-            }
-            else{
-                ui.print("This role does not exist where you are currently (check your command for typos) or you are not a high enough level, other role options are " + board.freeRoles(location.getName()));
+            role = location.getRole(roleName);
+            if (role != null) {
+                roleLevel = Integer.parseInt(role.getLevel());
+                if(rank >= roleLevel)
+                {
+                    this.giveRole(roleName);
+                    board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
+                    ui.print("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
+                }
+                else{
+                    ui.print("Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
+                }
+            } else {
+                ui.print("Role " + roleName + " not found at this location. Your role options are" + board.freeRoles(location.getName()));
             }
         }
         else{

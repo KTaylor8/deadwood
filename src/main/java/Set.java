@@ -113,14 +113,21 @@ public class Set{
         return false;
     }
 
-    //returns int of the level of the role
-    public int getRoleRank(String roleName){
+    //returns Role object
+    public Role getRole(String roleName){
         for(Role r: offCardRoles){
             if(roleName.equals(r.getName())){
-                return Integer.valueOf(r.getLevel());
+                return r;
             }
         }
-        return 0;
+        
+        for(Role r: currentCard.getOnCardRoles()){
+            if(roleName.equals(r.getName())){
+                return r;
+            }
+        }
+        
+        return null;
     }
 
     //hands out bonuses based on on card and off card people
@@ -147,8 +154,10 @@ public class Set{
 
         //hand out bonuses of rank to off card people
         for(Player p: offCardPlayers){
-            p.incDollar(getRoleRank(p.getRoleName()));
-            ui.print(p.getName() + " gets $" + getRoleRank(p.getRoleName()));
+            // SORRY THIS IS CONVOLUTED. NEED TO MAKE (BOARD?) METHOD THAT RETURNS ROLE OBJ/ROLE RANK GIVEN PLAYER
+            int playerRoleRank = Integer.parseInt(p.getLocation().getRole(p.getRoleName()).getLevel());
+            p.incDollar(playerRoleRank);
+            ui.print(p.getName() + " gets $" + playerRoleRank);
         }
     }
 
