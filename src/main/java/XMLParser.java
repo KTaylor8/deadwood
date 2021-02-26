@@ -16,6 +16,8 @@ import java.util.*;
 public class XMLParser {
     private UI ui = new UI();
 
+    public XMLParser() {}
+
     // building a document from the XML file
     // returns a Document object after loading the card.xml file.
     public Document getDocFromFile(String filename) throws ParserConfigurationException {
