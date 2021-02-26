@@ -27,7 +27,7 @@ public class ParseXML {
             try {
                 doc = db.parse(filename);
             } catch (Exception ex) {
-                System.out.println("XML parse failure");
+                ui.print("XML parse failure");
                 ex.printStackTrace();
             }
             return doc;
@@ -43,12 +43,12 @@ public class ParseXML {
 
         for (int i = 0; i < books.getLength(); i++) {
 
-            System.out.println("Printing information for book " + (i + 1));
+            ui.print("Printing information for book " + (i + 1));
 
             //reads data from the nodes
             Node book = books.item(i);
             String bookCategory = book.getAttributes().getNamedItem("category").getNodeValue();
-            System.out.println("Category = " + bookCategory);
+            ui.print("Category = " + bookCategory);
 
             //reads data
 
@@ -60,28 +60,28 @@ public class ParseXML {
 
                 if ("title".equals(sub.getNodeName())) {
                     String bookLanguage = sub.getAttributes().getNamedItem("lang").getNodeValue();
-                    System.out.println("Language = " + bookLanguage);
+                    ui.print("Language = " + bookLanguage);
                     String title = sub.getTextContent();
-                    System.out.println("Title = " + title);
+                    ui.print("Title = " + title);
 
                 } else if ("author".equals(sub.getNodeName())) {
                     String authorName = sub.getTextContent();
-                    System.out.println(" Author = " + authorName);
+                    ui.print(" Author = " + authorName);
 
                 } else if ("year".equals(sub.getNodeName())) {
                     String yearVal = sub.getTextContent();
-                    System.out.println(" Publication Year = " + yearVal);
+                    ui.print(" Publication Year = " + yearVal);
 
                 } else if ("price".equals(sub.getNodeName())) {
                     String priceVal = sub.getTextContent();
-                    System.out.println(" Price = " + priceVal);
+                    ui.print(" Price = " + priceVal);
 
                 }
 
 
             } //for childnodes
 
-            System.out.println("\n");
+            ui.print("\n");
 
         }//for book nodes
 

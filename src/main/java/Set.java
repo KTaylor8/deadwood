@@ -1,17 +1,19 @@
 import java.util.*;
 
 public class Set{
-    public String setName;
-    public List<String> neighbors;
-    public List<Role> offCardRoles = new ArrayList<Role>();
-    public Card currentCard;
+    private String setName;
+    private List<String> neighbors;
+    private List<Role> offCardRoles = new ArrayList<Role>();
+    private Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
-    public int flipStage;
+    private int flipStage;
     private int finalTakes = 0;
-    private int currentTakes; // field should be private if other classes use a getter method to access them, right?
+    private int takesLeft; // field should be private if other classes use a getter method to access them, right?
     
-    public int[] upgradeCostDollars;
-    public int[] upgradeCostCredits;
+    private int[] upgradeCostDollars;
+    private int[] upgradeCostCredits;
+
+    private UI ui = new UI();
 
     // regular set constructor
     Set(String s, List<String> n, List<Role> r, int t){
@@ -35,6 +37,134 @@ public class Set{
         this.neighbors = n;
     }
 
+    public String getName() {
+        return setName;
+    }
+
+    public void resetSet(Card newCard){
+        for(int i = 0; i < offCardRoles.size(); i++ ){
+            (offCardRoles.get(i)).unoccupy();
+        }
+        this.currentCard = newCard;
+        this.takesLeft = finalTakes;
+        flipStage = 0;
+    }
+
+    public List<String> getNeighbors() {
+        return neighbors;
+    }
+    public boolean checkNeighbor(String s) {
+        boolean isNeighbor = false;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (s.equals(neighbors.get(i))) {
+                isNeighbor = true;
+            }
+        }
+        return isNeighbor;
+    }
+
+    public List<Role> getOnCardRoles() {
+        return currentCard.getOnCardRoles();
+    }
+    public List<Role> getOffCardRoles() {
+        return offCardRoles;
+    }
+
+    public Card getCard() {
+        return currentCard;
+    }
+
+    public int getFlipStage() {
+        return flipStage;
+    }
+
+    public void flipSet(){
+        flipStage = 2;
+    }
+
+    public int getTakesLeft(){
+        return takesLeft;
+    }
+
+    public void decTakesLeft(){
+        takesLeft--;
+    }
+
+    public int[] getUpgradeCD(){
+        return upgradeCostDollars;
+    }
+
+    public int[] getUpgradeCC(){
+        return upgradeCostCredits;
+    }
+
+    // returns boolean stating if THIS set is closed
+    public boolean isClosed() {
+        return (flipStage == 2);
+    }
+
+    //returns true if someone is on card
+    public boolean canBonus(){
+        for(int i = 0; i < ((this.getCard()).getOnCardRoles()).size(); i ++){
+            if((((this.getCard()).getOnCardRoles()).get(i)).isOccupied()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //returns int of the level of the role
+    public int getRoleRank(String roleName){
+        for(Role r: offCardRoles){
+            if(roleName.equals(r.getName())){
+                return Integer.valueOf(r.getLevel());
+            }
+        }
+        return 0;
+    }
+
+    //hands out bonuses based on on card and off card people
+    public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
+
+        int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
+        ui.print("Rolling " + (this.currentCard.getBudget()) + " dice");
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
+        }
+
+        // sort array in ascending order and then reverse it
+        Arrays.sort(dice);
+        int[] newDice = new int[dice.length];
+        for(int i = 0; i < dice.length; i++) {
+            newDice[dice.length-1-i] = dice[i];
+        }
+
+        //hand out bonuses of randomized dice to on card people
+        for(int i = 0; i < dice.length; i++){
+            (onCardPlayers.get(i%(onCardPlayers.size()))).incDollar(dice[i]);
+            ui.print((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
+        }
+
+        //hand out bonuses of rank to off card people
+        for(Player p: offCardPlayers){
+            p.incDollar(getRoleRank(p.getRoleName()));
+            ui.print(p.getName() + " gets $" + getRoleRank(p.getRoleName()));
+        }
+    }
+
+    //wraps up a set and resets the roles,
+    public void wrapUp(List<Player> onCardPlayers, List<Player> offCardPlayers){
+        for(Player p: onCardPlayers){
+            p.resetRole();
+        }
+        for(Player p: offCardPlayers){
+            p.resetRole();
+        }
+
+        //make sure the set isn't used again for this day
+        this.flipSet();
+    }
+
     public void printInfo() {
         String setInfo = "";
         setInfo += ("\nSet name: " + setName);
@@ -54,41 +184,11 @@ public class Set{
         } else if (setName != "trailer") {
             for (int i = 0; i < offCardRoles.size(); i++) {
                 setInfo += "\n\tOff-card role #" + (i+1) + ":";
-                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).name;
-                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).level;
-                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).line;
+                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).getName();
+                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).getLevel();
+                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).getLine();
             }
         } 
-        System.out.println(setInfo);
+        ui.print(setInfo);
     }
-
-    public void resetSet(Card newCard){
-        for(int i = 0; i < offCardRoles.size(); i++ ){
-            (offCardRoles.get(i)).occupied = false;
-        }
-        this.currentCard = newCard;
-        this.currentTakes = finalTakes;
-        flipStage = 0;
-    }
-
-    public void incTakes(){
-        currentTakes--;
-    }
-
-    public void flipSet(){
-        flipStage = 2;
-    }
-
-    public int[] getUpgradeCD(){
-        return upgradeCostDollars;
-    }
-
-    public int[] getUpgradeCC(){
-        return upgradeCostCredits;
-    }
-
-    public int getScene(){
-        return currentTakes;
-    }
-
 }

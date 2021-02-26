@@ -19,10 +19,10 @@ public class XMLTest {
             parsing.readBookData(doc);
 
         } catch (NullPointerException e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         } catch (Exception e) {
-            System.out.println("Error = " + e);
+            ui.print("Error = " + e);
             return;
         }
     }

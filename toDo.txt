@@ -12,7 +12,23 @@ x test that acting awards the correct amounts at the end of it
   x Role
 x clean stuff up and add comments
 If time:
-- make board singleton
+- make board singleton -- this might actually be hard w/ the args...
+
+Written stuff:
+X READ.ME with instructions on how to compile and run the code -- Lilu
+- update assignment 3 doc and charts and upload it as repo design.pdf
+  - keep a brief change log as we go (a brief description of what you changed and why)
+  - add the change log to the document
+- design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
+- individual 4 paragraph submissions on Canvas
+  - Katie
+  - Lilu
+
+Some design updates
+(keep and update a brief change log)
+--update CastingOffice's methods to match actual implementation plan-- remove CastingOffice
+- change Game class to Deadwood class
+- change reset board sequence diagram to init board before players
 
 
 Deadwood:
@@ -22,10 +38,6 @@ x create ^ many players
 x UI
 ? fix the absolutely wild if statements for the move condition cause theres def a better way to do that
 - figure out something for ties
--Questions:
-  xdid we have act thing in game or board???????? (im making that a problem for later)
-
-
 
 
 Board:
@@ -47,7 +59,7 @@ x calculate bonuses/pay player
 x create get methods
 
 Role:
-x create get methods (level, dialouge, name)
+x create get methods (level, dialog, name)
 x on card/off card
 x isOccupied
 x makeOccupied
@@ -66,12 +78,6 @@ x get upgrade costs
 - verify upgrades -> might not need (Lilu)
 
 
-Design updates
-(keep and update a brief change log)
---update CastingOffice's methods to match actual implementation plan-- remove CastingOffice
-- change Game class to Deadwood class
-- change reset board sequence diagram to init board before players
-
 Other:
 - get ParseXML example working -- Katie
   X cards.xml -- Katie
@@ -84,8 +90,3 @@ Other:
   - loads cards' parts/roles into their cards -- Katie
   - at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
   - this needs to be updated on the design.pdf
-- READ.ME with instructions on how to compile and run the code
-- design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
-- individual 4 paragraph submissions on Canvas
-  - Katie
-  - Lilu

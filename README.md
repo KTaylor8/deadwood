@@ -1,14 +1,18 @@
-To run game:
+# How to Use This Code
+
+## How to Run Deadwood
+
     1. While in team_bunny_345-21wi compile with:  
         ./compile.sh
     2. Then decide player number run with:
         ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {player number}
 
-To play game:
+## How to Play Deadwood
+
     (WARNING: ALL THINGS ARE CASE SENSITIVE, COMMANDS ARE LOWERCASE AND LOCATIONS SHOWN HAVE EXACT SAME CAPITALIZATION
         ex1: to move:  
             - "move Secret Hideout"
-            -" take role Sleeping Drunkard
+            - "take role Sleeping Drunkard"
     Get exact names of roles and neighboring places if you are unsure of capitalization)
     
     1. Once code is running, you will be prompted to enter names of all of your players, this will also be in the same order that they play.
@@ -26,7 +30,7 @@ To play game:
         - "upgrade costs" to get the cost of each upgrade from both credits and dollars
         - "act" when employed to act
         - "rehearse" to add a rehearse token to the current player
-        Note: You are allowed to do any of these things any amount of times, but you can only do one of:
+        Note: You are allowed to many of these things any amount of times, but you can only do one of the following (once) per turn:
             act
             move
             rehearse

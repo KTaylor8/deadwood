@@ -1,16 +1,16 @@
-import java.util.*;
+// import java.util.*;
 
 public class Role{
-    String name;
-    String level;
+    private String roleName;
+    private String roleLevel;
     // AreaData area; // uncomment for GUI
-    String line;
-    Boolean occupied;
+    private String line;
+    private Boolean occupied;
 
 
     // Role(String name, String level, AreaData area, String line) { // uncomment for GUI
-    //     this.name = name;
-    //     this.level = level;
+    //     this.roleName = name;
+    //     this.roleLevel = level;
     //     this.area = area;
     //     this.line = line;
     // }
@@ -18,10 +18,26 @@ public class Role{
     Role() {}
 
     Role(String name, String level, String line) {
-        this.name = name;
-        this.level = level;
+        this.roleName = name;
+        this.roleLevel = level;
         this.line = line;
         this.occupied = false;
+    }
+
+    public String getName() {
+        return roleName;
+    }
+
+    public String getLevel() {
+        return roleLevel;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public Boolean isOccupied() {
+        return occupied;
     }
 
     public void occupy(){
@@ -31,4 +47,17 @@ public class Role{
     public void unoccupy(){
         this.occupied = false;
     }
+
+    // //returns boolean if the role is on card of a set
+    // // was replaced by Card's hasRole()
+    // private boolean isOnCard(Set s){
+    //     boolean isOnCard = false;
+    //     List<Role> tester = s.getOnCardRoles();
+    //     for(int i = 0; i < tester.size(); i++){
+    //         if(this.equals(tester.get(i))){
+    //             return true;
+    //         }
+    //     }
+    //     return isOnCard;
+    // }
 }

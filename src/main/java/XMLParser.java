@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.*;
 
 public class XMLParser {
-
+    private UI ui = new UI();
 
     // building a document from the XML file
     // returns a Document object after loading the card.xml file.
@@ -27,7 +27,7 @@ public class XMLParser {
             try {
                 doc = db.parse(filename);
             } catch (Exception ex) {
-                System.out.println("XML parse failure");
+                ui.print("XML parse failure");
                 ex.printStackTrace();
             }
             return doc;
@@ -79,8 +79,8 @@ public class XMLParser {
     //     // String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
     //     // String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
     //     // String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
-    //     // System.out.println("  area: ");
-    //     // System.out.println("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
+    //     // ui.print("  area: ");
+    //     // ui.print("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
 
     //     return new AreaData(
     //         area.getAttributes().getNamedItem("x").getNodeValue(),
@@ -97,7 +97,7 @@ public class XMLParser {
      * @param part accepts a single Node part
      * @return
      */
-    private static Role getPartData(Role roleObj, Node part){
+    private Role getPartData(Role roleObj, Node part){
         // Declare vars for part data handling
         NodeList partChildren;
         Node partChildrenSub;
@@ -124,7 +124,7 @@ public class XMLParser {
                 partLine = partChildrenSub.getTextContent();
             }
 
-        } //for part childnodes
+        } //for part child nodes
 
         // roleObj = new Role(partName, partLevel, partArea, partLine); // uncomment for GUI
         roleObj = new Role(partName, partLevel, partLine);
@@ -138,7 +138,7 @@ public class XMLParser {
      * @param root -- document root
      * @return
      */
-    private static Set getOfficeData(Element root){
+    private Set getOfficeData(Element root){
         // Declare vars for office data handling
         Node office; /* Element with tag name "office" */
         NodeList officeChildren;
@@ -203,14 +203,14 @@ public class XMLParser {
             }
             // don't use an else block
 
-        } //for office childnodes
+        } //for office child nodes
 
         return new Set("office", neighbors, upgradeDollars, upgradeCredits);
     }
 
 
     /* Parse trailer data into Set */
-    private static Set getTrailerData(Element root){
+    private Set getTrailerData(Element root){
         // Declare vars for trailer data handling
         Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
@@ -267,7 +267,7 @@ public class XMLParser {
 
             setRoles = new ArrayList<Role>(); // want a new List each time, don't try to clear and reuse the same one
 
-            // System.out.println("Parsing data for set " + (i + 1));
+            // ui.print("Parsing data for set " + (i + 1));
 
             //reads attributes from the sets/nodes
             set = sets.item(i);
@@ -300,7 +300,7 @@ public class XMLParser {
                             numTakes++;
                             // // ignoring the actual individual takes for now
                             // String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
-                            // System.out.println("  take number: " + takeNumber);
+                            // ui.print("  take number: " + takeNumber);
 
                             // // ignoring area data for now; uncomment for GUI
                             // for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
@@ -324,7 +324,7 @@ public class XMLParser {
                 } //for part nodes
                 // don't use an else block                
 
-            } //for set childnodes
+            } //for set child nodes
             setList.add(new Set(setName, neighbors, setRoles, numTakes));
         
         }//for set nodes
@@ -378,7 +378,7 @@ public class XMLParser {
         for (int i = 0; i < cards.getLength(); i++) {
             cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
 
-            // System.out.println("Parsing card " + (i + 1));
+            // ui.print("Parsing card " + (i + 1));
 
             //reads attributes from the Cards/Nodes
             card = cards.item(i);
@@ -400,7 +400,7 @@ public class XMLParser {
                     cardRoles.add(getPartData(role, cardListSub));
                 } //for part nodes
 
-            } //for card childnodes
+            } //for card child nodes
 
             // init card obj w/ parsed data and add it to cardDeck
             cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
