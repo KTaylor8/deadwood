@@ -13,7 +13,7 @@ public class Board{
 
         try {
             doc = parsing.getDocFromFile(cardPath); // static path: "src/main/resources/xml/cards.xml"
-            cardDeck = parsing.convertDocToCardDeck(doc);
+            cardDeck = parsing.parseCardData(doc);
             // for (Card card: cardDeck) { // uncomment to test that all the Cards are there
             //     card.printInfo();
             // }
