@@ -3,9 +3,8 @@ import java.util.*;
 public class UI{
 
     private Scanner scan;
-    // private String input;
 
-    UI() { scan = new Scanner(System.in); }
+    public UI() { scan = new Scanner(System.in); }
 
     public String readInput() {
         return scan.nextLine().trim();

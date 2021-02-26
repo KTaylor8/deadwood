@@ -1,9 +1,9 @@
 Remaining tasks:
-- handle ties -- Katie (implemented something *untested*)
+X handle ties -- Katie (implemented something *untested*)
 x test upgrading works -- Lilu
 x test that the game will reset at the end of the day -- Katie
 x test that acting awards the correct amounts at the end of it 
-- go through classes and make some public stuff private
+X go through classes and make some public stuff private
   X Deadwood
   x Board
   x Player
@@ -16,7 +16,7 @@ If time:
 
 Written stuff:
 X READ.ME with instructions on how to compile and run the code -- Lilu
-- update assignment 3 doc and charts and upload it as repo design.pdf
+- update assignment 3 doc class diagram and upload it as repo design.pdf
   - keep a brief change log as we go (a brief description of what you changed and why)
   - add the change log to the document
 - design-choices specify what types of cohesion and coupling you utilized in your design and your rationale for using them. Also discuss your overall design choices and how they relate to good software design principles.
@@ -37,7 +37,6 @@ x prompt how many players -Lilu
 x create ^ many players
 x UI
 ? fix the absolutely wild if statements for the move condition cause theres def a better way to do that
-- figure out something for ties
 
 
 Board:
@@ -67,7 +66,7 @@ x makeOccupied
 
 Player:
 x initialize player
-- action options
+x action options
 x get methods for money/role
 x calc final score
 x changeRole
@@ -75,7 +74,7 @@ x changeRole
 
 CastingOffice:
 x get upgrade costs
-- verify upgrades -> might not need (Lilu)
+x verify upgrades -> might not need (Lilu)
 
 
 Other:
@@ -84,9 +83,19 @@ Other:
   X board.xml -- Katie
 - use parsing example to parse data for actual game use -- Katie
   X make a class for the card -- Katie
-  - make parser load card objects into a stack (may change the datatype later) -- Katie
-  - make parser load board set objects into a stack (may change the datatype later) -- Katie
-  - load board parts/roles into their sets on board.java -- Katie
-  - loads cards' parts/roles into their cards -- Katie
-  - at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
+  x make parser load card objects into a stack (may change the datatype later) -- Katie
+  x make parser load board set objects into a stack (may change the datatype later) -- Katie
+  x load board parts/roles into their sets on board.java -- Katie
+  x loads cards' parts/roles into their cards -- Katie
+  x at the start of each day, each set randomly gets a card and adds its on-card roles to the array of off-card roles (differentiated via attribute)
   - this needs to be updated on the design.pdf
+
+
+
+For A5:
+- Player gets Role obj instead of String roleName
+  - make getRole() method in Player
+  - address the comment that has the word CONVOLUTED
+- implement singleton design pattern in Game 
+- clean up freeRoles() in Board
+- clean up logic flow between objects for employ()

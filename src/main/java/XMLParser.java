@@ -237,7 +237,7 @@ public class XMLParser {
 
     private List<Set> addSets(Element root, List<Set> setList) {
         // declare class objects and their Lists
-        Role role = new Role();
+        Role role;
         List<Role> setRoles = new ArrayList<Role>();
         List<String> neighbors = new ArrayList<String>();
 
