@@ -41,7 +41,7 @@ public class XMLParser {
      * @param neighborList accepts a list of potential neighbors
      * @return neighbors
      */
-    private static List<String> handleNeighborData(NodeList neighborList) {
+    private List<String> getNeighborData(NodeList neighborList) {
         List<String> neighbors = new ArrayList<String>();
         String neighborName;
         Node neighborListSub;
@@ -168,7 +168,7 @@ public class XMLParser {
             officeChildSub = officeChildren.item(j);
 
             if ("neighbors".equals(officeChildSub.getNodeName())) {
-                neighbors = handleNeighborData(officeChildSub.getChildNodes());
+                neighbors = getNeighborData(officeChildSub.getChildNodes());
             } else if ("area".equals(officeChildSub.getNodeName())) {
                 // officeArea = handleAreaData(officeChildSub); // uncomment for GUI
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
@@ -228,7 +228,7 @@ public class XMLParser {
             trailerChildSub = trailerChildren.item(j);
 
             if ("neighbors".equals(trailerChildSub.getNodeName())) {
-                neighbors = handleNeighborData(trailerChildSub.getChildNodes());
+                neighbors = getNeighborData(trailerChildSub.getChildNodes());
             } else if ("area".equals(trailerChildSub.getNodeName())) {
                 // trailerArea = handleAreaData(trailerChildSub); // uncomment for GUI
             }
@@ -287,7 +287,7 @@ public class XMLParser {
 
                 if ("neighbors".equals(setChildSub.getNodeName())) {
                     // parse  neighbor children
-                    neighbors = handleNeighborData(setChildSub.getChildNodes());
+                    neighbors = getNeighborData(setChildSub.getChildNodes());
                 } else if ("area".equals(setChildSub.getNodeName())) {
                     // setArea = handleAreaData(setChildSub); // uncomment for GUI
                 } else if ("takes".equals(setChildSub.getNodeName())) {
@@ -353,7 +353,7 @@ public class XMLParser {
     }//readBoardData() method
 
     // reads card data from XML file, stores it in Card objects, stores those objects in a List and returns List
-    public List<Card> convertDocToCardDeck(Document d) {
+    public List<Card> parseCardData(Document d) {
         // Declare vars for card data handling
         NodeList cards;
         Node card;
