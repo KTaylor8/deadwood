@@ -1,4 +1,11 @@
 import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class View{
     JFrame frame;
@@ -34,7 +41,31 @@ public class View{
             actionPanel.add(b);
         }
 
-
+        frame.add(displayPanel,BorderLayout.PAGE_START);
+        frame.add(actionPanel, BorderLayout.PAGE_END);
+        //frame.add(players1, BoarderLayout.LINE_START);
+        //frame.add(players1, BoarderLayout.LINE_END);
+        //frame.add(board, BoarderLayout.CENTER);
 
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String buttonText = ((JButton) e.getSource()).getText();
+
+        if ("move".equals(buttonText)) {
+            controller.move();
+        } else if ("take role".equals(buttonText)) {
+            controller.takeRole();
+        } else if ("upgrade".equals(buttonText)) {
+            controller.upgrade();
+        } else if ("rehearse".equals(buttonText)) {
+            controller.rehearse();
+        } else if ("act".equals(buttonText)) {
+            controller.act();
+        }else {
+            controller.end();
+        }
+    }
+
 }
