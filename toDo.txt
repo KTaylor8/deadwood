@@ -99,3 +99,11 @@ For A5:
 - implement singleton design pattern in Game 
 - clean up freeRoles() in Board
 - clean up logic flow between objects for employ()
+
+
+For GUI:
+
+  -change the player names from interactive to preprogrammed
+  -make the interactive panel
+  -make action buttons connect to game activities
+  -make the upgrade station
