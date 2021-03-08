@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class View{
+public class View implements ActionListener{
     JFrame frame;
     JLabel display;
 
@@ -15,18 +15,16 @@ public class View{
 
     public void show(){
         frame = new JFrame();
-        frame.setSize(new Dimension(300, 300));
+        frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //panel for the top information about current player
         JPanel displayPanel = new JPanel();
 
-        display = new JLabel("0", JLabel.RIGHT);
+        display = new JLabel("Current player: ", JLabel.CENTER);
         display.setPreferredSize(new Dimension(290, 50));
-        display.setBorder(BorderFactory.createLoweredBevelBorder());
-        display.setOpaque(true);
+        display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
-        display.setBackground(Color.WHITE);
 
         displayPanel.add(display);
 
@@ -37,34 +35,62 @@ public class View{
         String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end"};
         for (String symbol: buttonText) {
             JButton b = new JButton(symbol);
-            b.addActionListener(this);
+            //b.addActionListener(this);
             actionPanel.add(b);
         }
 
+        JPanel leftPlayers = new JPanel();
+        leftPlayers.setLayout(new GridLayout(4, 1));
+
+        
+        for (int i = 1; i <= 7; i = i+2) {
+            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            leftPlayers.add(b);
+        }
+
+        JPanel rightPlayers = new JPanel();
+        rightPlayers.setLayout(new GridLayout(4, 1));
+
+        
+        for (int i = 2; i <= 8; i = i+2) {
+            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            rightPlayers.add(b);
+        }
+
+        ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
+        JLabel board = new JLabel(img);
+        //board.setMaximumSize(new Dimension(100, 100));
+
+        //JLabel board = new JLabel(new ImageIcon("src/main/resources/img/board.png"));
+        board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
+
+        frame.add(board, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
         frame.add(actionPanel, BorderLayout.PAGE_END);
-        //frame.add(players1, BoarderLayout.LINE_START);
-        //frame.add(players1, BoarderLayout.LINE_END);
-        //frame.add(board, BoarderLayout.CENTER);
+        frame.add(leftPlayers, BorderLayout.LINE_START);
+        frame.add(rightPlayers, BorderLayout.LINE_END);
+
+        frame.pack();
+
+        frame.setVisible(true);
 
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            controller.move();
+            //controller.move();
         } else if ("take role".equals(buttonText)) {
-            controller.takeRole();
+            //controller.takeRole();
         } else if ("upgrade".equals(buttonText)) {
-            controller.upgrade();
+            //controller.upgrade();
         } else if ("rehearse".equals(buttonText)) {
-            controller.rehearse();
+            //controller.rehearse();
         } else if ("act".equals(buttonText)) {
-            controller.act();
+            //controller.act();
         }else {
-            controller.end();
+            //controller.end();
         }
     }
 

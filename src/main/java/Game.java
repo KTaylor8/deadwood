@@ -7,13 +7,16 @@ public class Game{
     private Board board;
     private UI ui;
     private String input;
+    private Controller controller;
 
     private Player currentPlayer;
 
     public Game (String[] args) {
-        numPlayers = Integer.valueOf(args[2]); 
-        board = new Board(args[0], args[1]);
-        ui = new UI();
+        //numPlayers = Integer.valueOf(args[2]); 
+        //board = new Board(args[0], args[1]);
+        //ui = new UI();
+        controller = new Controller();
+        controller.run();
     }
 
     public void run(){
