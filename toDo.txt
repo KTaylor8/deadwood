@@ -107,3 +107,21 @@ For GUI:
   -make the interactive panel
   -make action buttons connect to game activities
   -make the upgrade station
+
+LILU NOTES:
+What ive done with the GUI so far:
+ - made the board and the formatting of the different things
+ - kinda set up the controller interfaces and thing but we should add more things to it as we initialize the buttons
+ - gave the cards their paths to their corresponding pngs
+ - gave the players a corresponding color (i thought this would be an easy way to grab the diff dice without giving them 6 differnent 
+   dice but thats also an option if this doesnt work)
+ - Created a popup method that will give sudden updates that we can use if a scene is wrapping up or with the success of acts, or at the end of days and winners
+ - worked out the end game logic so that it ends with a popup (i like those lol)
+ - I commented out a lot of the game method so that I could try to move it from the UI to the GUI
+
+Things that we could work out immediately:
+- moving would probably be the best first thing to do, and we have to figure out where we want the dice when they're idle
+  -we could use another popup thing and then have buttons? and they could choose where they want to move?
+- placing cards (with the backs)
+- placing shot tokens
+- putting the dice graphics on the board (i mostly had difficulty with placements because I cant get them exact with my version cropping)

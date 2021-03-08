@@ -372,6 +372,7 @@ public class XMLParser {
         String budget;
         String sceneNumber = "";
         String sceneDescription = "";
+        String picturePath = "src/main/resources/img/card_";
 
         Element root = d.getDocumentElement();
 
@@ -382,6 +383,13 @@ public class XMLParser {
 
             // ui.print("Parsing card " + (i + 1));
 
+            if(i < 9){
+                picturePath += "0"+(i+1);
+
+            }
+            else{
+                picturePath += (i+1);
+            }
             //reads attributes from the Cards/Nodes
             card = cards.item(i);
             cardName = card.getAttributes().getNamedItem("name").getNodeValue();
@@ -405,7 +413,7 @@ public class XMLParser {
             } //for card child nodes
 
             // init card obj w/ parsed data and add it to cardDeck
-            cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles);
+            cardObj = new Card(cardName, budget, sceneNumber, sceneDescription, cardRoles, picturePath);
             cardDeck.add(cardObj);
 
         }//for card nodes

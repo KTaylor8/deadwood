@@ -6,14 +6,16 @@ public class Card{
     private String sceneNumber;
     private String sceneDescription;
     private List<Role> onCardRoles;
+    private String picturePath = "";
     private UI ui = new UI();
 
-    public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles) {
+    public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles, String picturePath) {
         this.cardName = name;
         this.budget = budget;
         this.sceneNumber = sceneNumber;
         this.sceneDescription = sceneDescription;
         this.onCardRoles = cardRoles;
+        this.picturePath = picturePath;
     }
 
     public String getBudget() {

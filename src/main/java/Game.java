@@ -12,26 +12,29 @@ public class Game{
     private Player currentPlayer;
 
     public Game (String[] args) {
-        //numPlayers = Integer.valueOf(args[2]); 
-        //board = new Board(args[0], args[1]);
+        numPlayers = Integer.valueOf(args[2]); 
+        board = new Board(args[0], args[1]);
         //ui = new UI();
         controller = new Controller();
         controller.run();
     }
 
     public void run(){
+
+        
+
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
-            ui.print("Invalid input, please enter a player number from 2 to 8");
+            controller.popUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
 
         //  intro statement
-        ui.print("Welcome to Deadwood! Start with naming your characters");
+        //controller.popUp("Welcome to Deadwood!");
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
-        
+        /*
         //iterates through the day
         while(numDays != 0){
             ui.print("Placing all players in trailers");
@@ -53,8 +56,9 @@ public class Game{
 
         //calculate winner
         ui.print("Calculating winner...");
+        */
         calcWinner(players);
-        ui.closeScanner();
+        //ui.closeScanner();
     }
 
     private Queue<Player> initPlayers() {
@@ -87,12 +91,10 @@ public class Game{
 
         // Create players
         for(int i = 1; i <= numPlayers; i++){
-            ui.print("What is the name of player " + i +"?");
-            input = ui.readInput();
             if (numPlayers >= 5) {
-                p = new Player(startLocation, input, startRank, startCredits);
+                p = new Player(startLocation, ("player" + i), startRank, startCredits);
             } else {
-                p = new Player(startLocation, input);
+                p = new Player(startLocation, ("player" + i));
             }
             players.add(p);
         }
@@ -129,15 +131,16 @@ public class Game{
                 winners.remove(i);
             }
         }
-        
+        String winnersString = "";
         // Announce winners
         if (winners.size() > 1) {
-            ui.print("There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied:");
+            winnersString = "There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied: ";
             for (Player p : winners) {
-                ui.print(p.getName());
+                winnersString += p.getName() + " ";
             }
+            controller.popUp(winnersString);
         } else {
-            ui.print(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            controller.popUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
     }
 

@@ -11,7 +11,11 @@ public class View implements ActionListener{
     JFrame frame;
     JLabel display;
 
+    private ControllerInterface controller;
 
+    public View(ControllerInterface controller) {
+        this.controller = controller;
+    }
 
     public void show(){
         frame = new JFrame();
@@ -22,7 +26,7 @@ public class View implements ActionListener{
         JPanel displayPanel = new JPanel();
 
         display = new JLabel("Current player: ", JLabel.CENTER);
-        display.setPreferredSize(new Dimension(290, 50));
+        display.setPreferredSize(new Dimension(300, 50));
         display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 
@@ -35,13 +39,14 @@ public class View implements ActionListener{
         String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end"};
         for (String symbol: buttonText) {
             JButton b = new JButton(symbol);
-            //b.addActionListener(this);
+            b.addActionListener(this);
             actionPanel.add(b);
         }
 
         JPanel leftPlayers = new JPanel();
         leftPlayers.setLayout(new GridLayout(4, 1));
 
+        leftPlayers.setSize(new Dimension(50,400));
         
         for (int i = 1; i <= 7; i = i+2) {
             JLabel b = new JLabel("Player " + i, JLabel.LEFT);
@@ -51,6 +56,7 @@ public class View implements ActionListener{
         JPanel rightPlayers = new JPanel();
         rightPlayers.setLayout(new GridLayout(4, 1));
 
+        rightPlayers.setSize(new Dimension(50,400));
         
         for (int i = 2; i <= 8; i = i+2) {
             JLabel b = new JLabel("Player " + i, JLabel.LEFT);
@@ -80,7 +86,7 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            //controller.move();
+            controller.move();
         } else if ("take role".equals(buttonText)) {
             //controller.takeRole();
         } else if ("upgrade".equals(buttonText)) {
@@ -92,6 +98,10 @@ public class View implements ActionListener{
         }else {
             //controller.end();
         }
+    }
+
+    public void givePopUp(String notif){
+        JOptionPane.showMessageDialog(frame, notif); 
     }
 
 }
