@@ -18,4 +18,14 @@ public class Controller implements ControllerInterface{
     public void popUp(String notif){
         view.givePopUp(notif);
     }
+
+    @Override
+    public void updateCurrentPlayer(String notif){
+        view.changeCurrentPlayer(notif);
+    }
+
+    @Override
+    public void end(){
+        
+    }
 }

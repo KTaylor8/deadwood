@@ -14,7 +14,7 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
-        //ui = new UI();
+        ui = new UI();
         controller = new Controller();
         controller.run();
     }
@@ -34,13 +34,14 @@ public class Game{
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
-        /*
+        
         //iterates through the day
         while(numDays != 0){
-            ui.print("Placing all players in trailers");
+            //ui.print("Placing all players in trailers");
             while(board.sceneNum() > 1){
                 currentPlayer = players.peek();
                 players.add(players.remove());
+                controller.updateCurrentPlayer(currentPlayer.getName());
                 ui.interact(currentPlayer, board, players);
             }
             //decrement days and reset the roles and board
@@ -55,8 +56,8 @@ public class Game{
         }
 
         //calculate winner
-        ui.print("Calculating winner...");
-        */
+        //ui.print("Calculating winner...");
+        
         calcWinner(players);
         //ui.closeScanner();
     }
