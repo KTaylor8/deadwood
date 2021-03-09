@@ -235,7 +235,7 @@ public class XMLParser {
         Node setChildSub;
         NodeList partList;
         Node partListSub;
-        AreaData setArea;
+        AreaData setArea = new AreaData();
 
         // take vars
         NodeList takeList;
@@ -316,7 +316,7 @@ public class XMLParser {
                 // don't use an else block                
 
             } //for set child nodes
-            setList.add(new Set(setName, neighbors, setRoles, tokens.size(), tokens));
+            setList.add(new Set(setName, neighbors, setRoles, tokens.size(), tokens, setArea));
         
         }//for set nodes
 
