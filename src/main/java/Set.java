@@ -11,20 +11,21 @@ public class Set{
     private int flipStage;
     private int finalTakes = 0;
     private int takesLeft; // field should be private if other classes use a getter method to access them, right?
+    private List<ShotToken> shotTokens;
     
     private int[] upgradeCostDollars;
     private int[] upgradeCostCredits;
 
     
-
     private UI ui = new UI();
 
     // regular set constructor
-    public Set(String s, List<String> n, List<Role> r, int t){
+    public Set(String s, List<String> n, List<Role> r, int t, List<ShotToken> shotTokens){
         this.setName = s;
         this.neighbors = n;
         this.offCardRoles = r;
         this.finalTakes = t;
+        this.shotTokens = shotTokens;
     }
 
     // office constructor
