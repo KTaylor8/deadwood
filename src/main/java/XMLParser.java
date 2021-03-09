@@ -122,7 +122,7 @@ public class XMLParser {
         Node office; /* Element with tag name "office" */
         NodeList officeChildren;
         Node officeChildSub;
-        AreaData officeArea;
+        AreaData officeArea = new AreaData();
 
         // Declare vars for take data handling
         AreaData takeArea;
@@ -168,10 +168,11 @@ public class XMLParser {
 
                 // parse upgrade amounts in dollars
                 for (int k = 0; k < 5; k++) {
-                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
+                    Node curUpgrade = filteredUpgrades.poll();
+                    upgradeCost = Integer.parseInt(curUpgrade.getAttributes().getNamedItem("amt").getNodeValue());
                     upgradeDollars[k] = upgradeCost;
-                    for (int l = 0; l < filteredUpgrades.remove().getChildNodes().getLength(); l++) {
-                        Node upgradeChildrenSub = filteredUpgrades.remove().getChildNodes().item(l);
+                    for (int l = 0; l < curUpgrade.getChildNodes().getLength(); l++) {
+                        Node upgradeChildrenSub = curUpgrade.getChildNodes().item(l);
                         if ("area".equals(upgradeChildrenSub.getNodeName())) {
                             upgradeDollarsArea[k] = getAreaData(upgradeChildrenSub);
                         }
@@ -180,8 +181,15 @@ public class XMLParser {
 
                 // parse upgrade amounts in credits
                 for (int k = 0; k < 5; k++) {
-                    upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
+                    Node curUpgrade = filteredUpgrades.poll();
+                    upgradeCost = Integer.parseInt(curUpgrade.getAttributes().getNamedItem("amt").getNodeValue());
                     upgradeCredits[k] = upgradeCost;
+                    for (int l = 0; l < curUpgrade.getChildNodes().getLength(); l++) {
+                        Node upgradeChildrenSub = curUpgrade.getChildNodes().item(l);
+                        if ("area".equals(upgradeChildrenSub.getNodeName())) {
+                            upgradeCreditsArea[k] = getAreaData(upgradeChildrenSub);
+                        }
+                    }
                 }
 
 
@@ -190,7 +198,7 @@ public class XMLParser {
 
         } //for office child nodes
 
-        return new Set("office", neighbors, upgradeDollars, upgradeCredits, );
+        return new Set("office", neighbors, upgradeDollars, upgradeCredits, upgradeDollarsArea, upgradeCreditsArea, officeArea);
     }
 
 
@@ -316,7 +324,7 @@ public class XMLParser {
                 // don't use an else block                
 
             } //for set child nodes
-            setList.add(new Set(setName, neighbors, setRoles, tokens.size(), tokens, setArea));
+            setList.add(new Set(setName, neighbors, setRoles, tokens, setArea));
         
         }//for set nodes
 

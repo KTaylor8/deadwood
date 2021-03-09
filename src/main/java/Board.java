@@ -22,14 +22,15 @@ public class Board{
             ui.print("Error = " + e);
             return;
         } catch (Exception e) {
-            ui.print("Error = " + e);
+            ui.print("Error parsing cards: ");
+            e.printStackTrace();
             return;
         }
 
         try {
             doc = parsing.getDocFromFile(boardPath); // static path: "src/main/resources/xml/board.xml"
             boardSets = parsing.parseBoardData(doc);
-            // for (Set set: sets) { // uncomment to test that all the Sets are there
+            // for (Set set: boardSets) { // uncomment to test that all the Sets are there
             //     set.printInfo();
             // }
 
@@ -37,7 +38,8 @@ public class Board{
             ui.print("Error = " + e);
             return;
         } catch (Exception e) {
-            ui.print("Error = " + e);
+            ui.print("Error parsing sets: ");
+            e.printStackTrace();
             return;
         }
 
