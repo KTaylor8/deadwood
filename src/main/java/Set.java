@@ -26,9 +26,10 @@ public class Set{
         this.setName = s;
         this.neighbors = n;
         this.offCardRoles = r;
-        this.finalTakes = shotTokens.size();
         this.shotTokens = shotTokens;
         this.area = areaData;
+
+        this.finalTakes = shotTokens.size();
     }
 
     // office constructor
@@ -104,6 +105,10 @@ public class Set{
 
     public void flipSet(){
         flipStage = 2;
+    }
+
+    public List<ShotToken> getShotTokens(){
+        return shotTokens;
     }
 
     public int getTakesLeft(){
@@ -206,6 +211,10 @@ public class Set{
         for (int i = 0; i < neighbors.size(); i++) {
             setInfo += ("\n\t\tNeighbor name: " + neighbors.get(i));
         }
+        setInfo += "\n\tSet area: x = " + area.getX() + 
+                    ", y = " + area.getY() +
+                    ", w = " + area.getW() +
+                    ", h = " + area.getH();
         if (setName == "office") {
             setInfo += "\n\tUpgrade costs in dollars: ";
             for (int i = 0; i < upgradeCostDollars.length; i++) {
@@ -224,6 +233,15 @@ public class Set{
                 ", h = " + upgradeCreditsAreas[i].getH();
             }
         } else if (setName != "trailer") {
+            setInfo += "\n\tTakes: ";
+            for (int i = 0; i < shotTokens.size(); i++) {
+                ShotToken take = shotTokens.get(i);
+                setInfo += ("\n\t\tTake #" + (i+1));
+                setInfo += "\n\t\t\tTake area: x = " + take.getX() + 
+                ", y = " + take.getY() +
+                ", w = " + take.getW() +
+                ", h = " + take.getH();
+            }
             for (int i = 0; i < offCardRoles.size(); i++) {
                 role = offCardRoles.get(i);
                 setInfo += "\n\tOff-card role #" + (i+1) + ":";
