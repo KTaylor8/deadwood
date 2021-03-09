@@ -5,6 +5,8 @@ public class Set{
     private List<String> neighbors;
     private List<Role> offCardRoles = new ArrayList<Role>();
     private Card currentCard;
+    private int cardPosX = 0;
+    private int cardPosY = 0;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
     private int flipStage;
     private int finalTakes = 0;
@@ -12,6 +14,8 @@ public class Set{
     
     private int[] upgradeCostDollars;
     private int[] upgradeCostCredits;
+
+    
 
     private UI ui = new UI();
 
@@ -35,6 +39,14 @@ public class Set{
     public Set(String s, List<String> n){
         this.setName = s;
         this.neighbors = n;
+    }
+
+    public int getCardX(){
+        return cardPosX;
+    }
+
+    public int getCardY(){
+        return cardPosY;
     }
 
     public String getName() {

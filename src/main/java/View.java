@@ -8,14 +8,19 @@ import java.util.List;
 
 
 public class View implements ActionListener{
+    
     JFrame frame;
     JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
+    JLabel mainStreet;
+    JLayeredPane lpane = new JLayeredPane();
+    JPanel boardPanel = new JPanel();
 
 
-    private ControllerInterface controller;
+    private UI ui;
 
-    public View(ControllerInterface controller) {
-        this.controller = controller;
+    public View(UI ui){
+        
+        this.ui = ui;
     }
 
     public void show(){
@@ -78,18 +83,35 @@ public class View implements ActionListener{
             rightPlayers.add(b);
         }
 
+        boardPanel.setLayout(null);
+
+        //JLayeredPane layeredPane = new JLayeredPane();
+        //JLabel playerlabel = new JLabel("im going to cry");
+        //layeredPane.add(playerlabel,new Integer(0));
+
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
-        JLabel board = new JLabel(img);
+        JLabel b = new JLabel(img);
+        //boardPanel.add(b, BorderLayout.CENTER);
+        //lpane.add(boardPanel, 0);
+        //JLayeredPane board = new JLayeredPane();
+        //board.setLayout(new BorderLayout());
+
+        //board.setPreferredSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
+
+        //JButton please = new JButton("please");
+        //board.add(b, 0);
+        //board.setVisible(true);
         //board.setMaximumSize(new Dimension(100, 100));
 
         //JLabel board = new JLabel(new ImageIcon("src/main/resources/img/board.png"));
-        board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
+        //board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
 
-        frame.add(board, BorderLayout.CENTER);
+        frame.add(b, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
         frame.add(actionPanel, BorderLayout.PAGE_END);
         frame.add(leftPlayers, BorderLayout.LINE_START);
         frame.add(rightPlayers, BorderLayout.LINE_END);
+        //frame.add(mainStreet);
 
         frame.pack();
 
@@ -101,7 +123,7 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            controller.move();
+            //controller.move();
         } else if ("take role".equals(buttonText)) {
             //controller.takeRole();
         } else if ("upgrade".equals(buttonText)) {
@@ -111,11 +133,11 @@ public class View implements ActionListener{
         } else if ("act".equals(buttonText)) {
             //controller.act();
         }else {
-            controller.end();
+            //controller.end();
         }
     }
 
-    public void givePopUp(String notif){
+    public void popUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
@@ -125,6 +147,15 @@ public class View implements ActionListener{
 
     public void changePlayerStats(String stats){
         player1.setText("Player 1: \nDollars: \n Credits: ");
+    }
+
+    public void setCard(Set s){
+        if((s.getName()).equals("mainStreet")){
+            ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
+            // = new JLabel(img);
+            System.out.println("hello? " + (s.getCard()).getPicturePath());
+        }
+        
     }
 
 }

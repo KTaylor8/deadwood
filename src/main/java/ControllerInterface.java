@@ -6,4 +6,6 @@ interface ControllerInterface {
     void popUp(String notif);
 
     void updateCurrentPlayer(String playerName);
+
+    void setCard(Set s);
 }

@@ -7,7 +7,7 @@ public class Game{
     private Board board;
     private UI ui;
     private String input;
-    private Controller controller;
+    private View view;
 
     private Player currentPlayer;
 
@@ -15,8 +15,9 @@ public class Game{
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
         ui = new UI();
-        controller = new Controller();
-        controller.run();
+        view  = new View(ui);
+        board.resetBoard(view);
+        view.show();
     }
 
     public void run(){
@@ -25,7 +26,7 @@ public class Game{
 
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
-            controller.popUp("Invalid input, please enter a player number from 2 to 8");
+            view.popUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
 
@@ -41,13 +42,13 @@ public class Game{
             while(board.sceneNum() > 1){
                 currentPlayer = players.peek();
                 players.add(players.remove());
-                controller.updateCurrentPlayer(currentPlayer.getName());
+                view.changeCurrentPlayer(currentPlayer.getName());
                 ui.interact(currentPlayer, board, players);
             }
             //decrement days and reset the roles and board
             numDays--;
             ui.print("Its the end of the day! " + numDays + " days remain");
-            board.resetBoard();
+            board.resetBoard(view);
             for(int i = 0; i < players.size(); i++){
                 (players.peek()).resetRole();
                 (players.peek()).setLocation(board.getSet("trailer"));
@@ -139,9 +140,9 @@ public class Game{
             for (Player p : winners) {
                 winnersString += p.getName() + " ";
             }
-            controller.popUp(winnersString);
+            view.popUp(winnersString);
         } else {
-            controller.popUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            view.popUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
     }
 

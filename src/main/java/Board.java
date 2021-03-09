@@ -44,12 +44,12 @@ public class Board{
         /* Assign cards to sets */
         Collections.shuffle(cardDeck);
 
-        resetBoard();
     }
     
-    public void resetBoard(){
+    public void resetBoard(View view){
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
+            view.setCard(boardSets.get(i));
         }
     }
 

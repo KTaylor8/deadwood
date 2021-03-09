@@ -372,13 +372,14 @@ public class XMLParser {
         String budget;
         String sceneNumber = "";
         String sceneDescription = "";
-        String picturePath = "src/main/resources/img/card_";
+        
 
         Element root = d.getDocumentElement();
 
         cards = root.getElementsByTagName("card");
 
         for (int i = 0; i < cards.getLength(); i++) {
+            String picturePath = "src/main/resources/img/card_";
             cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
 
             // ui.print("Parsing card " + (i + 1));

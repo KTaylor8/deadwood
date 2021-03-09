@@ -22,6 +22,10 @@ public class Card{
         return budget;
     }
 
+    public String getPicturePath(){
+        return picturePath;
+    }
+
     public List<Role> getOnCardRoles() {
         return onCardRoles;
     }

@@ -1,8 +1,10 @@
 public class Controller implements ControllerInterface{
     private final View view;
+    UI model;
 
-    public Controller() {
-        view = new View(this);
+    public Controller(UI ui) {
+        model = ui;
+        view = new View(model);
     }
 
     public void run() {
@@ -16,7 +18,7 @@ public class Controller implements ControllerInterface{
 
     @Override
     public void popUp(String notif){
-        view.givePopUp(notif);
+        //view.givePopUp(notif);
     }
 
     @Override
@@ -26,6 +28,11 @@ public class Controller implements ControllerInterface{
 
     @Override
     public void end(){
-        
+
+    }
+
+    @Override
+    public void setCard(Set s){
+        view.setCard(s);
     }
 }
