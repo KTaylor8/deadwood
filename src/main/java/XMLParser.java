@@ -200,7 +200,7 @@ public class XMLParser {
         Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
         Node trailerChildSub;
-        AreaData trailerArea;
+        AreaData trailerArea = new AreaData();
         
         List<String> neighbors = new ArrayList<String>();
 
@@ -218,7 +218,7 @@ public class XMLParser {
             }
         }
 
-        return new Set("trailer", neighbors);
+        return new Set("trailer", neighbors, trailerArea);
     }
 
     private List<Set> addSets(Element root, List<Set> setList) {
