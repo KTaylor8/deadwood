@@ -3,17 +3,8 @@
 public class Role{
     private String roleName;
     private String roleLevel;
-    // AreaData area; // uncomment for GUI
     private String line;
     private Boolean occupied;
-
-
-    // Role(String name, String level, AreaData area, String line) { // uncomment for GUI
-    //     this.roleName = name;
-    //     this.roleLevel = level;
-    //     this.area = area;
-    //     this.line = line;
-    // }
 
     public Role() {
         
