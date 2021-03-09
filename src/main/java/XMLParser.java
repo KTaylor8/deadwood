@@ -61,36 +61,48 @@ public class XMLParser {
 
 
     // class for Area, so then it's easier to store and access the dimensions
-    // let's move this to it's own java file later if we decide to keep this class
-    // public class AreaData{ // uncomment for GUI
-    //     String x;
-    //     String y;
-    //     String h;
-    //     String w;
+    private class AreaData{
+        private int x;
+        private int y;
+        private int h;
+        private int w;
 
-    //     AreaData(String x, String y, String h, String w) {
-    //         this.x = x;
-    //         this.y = y;
-    //         this.h = h;
-    //         this.w = w;
-    //     }
-    // }
+        AreaData() {}
 
-    // private AreaData handleAreaData(Node area) { // uncomment for GUI
-    //     // String areaX = area.getAttributes().getNamedItem("x").getNodeValue();
-    //     // String areaY = area.getAttributes().getNamedItem("y").getNodeValue();
-    //     // String areaH = area.getAttributes().getNamedItem("h").getNodeValue();
-    //     // String areaW = area.getAttributes().getNamedItem("w").getNodeValue();
-    //     // ui.print("  area: ");
-    //     // ui.print("   x = " + areaX + ", y = " + areaY  + ", h = " + areaH + ", w = " + areaW);
+        AreaData(String x, String y, String h, String w) {
+            this.x = Integer.parseInt(x);
+            this.y = Integer.parseInt(y);
+            this.h = Integer.parseInt(h);
+            this.w = Integer.parseInt(w);
+        }
 
-    //     return new AreaData(
-    //         area.getAttributes().getNamedItem("x").getNodeValue(),
-    //         area.getAttributes().getNamedItem("y").getNodeValue(),
-    //         area.getAttributes().getNamedItem("h").getNodeValue(),
-    //         area.getAttributes().getNamedItem("w").getNodeValue()
-    //     );
-    // }//handleAreaData() method
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public int getH() {
+            return h;
+        }
+
+        public int getW() {
+            return w;
+        }
+
+    }
+
+    private AreaData getAreaData(Node area) { 
+
+        return new AreaData(
+            area.getAttributes().getNamedItem("x").getNodeValue(),
+            area.getAttributes().getNamedItem("y").getNodeValue(),
+            area.getAttributes().getNamedItem("h").getNodeValue(),
+            area.getAttributes().getNamedItem("w").getNodeValue()
+        );
+    }
 
 
     /**
@@ -103,12 +115,13 @@ public class XMLParser {
         // Declare vars for part data handling
         NodeList partChildren;
         Node partChildrenSub;
+        AreaData partArea;
 
         // Part data for Role constructor
-        // AreaData partArea; // uncomment for GUI
         String partName;
         String partLevel;
         String partLine = "";
+
 
         //read part's attributes and text
         partName = part.getAttributes().getNamedItem("name").getNodeValue();
@@ -121,7 +134,7 @@ public class XMLParser {
             partChildrenSub = partChildren.item(k);
 
             if ("area".equals(partChildrenSub.getNodeName())) {
-                // partArea = handleAreaData(partChildrenSub); // uncomment for GUI
+                partArea = getAreaData(partChildrenSub);
             } else if ("line".equals(partChildrenSub.getNodeName())) {
                 partLine = partChildrenSub.getTextContent();
             }
@@ -145,6 +158,10 @@ public class XMLParser {
         Node office; /* Element with tag name "office" */
         NodeList officeChildren;
         Node officeChildSub;
+        AreaData officeArea;
+
+        // Declare vars for take data handling
+        AreaData takeArea;
 
         List<String> neighbors = new ArrayList<String>();     
 
@@ -160,8 +177,6 @@ public class XMLParser {
         office = root.getElementsByTagName("office").item(0);
         officeChildren = office.getChildNodes();
 
-        // AreaData officeArea;
-        // AreaData takeArea;
 
         for (int j = 0; j < officeChildren.getLength(); j++) {
 
@@ -170,7 +185,7 @@ public class XMLParser {
             if ("neighbors".equals(officeChildSub.getNodeName())) {
                 neighbors = getNeighborData(officeChildSub.getChildNodes());
             } else if ("area".equals(officeChildSub.getNodeName())) {
-                // officeArea = handleAreaData(officeChildSub); // uncomment for GUI
+                officeArea = getAreaData(officeChildSub);
             } else if ("upgrades".equals(officeChildSub.getNodeName())) {
                 //read attributes for takes and their area children
                 upgradesList = officeChildSub.getChildNodes();
@@ -199,7 +214,7 @@ public class XMLParser {
                 // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
                 //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
                 //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
-                //         // upgradeArea = handleAreaData(upgradeChildrenSub);
+                //         // upgradeArea = getAreaData(upgradeChildrenSub);
                 //     }
                 // }
             }
@@ -217,6 +232,7 @@ public class XMLParser {
         Node trailer; /* Element with tag name "trailer" */
         NodeList trailerChildren;
         Node trailerChildSub;
+        AreaData trailerArea;
         
         List<String> neighbors = new ArrayList<String>();
 
@@ -230,7 +246,7 @@ public class XMLParser {
             if ("neighbors".equals(trailerChildSub.getNodeName())) {
                 neighbors = getNeighborData(trailerChildSub.getChildNodes());
             } else if ("area".equals(trailerChildSub.getNodeName())) {
-                // trailerArea = handleAreaData(trailerChildSub); // uncomment for GUI
+                trailerArea = getAreaData(trailerChildSub);
             }
         }
 
@@ -251,12 +267,16 @@ public class XMLParser {
         Node setChildSub;
         NodeList partList;
         Node partListSub;
+        AreaData setArea;
 
         // take vars
         NodeList takeList;
         Node takeListSub;
         Node take;
-        int numTakes;
+        int takeNum;
+        // int numTakes;
+        AreaData takeArea;
+        List<ShotToken> tokens;
 
         sets = root.getElementsByTagName("set");
 
@@ -265,9 +285,12 @@ public class XMLParser {
             role = new Role();
             setRoles = new ArrayList<Role>();
             neighbors = new ArrayList<String>();
-            numTakes = 0;
+            // numTakes = 0;
 
             setRoles = new ArrayList<Role>(); // want a new List each time, don't try to clear and reuse the same one
+
+            tokens = new ArrayList<ShotToken>();
+            takeArea = new AreaData();
 
             // ui.print("Parsing data for set " + (i + 1));
 
@@ -278,9 +301,6 @@ public class XMLParser {
             //reads attributes and parts from the sets' children
             setChildren = set.getChildNodes();
 
-            // AreaData setArea;
-            // AreaData takeArea;
-
             for (int j = 0; j < setChildren.getLength(); j++) {
 
                 setChildSub = setChildren.item(j);
@@ -289,28 +309,29 @@ public class XMLParser {
                     // parse  neighbor children
                     neighbors = getNeighborData(setChildSub.getChildNodes());
                 } else if ("area".equals(setChildSub.getNodeName())) {
-                    // setArea = handleAreaData(setChildSub); // uncomment for GUI
+                    setArea = getAreaData(setChildSub);
                 } else if ("takes".equals(setChildSub.getNodeName())) {
                     //read attributes for takes and their area children
                     takeList = setChildSub.getChildNodes();
-                    numTakes = 0;
+                    // numTakes = 0;
                     for (int k = 1; k < takeList.getLength(); k++) {
                         takeListSub = takeList.item(k);
                         // not all items in takeList are actual "take"s
                         if ("take".equals(takeListSub.getNodeName())) {
                             take = takeListSub;
-                            numTakes++;
-                            // // ignoring the actual individual takes for now
-                            // String takeNumber = take.getAttributes().getNamedItem("number").getNodeValue();
+                            // numTakes++;
+
+                            takeNum = Integer.parseInt(take.getAttributes().getNamedItem("number").getNodeValue());
                             // ui.print("  take number: " + takeNumber);
 
-                            // // ignoring area data for now; uncomment for GUI
-                            // for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
-                            //     Node takeChildrenSub = takeChildrenNodes.item(l);
-                            //     if ("area".equals(takeChildrenSub.getNodeName())) {
-                            //         // takeArea = handleAreaData(takeChildrenSub);
-                            //     }
-                            // }
+                            NodeList takeChildrenNodes = take.getChildNodes();
+                            for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
+                                Node takeChildrenSub = takeChildrenNodes.item(l);
+                                if ("area".equals(takeChildrenSub.getNodeName())) {
+                                    takeArea = getAreaData(takeChildrenSub);
+                                }
+                            }
+                            tokens.add(new ShotToken(takeNum, takeArea.getX(), takeArea.getY(), takeArea.getW(), takeArea.getH()));
                         }
                     }
                 } else if ("parts".equals(setChildSub.getNodeName())) {
@@ -327,7 +348,7 @@ public class XMLParser {
                 // don't use an else block                
 
             } //for set child nodes
-            setList.add(new Set(setName, neighbors, setRoles, numTakes));
+            setList.add(new Set(setName, neighbors, setRoles, tokens.size(), tokens));
         
         }//for set nodes
 
