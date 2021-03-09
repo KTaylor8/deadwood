@@ -59,41 +59,6 @@ public class XMLParser {
         return neighbors;
     }
 
-
-    // class for Area, so then it's easier to store and access the dimensions
-    private class AreaData{
-        private int x;
-        private int y;
-        private int h;
-        private int w;
-
-        AreaData() {}
-
-        AreaData(String x, String y, String h, String w) {
-            this.x = Integer.parseInt(x);
-            this.y = Integer.parseInt(y);
-            this.h = Integer.parseInt(h);
-            this.w = Integer.parseInt(w);
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getH() {
-            return h;
-        }
-
-        public int getW() {
-            return w;
-        }
-
-    }
-
     private AreaData getAreaData(Node area) { 
 
         return new AreaData(
@@ -115,7 +80,7 @@ public class XMLParser {
         // Declare vars for part data handling
         NodeList partChildren;
         Node partChildrenSub;
-        AreaData partArea;
+        AreaData partArea = new AreaData();
 
         // Part data for Role constructor
         String partName;
@@ -141,8 +106,7 @@ public class XMLParser {
 
         } //for part child nodes
 
-        // roleObj = new Role(partName, partLevel, partArea, partLine); // uncomment for GUI
-        roleObj = new Role(partName, partLevel, partLine);
+        roleObj = new Role(partName, partLevel, partLine, partArea);
 
         return roleObj;
     }//getPartData() method
