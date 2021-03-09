@@ -145,7 +145,7 @@ public class View implements ActionListener{
         display.setText("Current Player: " + playerName);
     }
 
-    public void changePlayerStats(String stats){
+    public void changePlayerStats(String stats){ // not functional
         player1.setText("Player 1: \nDollars: \n Credits: ");
     }
 
