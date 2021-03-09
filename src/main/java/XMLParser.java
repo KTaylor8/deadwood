@@ -131,11 +131,15 @@ public class XMLParser {
 
         // Upgrade vars
         NodeList upgradesList;
+        // UNSURE IF QUEUE IS RIGHT DATA STRUCTURE FOR THIS
         Queue<Node> filteredUpgrades; /* Intermediary storage helps parse upgrades */
         Node upgradesListSub;
         int upgradeCost;
-        int[] upgradeDollars = new int[5]; // number of upgrade options currently hard-coded, but we might make it dynamic later
-        int[] upgradeCredits = new int[5];
+        int numUpgradeOptions = 5;
+        AreaData[] upgradeDollarsArea = new AreaData[numUpgradeOptions];
+        int[] upgradeDollars = new int[numUpgradeOptions]; // number of upgrade options currently hard-coded, but we might make it dynamic later
+        AreaData[] upgradeCreditsArea = new AreaData[numUpgradeOptions];
+        int[] upgradeCredits = new int[numUpgradeOptions];
 
         //reads attributes and parts from the offices' children
         office = root.getElementsByTagName("office").item(0);
@@ -166,6 +170,12 @@ public class XMLParser {
                 for (int k = 0; k < 5; k++) {
                     upgradeCost = Integer.parseInt(filteredUpgrades.poll().getAttributes().getNamedItem("amt").getNodeValue());
                     upgradeDollars[k] = upgradeCost;
+                    for (int l = 0; l < filteredUpgrades.remove().getChildNodes().getLength(); l++) {
+                        Node upgradeChildrenSub = filteredUpgrades.remove().getChildNodes().item(l);
+                        if ("area".equals(upgradeChildrenSub.getNodeName())) {
+                            upgradeDollarsArea[k] = getAreaData(upgradeChildrenSub);
+                        }
+                    }
                 }
 
                 // parse upgrade amounts in credits
@@ -174,19 +184,13 @@ public class XMLParser {
                     upgradeCredits[k] = upgradeCost;
                 }
 
-                // ignoring area data for now; uncomment for GUI
-                // for (int l = 0; l < upgradeChildrenNodes.getLength(); l++) {
-                //     Node upgradeChildrenSub = upgradeChildrenNodes.item(l);
-                //     if ("area".equals(upgradeChildrenSub.getNodeName())) {
-                //         // upgradeArea = getAreaData(upgradeChildrenSub);
-                //     }
-                // }
+
             }
             // don't use an else block
 
         } //for office child nodes
 
-        return new Set("office", neighbors, upgradeDollars, upgradeCredits);
+        return new Set("office", neighbors, upgradeDollars, upgradeCredits, );
     }
 
 
