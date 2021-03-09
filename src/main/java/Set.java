@@ -12,34 +12,41 @@ public class Set{
     private int finalTakes = 0;
     private int takesLeft; // field should be private if other classes use a getter method to access them, right?
     private List<ShotToken> shotTokens;
+    private AreaData area;
     
-    private int[] upgradeCostDollars;
-    private int[] upgradeCostCredits;
+    private int[] upgradeCostDollars, upgradeCostCredits;
+
+    AreaData[] upgradeDollarsAreas, upgradeCreditsAreas;
 
     
     private UI ui = new UI();
 
     // regular set constructor
-    public Set(String s, List<String> n, List<Role> r, int t, List<ShotToken> shotTokens){
+    public Set(String s, List<String> n, List<Role> r, List<ShotToken> shotTokens, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
         this.offCardRoles = r;
-        this.finalTakes = t;
+        this.finalTakes = shotTokens.size();
         this.shotTokens = shotTokens;
+        this.area = areaData;
     }
 
     // office constructor
-    public Set(String s, List<String> n, int[] upgradeD, int[] upgradeC){
+    public Set(String s, List<String> n, int[] upgradeD, int[] upgradeC, AreaData[]upgradeDAreas, AreaData[] upgradeCAreas, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
         upgradeCostDollars = upgradeD;
         upgradeCostCredits = upgradeC;
+        upgradeDollarsAreas = upgradeDAreas;
+        upgradeCreditsAreas = upgradeCAreas;
+        this.area = areaData;
     }
 
     // trailers constructor
-    public Set(String s, List<String> n){
+    public Set(String s, List<String> n, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
+        this.area = areaData;
     }
 
     public int getCardX(){
@@ -52,6 +59,10 @@ public class Set{
 
     public String getName() {
         return setName;
+    }
+
+    public AreaData getArea() {
+        return area;
     }
 
     public void resetSet(Card newCard){
@@ -189,6 +200,7 @@ public class Set{
 
     public void printInfo() {
         String setInfo = "";
+        Role role = new Role();
         setInfo += ("\nSet name: " + setName);
         setInfo += "\n\tNeighbors: ";
         for (int i = 0; i < neighbors.size(); i++) {
@@ -198,17 +210,30 @@ public class Set{
             setInfo += "\n\tUpgrade costs in dollars: ";
             for (int i = 0; i < upgradeCostDollars.length; i++) {
                 setInfo += "\n\t\tRank " + (i+2) + ": $" + upgradeCostDollars[i];
+                setInfo += "\n\t\t\tUpgrade area: x = " + upgradeDollarsAreas[i].getX() + 
+                ", y = " + upgradeDollarsAreas[i].getY() +
+                ", w = " + upgradeDollarsAreas[i].getW() +
+                ", h = " + upgradeDollarsAreas[i].getH();
             }
             setInfo += "\n\tUpgrade costs in credits: ";
             for (int i = 0; i < upgradeCostCredits.length; i++) {
                 setInfo += "\n\t\tRank " + (i+2) + ": " + upgradeCostCredits[i] + " credits";
+                setInfo += "\n\t\t\tUpgrade area: x = " + upgradeCreditsAreas[i].getX() + 
+                ", y = " + upgradeCreditsAreas[i].getY() +
+                ", w = " + upgradeCreditsAreas[i].getW() +
+                ", h = " + upgradeCreditsAreas[i].getH();
             }
         } else if (setName != "trailer") {
             for (int i = 0; i < offCardRoles.size(); i++) {
+                role = offCardRoles.get(i);
                 setInfo += "\n\tOff-card role #" + (i+1) + ":";
-                setInfo += "\n\t\tOff-card role name: " + offCardRoles.get(i).getName();
-                setInfo += "\n\t\tOff-card role level: " + offCardRoles.get(i).getLevel();
-                setInfo += "\n\t\tOff-card role line: " + offCardRoles.get(i).getLine();
+                setInfo += "\n\t\tOff-card role name: " + role.getName();
+                setInfo += "\n\t\tOff-card role level: " + role.getLevel();
+                setInfo += "\n\t\tOff-card role line: " + role.getLine();
+                setInfo += "\n\t\tCard area: x = " + role.getArea().getX() + 
+                ", y = " + role.getArea().getY() +
+                ", w = " + role.getArea().getW() +
+                ", h = " + role.getArea().getH();
             }
         } 
         ui.print(setInfo);

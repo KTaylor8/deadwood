@@ -42,15 +42,26 @@ public class Card{
 
     public void printInfo() {
         String cardInfo = "";
+        Role role;
         cardInfo += ("\nCard name: " + cardName);
         cardInfo += ("\n\tCard budget: " + budget);
         cardInfo += ("\n\tScene number: " + sceneNumber);
         cardInfo += ("\n\tScene description: " + sceneDescription);
-        for (int i = 0; i < onCardRoles.size(); i++) {
-            cardInfo += "\n\tOn-card role #" + (i+1) + ":";
-            cardInfo += "\n\t\tOn-card role name: " + onCardRoles.get(i).getName();
-            cardInfo += "\n\t\tOn-card role level: " + onCardRoles.get(i).getLevel();
-            cardInfo += "\n\t\tOn-card role line: " + onCardRoles.get(i).getLine();
+        try {
+            for (int i = 0; i < onCardRoles.size(); i++) {
+                role = onCardRoles.get(i);
+                cardInfo += "\n\tOn-card role #" + (i+1) + ":";
+                cardInfo += "\n\t\tOn-card role name: " + role.getName();
+                cardInfo += "\n\t\tOn-card role level: " + role.getLevel();
+                cardInfo += "\n\t\tCard area: x = " + role.getArea().getX() + 
+                            ", y = " + role.getArea().getY() +
+                            ", w = " + role.getArea().getW() +
+                            ", h = " + role.getArea().getH();
+                cardInfo += "\n\t\tOn-card role line: " + role.getLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ui.print(e.getMessage());
         }
         ui.print(cardInfo);
     }

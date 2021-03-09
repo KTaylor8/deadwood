@@ -5,16 +5,18 @@ public class Role{
     private String roleLevel;
     private String line;
     private Boolean occupied;
+    private AreaData area;
 
     public Role() {
         
     }
 
-    public Role(String name, String level, String line) {
+    public Role(String name, String level, String line, AreaData areaData) {
         this.roleName = name;
         this.roleLevel = level;
         this.line = line;
         this.occupied = false;
+        this.area = areaData;
     }
 
     public String getName() {
@@ -27,6 +29,10 @@ public class Role{
 
     public String getLine() {
         return line;
+    }
+
+    public AreaData getArea() {
+        return area;
     }
 
     public Boolean isOccupied() {
