@@ -19,7 +19,6 @@ public class View extends JPanel implements ActionListener{
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
 
-
     private UI ui;
 
     public View(UI ui){
@@ -184,7 +183,7 @@ public class View extends JPanel implements ActionListener{
         player1.setText("Player 1: \nDollars: \n Credits: ");
     }
 
-    public void setCard(Set s){
+    public void resetCard(Set s){
         ImageIcon img;
         JLabel l;
 
@@ -202,7 +201,7 @@ public class View extends JPanel implements ActionListener{
         cardPanel.add(l);
     }
 
-    public void setShot(Set s){
+    public void resetShot(Set s){
         JLabel l;
         AreaData area;
 
@@ -218,6 +217,31 @@ public class View extends JPanel implements ActionListener{
         
     }
 
+    // reset a given player's die's location to the trailers
+    public void resetPlayerDie(Player p, int pNum){
+        JLabel l;
+        int trailerX = 1000;
+        int trailerY = 262;
+        AreaData area = p.getPlayerDieArea();
+
+        // set 
+        int x = trailerX + (46*pNum);
+        int y;
+        if (pNum <= 4) { // 1st row; 4 dice/row
+            y = trailerY;
+        } else { // 2nd row
+            y = trailerY + 50;
+        }
+        area.setX(x); // I think this should update the coords of the player's playerDieArea attribute, but unverified
+        area.setY(y);
+
+        l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
+
+        l.setBounds(x, y, 46, 46); // dice w/h = 46
+        cardPanel.add(l);
+    }
+    public void movePlayerDie(Player p){}
+    public void changePlayerDieVal(Player p){}
 
     /*if((s.getName()).equals("Main Street")){
         ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());

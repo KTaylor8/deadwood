@@ -106,8 +106,10 @@ public class Game{
             String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
                 p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
+                view.resetPlayerDie(p, i);
             } else {
                 p = new Player(startLocation, tempName, dieImgPaths);
+                view.resetPlayerDie(p, i);
             }
             players.add(p);
         }
@@ -122,6 +124,7 @@ public class Game{
             curPlayer = players.peek();
             curPlayer.resetRole();
             curPlayer.setLocation(board.getSet("trailer"));
+            view.resetPlayerDie(curPlayer, i);
             players.add(players.remove());
         }
     }

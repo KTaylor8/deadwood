@@ -1,4 +1,4 @@
-import java.lang.invoke.VolatileCallSite;
+// import java.lang.invoke.VolatileCallSite;
 import java.util.*;
 import org.w3c.dom.Document;
 
@@ -53,8 +53,8 @@ public class Board{
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
             //System.out.println("helo");
-            view.setCard(boardSets.get(i));
-            view.setShot(boardSets.get(i));
+            view.resetCard(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
         }
     }
 
