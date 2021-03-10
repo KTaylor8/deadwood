@@ -4,26 +4,40 @@ public class Player{
 
     private String playerName;
     private String[] playerDiePaths;
-    private int rank = 1;
-    private int dollars = 0;
-    private int credits = 0;
-    private boolean employed = false; 
-    private int rehearseTokens = 0;
+    private int playerDieCurrentNum;
+    private int rank;
+    private int dollars;
+    private int credits;
+    private boolean employed; 
+    private int rehearseTokens;
     private Set location;
     private String roleName;
     private UI ui = new UI();
 
     public Player(Set s, String p, String[] paths){
-        playerName = p;
         location = s;
+        playerName = p;
         playerDiePaths = paths;
+        
+        rank = 1;
+        credits = 0;
+        dollars = 0;
+        playerDieCurrentNum = 0;
+        employed = false;
+        rehearseTokens = 0;
     }
 
     public Player(Set s, String p, int sr, int sc, String[] paths){
+        location = s;
         playerName = p;
         rank = sr;
-        location = s;
+        credits = sc;
         playerDiePaths = paths;
+
+        dollars = 0;
+        playerDieCurrentNum = 0;
+        employed = false;
+        rehearseTokens = 0;
     }
 
     public String getName(){
@@ -33,8 +47,8 @@ public class Player{
         this.playerName = s;
     }
 
-    public String[] getPlayerDiePath() {
-        return playerDiePaths;
+    public String getPlayerDie() {
+        return playerDiePaths[playerDieCurrentNum];
     }
 
     public int getRank(){
