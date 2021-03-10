@@ -85,11 +85,15 @@ public class View implements ActionListener{
 
         boardPanel.setLayout(null);
 
-        //JLayeredPane layeredPane = new JLayeredPane();
-        //JLabel playerlabel = new JLabel("im going to cry");
-        //layeredPane.add(playerlabel,new Integer(0));
-
+        JLayeredPane layeredPane = new JLayeredPane();
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
+        layeredPane.setPreferredSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
+        layeredPane.setBorder(BorderFactory.createTitledBorder("title"));
+        //layeredPane.setBorder(BorderFactory.createTitledBorder(“Pane of pain, please let me die"));
+        JLabel playerlabel = new JLabel(img, JLabel.CENTER);
+        playerlabel.setBounds(200, 0, img.getIconWidth(), img.getIconHeight());
+        layeredPane.add(playerlabel, 0);
+
         JLabel b = new JLabel(img);
         //boardPanel.add(b, BorderLayout.CENTER);
         //lpane.add(boardPanel, 0);
