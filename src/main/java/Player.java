@@ -5,6 +5,7 @@ public class Player{
     private String playerName;
     private String[] playerDiePaths;
     private int playerDieCurrentNum;
+    private AreaData playerDieArea;
     private int rank;
     private int dollars;
     private int credits;
@@ -25,6 +26,9 @@ public class Player{
         playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
+        playerDieArea = new AreaData(0, 0, 46, 46);
+        // roles' area w/h = 46
+        // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
     }
 
     public Player(Set s, String p, int sr, int sc, String[] paths){
@@ -38,7 +42,10 @@ public class Player{
         playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
-    }
+        playerDieArea = new AreaData(0, 0, 46, 46); // roles' area w/h = 46
+    } 
+    // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
+    // trailerX + (i*46)
 
     public String getName(){
         return playerName;
@@ -47,8 +54,12 @@ public class Player{
         this.playerName = s;
     }
 
-    public String getPlayerDie() {
+    public String getPlayerDiePath() {
         return playerDiePaths[playerDieCurrentNum];
+    }
+
+    public AreaData getPlayerDieArea() {
+        return playerDieArea;
     }
 
     public int getRank(){
