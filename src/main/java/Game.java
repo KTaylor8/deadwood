@@ -16,15 +16,9 @@ public class Game{
         board = new Board(args[0], args[1]);
         ui = new UI();
         view  = new View(ui);
-        board.resetBoard(view);
-        //view.setCard(board);
-        view.show();
     }
 
     public void run(){
-
-        
-
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             view.popUp("Invalid input, please enter a player number from 2 to 8");
@@ -36,6 +30,10 @@ public class Game{
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
+
+        // init and show board
+        board.resetBoard(view);
+        view.show();
         
         //iterates through the day
         while(numDays != 0){
@@ -50,11 +48,9 @@ public class Game{
             numDays--;
             ui.print("Its the end of the day! " + numDays + " days remain");
             board.resetBoard(view);
-            for(int i = 0; i < players.size(); i++){
-                (players.peek()).resetRole();
-                (players.peek()).setLocation(board.getSet("trailer"));
-                players.add(players.remove());
-            }
+
+            // reset players
+            resetPlayers(players);
         }
 
         //calculate winner
@@ -118,7 +114,17 @@ public class Game{
 
         return players;
     }
-    
+
+    // to reset players
+    public void resetPlayers(Queue<Player> players) {
+        Player curPlayer;
+        for(int i = 0; i < players.size(); i++){
+            curPlayer = players.peek();
+            curPlayer.resetRole();
+            curPlayer.setLocation(board.getSet("trailer"));
+            players.add(players.remove());
+        }
+    }
 
     //to calculate winner
     private void calcWinner(Queue<Player> players){
