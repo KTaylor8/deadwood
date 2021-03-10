@@ -5,8 +5,6 @@ public class Set{
     private List<String> neighbors;
     private List<Role> offCardRoles = new ArrayList<Role>();
     private Card currentCard;
-    private int cardPosX = 0;
-    private int cardPosY = 0;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
     private int flipStage;
     private int finalTakes = 0;

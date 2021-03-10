@@ -124,9 +124,6 @@ public class XMLParser {
         Node officeChildSub;
         AreaData officeArea = new AreaData();
 
-        // Declare vars for take data handling
-        AreaData takeArea;
-
         List<String> neighbors = new ArrayList<String>();     
 
         // Upgrade vars
