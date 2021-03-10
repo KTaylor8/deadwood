@@ -1,9 +1,8 @@
-import java.util.*;
+// import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.Graphics;
 
@@ -29,6 +28,8 @@ public class View extends JPanel implements ActionListener{
     }
 
     public void show(){
+        int leftMargin = 300; // sets left margin of display and panels, for centering
+
         frame = new JFrame();
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,7 +38,7 @@ public class View extends JPanel implements ActionListener{
         JPanel displayPanel = new JPanel();
 
         display = new JLabel("Current player: ", JLabel.CENTER);
-        display.setPreferredSize(new Dimension(300, 50));
+        display.setPreferredSize(new Dimension(leftMargin, 50));
         display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 
@@ -98,15 +99,15 @@ public class View extends JPanel implements ActionListener{
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
         JLabel board = new JLabel(img, JLabel.CENTER);
-        board.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        board.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
         //layeredPane.add(board, 100);
-        cardPanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        cardPanel.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
         cardPanel.setOpaque(false);
         cardPanel.setLayout(null);
-        shotPanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        shotPanel.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
         shotPanel.setOpaque(false);
         shotPanel.setLayout(null);
-        dicePanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        dicePanel.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
         dicePanel.setOpaque(false);
         dicePanel.setLayout(null);
         layeredPane.add(dicePanel, 0);
@@ -185,43 +186,52 @@ public class View extends JPanel implements ActionListener{
 
     public void setCard(Set s){
             ImageIcon img;
+            JLabel l;
+
+            AreaData area = s.getArea();
+
             if(s.getFlipStage() != 1){
                 img = new ImageIcon("src/main/resources/img/cardback.png");
             }
             else{
-                img = new ImageIcon((s.getCard()).getPicturePath());
+                img = new ImageIcon(s.getCard().getPicturePath());
             }
-            JLabel l = new JLabel(img);
-            l.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+            l = new JLabel(img);
+           
+            l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
             cardPanel.add(l);
         }
 
     public void setShot(Set s){
-            System.out.println(s.getTakesLeft());
-            List<ShotToken> tokens = s.getShotTokens();
-            for(int i = 0; i < s.getTakesLeft(); i++){
-                ImageIcon img = new ImageIcon("src/main/resources/img/shot.png");
-                JLabel l = new JLabel(img);
-                l.setBounds(((tokens.get(i)).getArea()).getX(), ((tokens.get(i)).getArea()).getY(), ((tokens.get(i)).getArea()).getW(),((tokens.get(i)).getArea()).getH());
-                shotPanel.add(l);
-            }
-            //System.out.println("uh " + (s.getCard()).getPicturePath());
-            
+        JLabel l;
+        AreaData area;
+
+        System.out.println(s.getTakesLeft());
+        List<ShotToken> tokens = s.getShotTokens();
+
+        for(int i = 0; i < s.getTakesLeft(); i++){
+            l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
+            area = tokens.get(i).getArea();
+            l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
+            shotPanel.add(l);
         }
-    
+        //System.out.println("uh " + (s.getCard()).getPicturePath());
+        
+    }
 
-        /*if((s.getName()).equals("Main Street")){
-            ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
-            mainStreet = new JLabel(img);
-            mainStreet.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
-            layeredPane.add(mainStreet, 1);
-            System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
 
-            mainStreet2 = new JLabel(img);
-            mainStreet2.setBounds((s.getArea()).getX()-500, (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
-            layeredPane.add(mainStreet2, 2);
-            System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
-        }*/
+    /*if((s.getName()).equals("Main Street")){
+        ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
+        mainStreet = new JLabel(img);
+        mainStreet.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+        layeredPane.add(mainStreet, 1);
+        System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
+
+        mainStreet2 = new JLabel(img);
+        mainStreet2.setBounds((s.getArea()).getX()-500, (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+        layeredPane.add(mainStreet2, 2);
+        System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
+    }*/
         
     
 
