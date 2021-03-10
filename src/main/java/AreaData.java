@@ -16,6 +16,13 @@ public class AreaData{
         this.w = Integer.parseInt(w);
     }
 
+    AreaData(int x, int y, int h, int w) {
+        this.x = x;
+        this.y = y;
+        this.h = h;
+        this.w = w;
+    }
+
     public int getX() {
         return x;
     }
