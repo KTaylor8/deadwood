@@ -99,7 +99,7 @@ For A5:
 - implement singleton design pattern in Game 
 - clean up freeRoles() in Board
 - clean up logic flow between objects for employ()
-
+- edit based on A4 feedback
 
 For GUI:
 
