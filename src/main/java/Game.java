@@ -73,6 +73,13 @@ public class Game{
         int startCredits = 0;
         numDays = 4;
 
+        // managing the image filepaths for the die assigned to each player
+        int numImgs = 6;
+        String[] dieImgPaths;
+        String dieImgPathStub = "src/main/resources/img/dice_";
+        String[] playerDieLetters = {"b", "c", "g", "o", "p", "r", "v", "y"};
+        String imgExtension = ".png";
+
         //changes player values according to number of players
         if (numPlayers >= 7){
             startRank = 2;
@@ -92,12 +99,19 @@ public class Game{
             numDays = 3;
         }
 
-        // Create players
-        for(int i = 1; i <= numPlayers; i++){
+        // Make players
+        for(int i = 0; i < numPlayers; i++){
+            // Create dieImgPaths
+            dieImgPaths = new String[numImgs];
+            for (int j = 0; j < numImgs; j++) {
+                dieImgPaths[j] = dieImgPathStub + playerDieLetters[i] + (j+1) + imgExtension;
+            }
+            // Create players
+            String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
-                p = new Player(startLocation, ("player" + i), startRank, startCredits);
+                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
             } else {
-                p = new Player(startLocation, ("player" + i));
+                p = new Player(startLocation, tempName, dieImgPaths);
             }
             players.add(p);
         }

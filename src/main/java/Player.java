@@ -3,6 +3,7 @@ import java.util.*;
 public class Player{
 
     private String playerName;
+    private String[] playerDiePaths;
     private int rank = 1;
     private int dollars = 0;
     private int credits = 0;
@@ -12,15 +13,17 @@ public class Player{
     private String roleName;
     private UI ui = new UI();
 
-    public Player(Set s, String p){
+    public Player(Set s, String p, String[] paths){
         playerName = p;
         location = s;
+        playerDiePaths = paths;
     }
 
-    public Player(Set s, String p, int sr, int sc){
+    public Player(Set s, String p, int sr, int sc, String[] paths){
         playerName = p;
         rank = sr;
         location = s;
+        playerDiePaths = paths;
     }
 
     public String getName(){
@@ -28,6 +31,10 @@ public class Player{
     }
     public void setName(String s){
         this.playerName = s;
+    }
+
+    public String[] getPlayerDiePath() {
+        return playerDiePaths;
     }
 
     public int getRank(){
