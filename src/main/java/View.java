@@ -59,6 +59,7 @@ public class View implements ActionListener{
 
         JPanel leftPlayers = new JPanel();
         leftPlayers.setLayout(new GridLayout(4, 1));
+        leftPlayers.setSize(new Dimension(800, 1200));
         //leftPlayers.add(player1);
         //leftPlayers.add(player3);
         //leftPlayers.add(player5);
@@ -73,6 +74,7 @@ public class View implements ActionListener{
 
         JPanel rightPlayers = new JPanel();
         rightPlayers.setLayout(new GridLayout(4, 1));
+        rightPlayers.setSize(new Dimension(800, 1200));
         //rightPlayers.add(player2);
         //rightPlayers.add(player4);
         //rightPlayers.add(player6);
@@ -87,11 +89,9 @@ public class View implements ActionListener{
 
         JLayeredPane layeredPane = new JLayeredPane();
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
-        layeredPane.setPreferredSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
-        layeredPane.setBorder(BorderFactory.createTitledBorder("title"));
-        //layeredPane.setBorder(BorderFactory.createTitledBorder(“Pane of pain, please let me die"));
+        layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
         JLabel playerlabel = new JLabel(img, JLabel.CENTER);
-        playerlabel.setBounds(200, 0, img.getIconWidth(), img.getIconHeight());
+        playerlabel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
         layeredPane.add(playerlabel, 0);
 
         JLabel b = new JLabel(img);
@@ -110,7 +110,7 @@ public class View implements ActionListener{
         //JLabel board = new JLabel(new ImageIcon("src/main/resources/img/board.png"));
         //board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
 
-        frame.add(b, BorderLayout.CENTER);
+        frame.add(layeredPane, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
         frame.add(actionPanel, BorderLayout.PAGE_END);
         frame.add(leftPlayers, BorderLayout.LINE_START);
@@ -118,7 +118,7 @@ public class View implements ActionListener{
         //frame.add(mainStreet);
 
         frame.pack();
-
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         frame.setVisible(true);
 
     }
