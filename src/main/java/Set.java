@@ -97,7 +97,7 @@ public class Set{
     }
 
     public void flipSet(){
-        flipStage = 2;
+        flipStage++;
     }
 
     public List<ShotToken> getShotTokens(){

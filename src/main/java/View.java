@@ -17,6 +17,8 @@ public class View extends JPanel implements ActionListener{
     JLabel mainStreet2 = new JLabel();
     JLayeredPane layeredPane = new JLayeredPane();
     JPanel cardPanel = new JPanel();
+    JPanel shotPanel = new JPanel();
+    JPanel dicePanel = new JPanel();
 
 
     private UI ui;
@@ -97,7 +99,20 @@ public class View extends JPanel implements ActionListener{
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
         JLabel board = new JLabel(img, JLabel.CENTER);
         board.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
-        layeredPane.add(board, 100);
+        //layeredPane.add(board, 100);
+        cardPanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        cardPanel.setOpaque(false);
+        cardPanel.setLayout(null);
+        shotPanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        shotPanel.setOpaque(false);
+        shotPanel.setLayout(null);
+        dicePanel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        dicePanel.setOpaque(false);
+        dicePanel.setLayout(null);
+        layeredPane.add(dicePanel, 0);
+        layeredPane.add(shotPanel, 1);
+        layeredPane.add(cardPanel, 2);
+        layeredPane.add(board, 3);
         //layeredPane.add(cardPanel, 0);
         
         /*for(int i = 0; i < 10; i++){
@@ -168,23 +183,27 @@ public class View extends JPanel implements ActionListener{
         player1.setText("Player 1: \nDollars: \n Credits: ");
     }
 
-    public void setCard(Set s, int i){
-            //System.out.println((s.getCard()).getPicturePath());
-            ImageIcon img = new ImageIcon("src/main/resources/img/cardback.png");
-            //System.out.println("uh " + (s.getCard()).getPicturePath());
+    public void setCard(Set s){
+            ImageIcon img;
+            if(s.getFlipStage() != 1){
+                img = new ImageIcon("src/main/resources/img/cardback.png");
+            }
+            else{
+                img = new ImageIcon((s.getCard()).getPicturePath());
+            }
             JLabel l = new JLabel(img);
             l.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
-            layeredPane.add(l, i);
-            i--;
+            cardPanel.add(l);
         }
 
-    public void setShot(Set s, int i){
+    public void setShot(Set s){
+            System.out.println(s.getTakesLeft());
             List<ShotToken> tokens = s.getShotTokens();
-            for(int j = 1; j <= tokens.size(); j++){
+            for(int i = 0; i < s.getTakesLeft(); i++){
                 ImageIcon img = new ImageIcon("src/main/resources/img/shot.png");
                 JLabel l = new JLabel(img);
-                l.setBounds(((tokens.get(j-1)).getArea()).getX(), ((tokens.get(j-1)).getArea()).getY(), ((tokens.get(j-1)).getArea()).getW(),((tokens.get(j-1)).getArea()).getH());
-                layeredPane.add(l, i-j);
+                l.setBounds(((tokens.get(i)).getArea()).getX(), ((tokens.get(i)).getArea()).getY(), ((tokens.get(i)).getArea()).getW(),((tokens.get(i)).getArea()).getH());
+                shotPanel.add(l);
             }
             //System.out.println("uh " + (s.getCard()).getPicturePath());
             

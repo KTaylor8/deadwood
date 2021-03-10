@@ -10,7 +10,7 @@ public class AreaData{
     AreaData() {}
 
     AreaData(String x, String y, String h, String w) {
-        this.x = Integer.parseInt(x) + 300;
+        this.x = Integer.parseInt(x);
         this.y = Integer.parseInt(y);
         this.h = Integer.parseInt(h);
         this.w = Integer.parseInt(w);

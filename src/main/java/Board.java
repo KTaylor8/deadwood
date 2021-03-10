@@ -53,8 +53,8 @@ public class Board{
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
             //System.out.println("helo");
-            view.setCard(boardSets.get(i), 101-i);
-            view.setShot(boardSets.get(i), i*5);
+            view.setCard(boardSets.get(i));
+            view.setShot(boardSets.get(i));
         }
     }
 
