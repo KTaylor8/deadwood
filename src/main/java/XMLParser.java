@@ -307,7 +307,7 @@ public class XMLParser {
                                     takeArea = getAreaData(takeChildrenSub);
                                 }
                             }
-                            tokens.add(new ShotToken(takeNum, takeArea.getX(), takeArea.getY(), takeArea.getW(), takeArea.getH()));
+                            tokens.add(new ShotToken(takeNum, takeArea));
                         }
                     }
                 } else if ("parts".equals(setChildSub.getNodeName())) {
