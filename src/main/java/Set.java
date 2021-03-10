@@ -50,13 +50,6 @@ public class Set{
         this.area = areaData;
     }
 
-    public int getCardX(){
-        return cardPosX;
-    }
-
-    public int getCardY(){
-        return cardPosY;
-    }
 
     public String getName() {
         return setName;
@@ -237,10 +230,10 @@ public class Set{
             for (int i = 0; i < shotTokens.size(); i++) {
                 ShotToken take = shotTokens.get(i);
                 setInfo += ("\n\t\tTake #" + (i+1));
-                setInfo += "\n\t\t\tTake area: x = " + take.getX() + 
-                ", y = " + take.getY() +
-                ", w = " + take.getW() +
-                ", h = " + take.getH();
+                setInfo += "\n\t\t\tTake area: x = " + take.getArea().getX() + 
+                ", y = " + take.getArea().getY() +
+                ", w = " + take.getArea().getW() +
+                ", h = " + take.getArea().getH();
             }
             for (int i = 0; i < offCardRoles.size(); i++) {
                 role = offCardRoles.get(i);

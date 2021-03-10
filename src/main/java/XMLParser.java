@@ -382,11 +382,11 @@ public class XMLParser {
             // ui.print("Parsing card " + (i + 1));
 
             if(i < 9){
-                picturePath += "0"+(i+1);
+                picturePath += (("0"+(i+1)) + ".png");
 
             }
             else{
-                picturePath += (i+1);
+                picturePath += ((i+1) + ".png");
             }
             //reads attributes from the Cards/Nodes
             card = cards.item(i);

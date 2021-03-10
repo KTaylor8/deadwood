@@ -17,6 +17,7 @@ public class Game{
         ui = new UI();
         view  = new View(ui);
         board.resetBoard(view);
+        //view.setCard(board);
         view.show();
     }
 

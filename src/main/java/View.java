@@ -5,15 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Graphics;
 
 
-public class View implements ActionListener{
+public class View extends JPanel implements ActionListener{
     
     JFrame frame;
     JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
-    JLabel mainStreet;
-    JLayeredPane lpane = new JLayeredPane();
-    JPanel boardPanel = new JPanel();
+    JLayeredPane[] places = new JLayeredPane[10];
+    JLabel mainStreet = new JLabel();
+    JLabel mainStreet2 = new JLabel();
+    JLayeredPane layeredPane = new JLayeredPane();
+    JPanel cardPanel = new JPanel();
 
 
     private UI ui;
@@ -48,15 +51,18 @@ public class View implements ActionListener{
             b.addActionListener(this);
             actionPanel.add(b);
         }
-        //player1 = new JLabel("", JLabel.LEFT);
-        //player2 = new JLabel("", JLabel.LEFT);
-        //player3 = new JLabel("", JLabel.LEFT);
-        //player4 = new JLabel("", JLabel.LEFT);
-        //player5 = new JLabel("", JLabel.LEFT);
-        //player6 = new JLabel("", JLabel.LEFT);
-        //player7 = new JLabel("", JLabel.LEFT);
-        //player8 = new JLabel("", JLabel.LEFT);
-
+        /*
+        places[0] = new JLayeredPane();
+        places[1] = new JLayeredPane();
+        places[2] = new JLayeredPane();
+        places[3] = new JLayeredPane();
+        places[4] = new JLayeredPane();
+        places[5] = new JLayeredPane();
+        places[6] = new JLayeredPane();
+        places[7] = new JLayeredPane();
+        places[8] = new JLayeredPane();
+        places[9] = new JLayeredPane();
+*/
         JPanel leftPlayers = new JPanel();
         leftPlayers.setLayout(new GridLayout(4, 1));
         leftPlayers.setSize(new Dimension(800, 1200));
@@ -85,16 +91,23 @@ public class View implements ActionListener{
             rightPlayers.add(b);
         }
 
-        boardPanel.setLayout(null);
+        //cardPanel.setLayout(null);
 
-        JLayeredPane layeredPane = new JLayeredPane();
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
-        JLabel playerlabel = new JLabel(img, JLabel.CENTER);
-        playerlabel.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
-        layeredPane.add(playerlabel, 0);
+        JLabel board = new JLabel(img, JLabel.CENTER);
+        board.setBounds(300, 0, img.getIconWidth(), img.getIconHeight());
+        layeredPane.add(board, 100);
+        //layeredPane.add(cardPanel, 0);
+        
+        /*for(int i = 0; i < 10; i++){
+            (places[i]).setSize(new Dimension(300,300));
+            layeredPane.add(places[i]);
+        }*/
 
-        JLabel b = new JLabel(img);
+        
+
+        //JLabel b = new JLabel(img);
         //boardPanel.add(b, BorderLayout.CENTER);
         //lpane.add(boardPanel, 0);
         //JLayeredPane board = new JLayeredPane();
@@ -109,6 +122,8 @@ public class View implements ActionListener{
 
         //JLabel board = new JLabel(new ImageIcon("src/main/resources/img/board.png"));
         //board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
+
+        
 
         frame.add(layeredPane, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
@@ -153,13 +168,42 @@ public class View implements ActionListener{
         player1.setText("Player 1: \nDollars: \n Credits: ");
     }
 
-    public void setCard(Set s){
-        if((s.getName()).equals("mainStreet")){
-            ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
-            // = new JLabel(img);
-            System.out.println("hello? " + (s.getCard()).getPicturePath());
+    public void setCard(Set s, int i){
+            //System.out.println((s.getCard()).getPicturePath());
+            ImageIcon img = new ImageIcon("src/main/resources/img/cardback.png");
+            //System.out.println("uh " + (s.getCard()).getPicturePath());
+            JLabel l = new JLabel(img);
+            l.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+            layeredPane.add(l, i);
+            i--;
         }
+
+    public void setShot(Set s, int i){
+            List<ShotToken> tokens = s.getShotTokens();
+            for(int j = 1; j <= tokens.size(); j++){
+                ImageIcon img = new ImageIcon("src/main/resources/img/shot.png");
+                JLabel l = new JLabel(img);
+                l.setBounds(((tokens.get(j-1)).getArea()).getX(), ((tokens.get(j-1)).getArea()).getY(), ((tokens.get(j-1)).getArea()).getW(),((tokens.get(j-1)).getArea()).getH());
+                layeredPane.add(l, i-j);
+            }
+            //System.out.println("uh " + (s.getCard()).getPicturePath());
+            
+        }
+    
+
+        /*if((s.getName()).equals("Main Street")){
+            ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
+            mainStreet = new JLabel(img);
+            mainStreet.setBounds((s.getArea()).getX(), (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+            layeredPane.add(mainStreet, 1);
+            System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
+
+            mainStreet2 = new JLabel(img);
+            mainStreet2.setBounds((s.getArea()).getX()-500, (s.getArea()).getY(), (s.getArea()).getW(),( s.getArea()).getH());
+            layeredPane.add(mainStreet2, 2);
+            System.out.println("hello? " + (s.getArea()).getX()+ " " +(s.getArea()).getY()+ " " + (s.getArea()).getW()+ " " +( s.getArea()).getH());
+        }*/
         
-    }
+    
 
 }

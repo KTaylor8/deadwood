@@ -33,6 +33,6 @@ public class Controller implements ControllerInterface{
 
     @Override
     public void setCard(Set s){
-        view.setCard(s);
+        //view.setCard(s);
     }
 }
