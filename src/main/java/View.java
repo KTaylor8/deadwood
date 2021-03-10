@@ -185,33 +185,32 @@ public class View extends JPanel implements ActionListener{
     }
 
     public void setCard(Set s){
-            ImageIcon img;
-            JLabel l;
+        ImageIcon img;
+        JLabel l;
 
-            AreaData area = s.getArea();
+        AreaData area = s.getArea();
 
-            if(s.getFlipStage() != 1){
-                img = new ImageIcon("src/main/resources/img/cardback.png");
-            }
-            else{
-                img = new ImageIcon(s.getCard().getPicturePath());
-            }
-            l = new JLabel(img);
-           
-            l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
-            cardPanel.add(l);
+        if(s.getFlipStage() != 1){
+            img = new ImageIcon("src/main/resources/img/cardback.png");
         }
+        else{
+            img = new ImageIcon(s.getCard().getPicturePath());
+        }
+        l = new JLabel(img);
+        
+        l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
+        cardPanel.add(l);
+    }
 
     public void setShot(Set s){
         JLabel l;
         AreaData area;
 
         System.out.println(s.getTakesLeft());
-        List<ShotToken> tokens = s.getShotTokens();
 
         for(int i = 0; i < s.getTakesLeft(); i++){
             l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
-            area = tokens.get(i).getArea();
+            area = s.getShotTokens().get(i).getArea();
             l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
             shotPanel.add(l);
         }
