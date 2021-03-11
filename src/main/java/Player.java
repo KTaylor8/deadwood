@@ -143,7 +143,7 @@ public class Player{
         }
         return false;
     }
-    public boolean moveTo(Set dest) {
+    public boolean moveTo(Set dest, View view) {
         boolean successfulMove = false;
         String destName;
 
@@ -158,6 +158,7 @@ public class Player{
 
             if (location.checkNeighbor(destName) ) {
                 location = dest;
+                view.movePlayerDie(this, dest.getArea().getX(), dest.getArea().getY());
                 ui.print("You're now located in " + destName);
                 successfulMove = true;
             }
@@ -209,16 +210,19 @@ public class Player{
         }
     }
 
-    public boolean act(List<Player> onCardPlayers, List<Player> offCardPlayers) {
+    public boolean act(View view, List<Player> onCardPlayers, List<Player> offCardPlayers) {
+        int dieVal;
+        int budget;
         boolean successfulActing = false;
         if(employed){
             //make and roll a die
-            int budget = Integer.valueOf((location.getCard()).getBudget());
-            int die = 1 + (int)(Math.random() * 6);
+            budget = Integer.valueOf((location.getCard()).getBudget());
+            dieVal = 1 + (int)(Math.random() * 6);
 
-            ui.print("The budget of your current job is: " + budget + ", you rolled a: " + die + ", and you have " + rehearseTokens + " rehearsal tokens");
+            ui.print("The budget of your current job is: " + budget + ", you rolled a: " + dieVal + ", and you have " + rehearseTokens + " rehearsal tokens");
+            // view.changePlayerDieVal(this, dieVal);
             //if the die is higher than the budget
-            if(budget > (die + rehearseTokens)){
+            if(budget > (dieVal + rehearseTokens)){
                 //for acting failures on card and off card
                 ui.print("Acting failure!");
                 if(location.getCard().hasRole(roleName)){

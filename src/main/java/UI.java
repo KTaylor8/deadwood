@@ -132,7 +132,7 @@ public class UI{
                 else if(input.equals("move")){
                     this.print("Please enter a place you want to move after \"move\"");
                 } else {
-                    hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)));
+                    hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)), view);
                 }
             }
             //if player wants to act

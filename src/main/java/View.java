@@ -242,7 +242,10 @@ public class View extends JPanel implements ActionListener{
         p.getPlayerDieArea().setY(y);
     }
 
-    public void changePlayerDieVal(Player p){}
+    // DO THIS IF ENOUGH TIME BUT NOT NECESSARY
+    // public void changePlayerDieVal(Player p, int newVal){
+    //     // p.setPlayerDieCurrentNum(newVal-1);
+    // }
 
     /*if((s.getName()).equals("Main Street")){
         ImageIcon img = new ImageIcon((s.getCard()).getPicturePath());
