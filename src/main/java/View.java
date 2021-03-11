@@ -19,11 +19,8 @@ public class View extends JPanel implements ActionListener{
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
 
-    private UI ui;
+    public View(){
 
-    public View(UI ui){
-        
-        this.ui = ui;
     }
 
     public void show(){
@@ -222,7 +219,6 @@ public class View extends JPanel implements ActionListener{
         JLabel l;
         int trailerX = 1000;
         int trailerY = 262;
-        AreaData area = p.getPlayerDieArea();
 
         // set 
         int x = trailerX + (46*pNum);
@@ -232,15 +228,20 @@ public class View extends JPanel implements ActionListener{
         } else { // 2nd row
             y = trailerY + 50;
         }
-        area.setX(x); // I think this should update the coords of the player's playerDieArea attribute, but unverified
-        area.setY(y);
+        movePlayerDie(p, x, y);
 
         l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
 
         l.setBounds(x, y, 46, 46); // dice w/h = 46
         cardPanel.add(l);
     }
-    public void movePlayerDie(Player p){}
+
+    // moves player's die to specified x and y positions
+    public void movePlayerDie(Player p, int x, int y){
+        p.getPlayerDieArea().setX(x);
+        p.getPlayerDieArea().setY(y);
+    }
+
     public void changePlayerDieVal(Player p){}
 
     /*if((s.getName()).equals("Main Street")){

@@ -14,8 +14,8 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
-        ui = new UI();
-        view  = new View(ui);
+        view  = new View();
+        ui = new UI(view);
     }
 
     public void run(){

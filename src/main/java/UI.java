@@ -3,8 +3,14 @@ import java.util.*;
 public class UI{
 
     private Scanner scan;
+    private View view;
 
-    public UI() { scan = new Scanner(System.in); }
+    public UI() {}
+
+    public UI(View view) {
+        scan = new Scanner(System.in);
+        this.view = view;
+    }
 
     public String readInput() {
         return scan.nextLine().trim();
