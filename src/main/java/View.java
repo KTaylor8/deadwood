@@ -32,9 +32,6 @@ public class View implements ActionListener{
         return uniqueInstance;
     }
     public static synchronized View getInstance() {
-        // if (uniqueInstance == null) {
-        //     uniqueInstance = new View();
-        // }
         return uniqueInstance;
     }
 
