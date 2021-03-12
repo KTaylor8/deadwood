@@ -149,6 +149,9 @@ public class Game{
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 refreshPlayerPanel();
             }
+            else {
+                view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+            }
         }
         else{                    
             view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
