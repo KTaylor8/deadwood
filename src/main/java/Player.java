@@ -164,9 +164,9 @@ public class Player{
         // Set dest = board.getSet(destination);
 
         // if player hasn't played yet
-        if (!hasPlayed) {
+        // if (!hasPlayed) {
             // if player is not employed
-            if(!employed){
+            // if(!employed){
                 try { // this might not be the best way to handle this error...
                     destName = dest.getName(); // null if not a valid Set name
                 } catch (NullPointerException e){
@@ -176,7 +176,7 @@ public class Player{
 
                 if (location.checkNeighbor(destName) ) {
                     location = dest;
-                    view.movePlayerDie(this, dest.getArea().getX(), dest.getArea().getY());
+                    view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
                     view.showPopUp("You're now located in " + destName);
                     hasPlayed = true;
                     successfulMove = true;
@@ -185,11 +185,11 @@ public class Player{
                 {
                     view.showPopUp("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
                 }
-            }
-            else{
-                view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
-            }
-        }
+            // }
+            // else{
+            //     view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+            // }
+        // }
 
         return successfulMove;
     }

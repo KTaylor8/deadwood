@@ -144,9 +144,11 @@ public class Game{
 
     public void tryMove() {
         if(!currentPlayer.getHasPlayed()){
-            String destStr = chooseNeighbor();
-            currentPlayer.moveTo(destStr, getBoardSet(destStr));
-            refreshPlayerPanel();
+            if (!currentPlayer.isEmployed()) {
+                String destStr = chooseNeighbor();
+                currentPlayer.moveTo(destStr, getBoardSet(destStr));
+                refreshPlayerPanel();
+            }
         }
         else{                    
             view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");

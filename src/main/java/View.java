@@ -285,7 +285,7 @@ public class View implements ActionListener{
         } else { // 2nd row
             y = trailerY + 50;
         }
-        movePlayerDie(p, x, y);
+        movePlayerPosition(p, x, y);
 
         l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
 
@@ -294,7 +294,7 @@ public class View implements ActionListener{
     }
 
     // moves player's die to specified x and y positions
-    public void movePlayerDie(Player p, int x, int y){
+    public void movePlayerPosition(Player p, int x, int y){
         p.getPlayerDieArea().setX(x);
         p.getPlayerDieArea().setY(y);
     }
