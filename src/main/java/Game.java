@@ -5,10 +5,7 @@ public class Game{
     private Queue<Player> players = new LinkedList<Player>();
     private int numPlayers;
     private Board board;
-    // private Controller controller;
-    // private String input;
     private View view;
-    private boolean hasPlayed = false; 
 
     private Player currentPlayer;
 
@@ -19,11 +16,27 @@ public class Game{
         // view  = new View(controller);
     }
 
+    private static Game uniqueInstance;
+
+    public static synchronized Game getInstance(String[] args) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new Game(args);
+        }
+        return uniqueInstance;
+    }
+    public static synchronized Game getInstance() {
+        // if (uniqueInstance == null) {
+        //     uniqueInstance = new Game();
+        // }
+        return uniqueInstance;
+    }
+
     public void registerObserver(View view) {
         this.view = view;
     }
 
     public void run(){
+        // view.init(); // init view so other classes can show popUps and reset cards/sets, but don't show it until the board is set-up
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
@@ -37,33 +50,33 @@ public class Game{
         players = initPlayers();
 
         // init and show board
-        board.resetBoard(view);
+        board.resetBoard();
         view.show();
-        changeTurn();
+        rotateTurn();
         //iterates through the day
-        while(numDays != 0){
-            //view.showPopUp("Placing all players in trailers");
-            if(board.sceneNum() > 1){ // this if-statement will probably have to be moved
-                //currentPlayer = players.peek();
-                //players.add(players.remove());
-                changeTurn();
-                view.changeCurrentPlayer(currentPlayer.getName());
-                //ui.interact(currentPlayer, board, players);
-            }
-            //decrement days and reset the roles and board
-            numDays--;
-            view.showPopUp("Its the end of the day! " + numDays + " days remain");
-            board.resetBoard(view);
+        // while(numDays != 0){
+        //     //view.showPopUp("Placing all players in trailers");
+        //     if(board.getSceneNum() > 1){ // this if-statement will probably have to be moved
+        //         //currentPlayer = players.peek();
+        //         //players.add(players.remove());
+        //         changeTurn();
+        //         view.changeCurrentPlayer(currentPlayer.getName());
+        //         //ui.interact(currentPlayer, board, players);
+        //     }
+        //     //decrement days and reset the roles and board
+        //     numDays--;
+        //     view.showPopUp("Its the end of the day! " + numDays + " days remain");
+        //     board.resetBoard();
 
-            // reset players
-            resetPlayers();
-        }
+        //     // reset players
+        //     resetPlayers();
+        // }
 
-        //calculate winner
-        //view.showPopUp("Calculating winner...");
+        // //calculate winner
+        // //view.showPopUp("Calculating winner...");
         
-        calcWinner();
-        //ui.closeScanner();
+        // calcWinner();
+        // //ui.closeScanner();
     }
 
     private Queue<Player> initPlayers() {
@@ -111,10 +124,10 @@ public class Game{
             // Create players
             String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
-                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
+                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths, view);
                 view.resetPlayerDie(p, i);
             } else {
-                p = new Player(startLocation, tempName, dieImgPaths);
+                p = new Player(startLocation, tempName, dieImgPaths, view);
                 view.resetPlayerDie(p, i);
             }
             players.add(p);
@@ -123,19 +136,91 @@ public class Game{
         return players;
     }
 
-    public void changeHasPlayed(Boolean b){
-        hasPlayed = b;
+    public String chooseNeighbor() {
+        String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
+        String result = view.moveShowPopUp(neighbors);
+        return result;
     }
 
-    // public boolean haveTheyPlayed(){
-    //     return hasPlayed;
-    // }
+    public void tryMove() {
+        if(!currentPlayer.getHasPlayed()){
+            String destStr = chooseNeighbor();
+            currentPlayer.moveTo(destStr, getBoardSet(destStr));
+            refreshPlayerPanel();
+        }
+        else{                    
+            view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+        }
+    }
 
-    public void changeTurn(){
+    public void tryTakeRole(String desiredRole) {
+        if (currentPlayer.isEmployed() == false) {
+            // LATER: THE METHOD CALLED NEEDS REFACTORING
+            currentPlayer.takeRole(desiredRole);
+            if (currentPlayer.isEmployed() == true) {
+                // board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
+                currentPlayer.getRole().occupy();
+            }
+        } else {
+            view.showPopUp("You're already employed, so you can't take another role until you finish this one");
+        }   
+    }
+
+    public void tryUpgrade(String[] upgradeChosen) {
+        if (upgradeChosen[0].equals("dollars")) {
+            currentPlayer.upgrade(
+                getDollarCost(), 
+                currentPlayer.getDollars(), 
+                Integer.valueOf(upgradeChosen[1])
+            );
+        } 
+        else {
+            currentPlayer.upgrade(
+                getCreditCost(), 
+                currentPlayer.getCredits(), 
+                Integer.valueOf(upgradeChosen[1])
+            );
+        }
+    }
+
+    public void tryRehearse() {
+        if (currentPlayer.isEmployed() == true) {
+            if(!currentPlayer.getHasPlayed()){
+                currentPlayer.rehearse();
+            }
+            else{                    
+                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            }
+        }
+        else {
+            view.showPopUp("You're not employed, so you need to take a role before you can rehearse.");
+        }
+    }
+
+    public void tryAct() {
+
+        List<Player> onCardPlayers = new ArrayList<Player>();
+        List<Player> offCardPlayers = new ArrayList<Player>();
+        if (currentPlayer.isEmployed() == true) {
+            if(!currentPlayer.getHasPlayed()){
+                findPlayers(currentPlayer.getLocation().getOnCardRoles());
+                findPlayers(currentPlayer.getLocation().getOffCardRoles());
+                currentPlayer.act(onCardPlayers, offCardPlayers); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
+            }
+            else{
+                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            }
+        }
+        else {
+            view.showPopUp("You're not employed, so you need to take a role before you can act.");
+        }
+    }
+
+    public void rotateTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
         view.changeCurrentPlayer(currentPlayer.getName());
-        hasPlayed = false;
+        currentPlayer.setHasPlayed(false);
     }
 
     // to reset players
@@ -150,15 +235,71 @@ public class Game{
         }
     }
 
+    public void endTurn() {
+        if (board.getSceneNum() > 1) { // day continues
+            rotateTurn();
+            view.changeCurrentPlayer(currentPlayer.getName());
+        }
+        else { // day ends
+            if (numDays > 0) { // game continues
+                //decrement days and reset the roles and board
+                numDays--;
+                view.showPopUp("Its the end of the day! " + numDays + " days remain");
+                board.resetBoard();
+
+                // reset players
+                resetPlayers();
+            }
+            else { // game ends
+                view.showPopUp("Calculating winner...");
+                calcWinner();
+                // do something to freeze the screen and not allow 
+            }
+        }
+    }
+
     public Player getCurrentPlayer(){
         return currentPlayer;
+    }
+
+    public List<Player> findPlayers(List<Role> rl) {
+        List<Player> pl = new ArrayList<Player>();
+        for(Player p: players){
+            for(Role r: rl){
+                if(r.equals(p.getRole())){
+                    pl.add(0, p);
+                }
+            }
+        }
+        return pl;
     }
 
     public Set getBoardSet(String s){
         return board.getSet(s);
     }
 
-    public void refreshPlayerPanel(View view) {
+
+    //returns the dollar cost of upgrades from the office
+    public int[] getDollarCost(){
+        for(Set s: board.getAllSets()){
+            if((s.getName()).equals("office")){
+                return (s.getUpgradeCD());
+            }
+        }
+        return null;
+    }
+
+    //returns the credit cost of upgrades from the office
+    public int[] getCreditCost(){
+        for(Set s: board.getAllSets()){
+            if((s.getName()).equals("office")){
+                return (s.getUpgradeCC());
+            }
+        }
+        return null;
+    }
+
+    public void refreshPlayerPanel() {
         view.clearDice();
         Player curPlayer;
         for(int i = 0; i < players.size(); i++){

@@ -16,8 +16,7 @@ public class Set{
 
     AreaData[] upgradeDollarsAreas, upgradeCreditsAreas;
 
-    
-    private Controller controller = new Controller();
+    private View view = View.getInstance();
 
     // regular set constructor
     public Set(String s, List<String> n, List<Role> r, List<ShotToken> shotTokens, AreaData areaData){
@@ -161,6 +160,7 @@ public class Set{
 
     //hands out bonuses based on on card and off card people
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
+        // this.view = View.getInstance();
 
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
         view.showPopUp("Rolling " + (this.currentCard.getBudget()) + " dice");
@@ -183,8 +183,7 @@ public class Set{
 
         //hand out bonuses of rank to off card people
         for(Player p: offCardPlayers){
-            // SORRY THIS IS CONVOLUTED. NEED TO MAKE (BOARD?) METHOD THAT RETURNS ROLE OBJ/ROLE RANK GIVEN PLAYER
-            int playerRoleRank = Integer.parseInt(p.getLocation().getRole(p.getRoleName()).getLevel());
+            int playerRoleRank = Integer.parseInt(p.getRole().getLevel());
             p.incDollars(playerRoleRank);
             view.showPopUp(p.getName() + " gets $" + playerRoleRank);
         }
@@ -254,6 +253,6 @@ public class Set{
                 ", h = " + role.getArea().getH();
             }
         } 
-        view.showPopUp(setInfo);
+        View.getInstance().showPopUp(setInfo);
     }
 }

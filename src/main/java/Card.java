@@ -7,7 +7,7 @@ public class Card{
     private String sceneDescription;
     private List<Role> onCardRoles;
     private String picturePath = "";
-    private Controller controller = new Controller();
+    // private Controller controller = new Controller();
 
     public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles, String picturePath) {
         this.cardName = name;
@@ -30,10 +30,10 @@ public class Card{
         return onCardRoles;
     }
 
-    public boolean hasRole(String roleName) {
+    public boolean hasRole(Role role) {
         boolean hasRole = false;
         for (Role r : onCardRoles) {
-            if (roleName.equals(r.getName())) {
+            if (r.equals(role)) {
                 hasRole = true;
             }
         }
@@ -61,9 +61,9 @@ public class Card{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            view.showPopUp(e.getMessage());
+            View.getInstance().showPopUp(e.getMessage());
         }
-        view.showPopUp(cardInfo);
+        View.getInstance().showPopUp(cardInfo);
     }
 
 }

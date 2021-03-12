@@ -14,9 +14,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.*;
 
 public class XMLParser {
-    private Controller controller = new Controller();
+    private View view;
 
-    public XMLParser() {}
+    public XMLParser() { this.view = View.getInstance(); }
 
     // building a document from the XML file
     // returns a Document object after loading the card.xml file.

@@ -3,8 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.awt.Graphics;
+// import java.awt.Graphics;
 
 
 public class View implements ActionListener{
@@ -20,11 +19,26 @@ public class View implements ActionListener{
     JPanel dicePanel = new JPanel();
     Controller controller;
 
+    private static View uniqueInstance;
+
     public View(Controller controller){
         this.controller = controller;
     }
 
-    public void show(){
+    public static synchronized View getInstance(Controller controller) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new View(controller);
+        }
+        return uniqueInstance;
+    }
+    public static synchronized View getInstance() {
+        // if (uniqueInstance == null) {
+        //     uniqueInstance = new View();
+        // }
+        return uniqueInstance;
+    }
+
+    public void init(){
         int leftMargin = 300; // sets left margin of display and panels, for centering
 
         frame = new JFrame();
@@ -122,7 +136,7 @@ public class View implements ActionListener{
 
         //JLabel b = new JLabel(img);
         //boardPanel.add(b, BorderLayout.CENTER);
-        //lpane.add(boardPanel, 0);
+        //lPane.add(boardPanel, 0);
         //JLayeredPane board = new JLayeredPane();
         //board.setLayout(new BorderLayout());
 
@@ -147,44 +161,50 @@ public class View implements ActionListener{
 
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        frame.setVisible(true);
+    }
 
+    public void show() {
+        frame.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
         String buttonText = ((JButton) e.getSource()).getText();
 
-        if ("move".equals(buttonText)) {
-            // if (game.haveTheyPlayed()) {
-            //     showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-            // }
-            // else {
-            //     String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
-            //     String result = moveshowPopUp(options);
-            //     game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
-            //     game.refreshPlayerPanel(this);
-            // }
+        controller.process(buttonText);
+        // if ("move".equals(buttonText)) {
+        //     // if (game.haveTheyPlayed()) {
+        //     //     showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+        //     // }
+        //     // else {
+        //     //     String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
+        //     //     String result = moveShowPopUp(options);
+        //     //     game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
+        //     //     game.refreshPlayerPanel(this);
+        //     // }
 
-            controller.tryMove();
-        } else if ("take role".equals(buttonText)) {
-            // showPopUp("dont take that role, trust me");
-            controller.tryTakeRole();
-        } else if ("upgrade".equals(buttonText)) {
-            // showPopUp("upgrades people, upgrades");
-            controller.tryUpgrade();
-        } else if ("rehearse".equals(buttonText)) {
-            // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
-            controller.tryRehearse();
-        } else if ("act".equals(buttonText)) {
-            // showPopUp("ha, yea right");
-            controller.tryAct();
-        }else {
-            // game.changeTurn();
-            controller.endTurn();
-        }
+        //     controller.tryMove(buttonText);
+        // } else if ("take role".equals(buttonText)) {
+        //     // showPopUp("dont take that role, trust me");
+        //     String role = chooseRole();
+        //     controller.tryTakeRole(role);
+        // } else if ("upgrade".equals(buttonText)) {
+        //     // showPopUp("upgrades people, upgrades");
+
+        //     String upgradeChoice = chooseUpgrade(); // have a way for user to choose upgrade type and rank, probably should return a String[] w/ the 2 values
+        //     controller.tryUpgrade(upgradeChoice);
+        // } else if ("rehearse".equals(buttonText)) {
+        //     // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
+        //     controller.tryRehearse();
+        // } else if ("act".equals(buttonText)) {
+        //     // showPopUp("ha, yea right");
+        //     controller.tryAct();
+        // }else {
+        //     // game.changeTurn();
+        //     controller.endTurn();
+        // }
     }
 
-    public String moveshowPopUp(String[] options){
+    public String moveShowPopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);

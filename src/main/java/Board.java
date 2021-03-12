@@ -5,9 +5,12 @@ import org.w3c.dom.Document;
 public class Board{
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
-    private Controller controller = new Controller();
+    private View view;
 
     public Board(String boardPath, String cardPath){
+        this.view = View.getInstance();
+        view.init();
+
         /* Parse XML */
         Document doc = null;
         XMLParser parsing = new XMLParser();
@@ -49,23 +52,23 @@ public class Board{
 
     }
     
-    public void resetBoard(View view){
+    public void resetBoard(){
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
-            //System.out.println("helo");
+            //System.out.println("hello");
             view.resetCard(boardSets.get(i));
             view.resetShot(boardSets.get(i));
         }
     }
 
-    public void refreshCard(View view){
+    public void refreshCard(){
         view.clearCard();
         for(int i = 2; i < boardSets.size(); i++){
             view.resetCard(boardSets.get(i));
         }
     }
 
-    public void refreshShot(View view){
+    public void refreshShot(){
         view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){
             view.resetShot(boardSets.get(i));
@@ -129,34 +132,14 @@ public class Board{
         return null;
     }
 
-    //returns the dollar cost of upgrades from the office
-    public int[] getDollarCost(){
-        for(Set s: boardSets){
-            if((s.getName()).equals("office")){
-                return (s.getUpgradeCD());
-            }
-        }
-        return null;
-    }
-
-    //returns the credit cost of upgrades from the office
-    public int[] getCreditCost(){
-        for(Set s: boardSets){
-            if((s.getName()).equals("office")){
-                return (s.getUpgradeCC());
-            }
-        }
-        return null;
-    }
-
-    //occupies a designated role
-    public void fillRole(Set location, Role role){
-        if( !(role.isOccupied()) ){
-            role.occupy();
-        } else {
-            view.showPopUp("Can't fill role: role not empty.");
-        }
-    }
+    //occupies a designated role -- obsoleted by assigning Role obj to Player obj
+    // public void fillRole(Set location, Role role){
+    //     if( !(role.isOccupied()) ){
+    //         role.occupy();
+    //     } else {
+    //         view.showPopUp("Can't fill role: role not empty.");
+    //     }
+    // }
 
     //returns a string that is a list of free roles card and off card
     public String freeRoles(String pos){
@@ -189,7 +172,7 @@ public class Board{
     }
 
     //returns the number of sets that have not been finished in one day
-    public int sceneNum(){
+    public int getSceneNum(){
         int numScene = 0;
         for(Set s: boardSets){
             if(s.getFlipStage() != 2){
