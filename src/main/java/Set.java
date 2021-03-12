@@ -66,9 +66,18 @@ public class Set{
         flipStage = 0;
     }
 
-    public List<String> getNeighbors() {
+    public List<String> getNeighbors(){
         return neighbors;
     }
+
+    public String[] getNeighborStrings() {
+        String[] n = new String[neighbors.size()];
+        for(int i = 0; i < neighbors.size(); i++){
+            n[i] = (neighbors.get(i)) ;
+        }
+        return n;
+    }
+    
     public boolean checkNeighbor(String s) {
         boolean isNeighbor = false;
         for (int i = 0; i < neighbors.size(); i++) {

@@ -159,9 +159,10 @@ public class View implements ActionListener{
                 popUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
             }
             else {
-                Object[] options = { "OK", "CANCEL", "no" };
+                String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
                 String result = movePopUp(options);
                 game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
+                game.refreshPlayerPanel(this);
             }
         } else if ("take role".equals(buttonText)) {
             popUp("dont take that role, trust me");
@@ -176,7 +177,7 @@ public class View implements ActionListener{
         }
     }
 
-    public String movePopUp(Object[] options){
+    public String movePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);

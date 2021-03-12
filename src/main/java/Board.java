@@ -116,6 +116,8 @@ public class Board{
         return null;
     }
 
+    
+
     //returns list of strings of the neighbors of a given set
     public List<String> getNeighbors(String pos){
         for(Set s: boardSets){

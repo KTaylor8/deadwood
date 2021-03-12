@@ -153,7 +153,7 @@ public class Game{
         return board.getSet(s);
     }
 
-    public void refreshPlayerPanel(Queue<Player> players, View view) {
+    public void refreshPlayerPanel(View view) {
         view.clearDice();
         Player curPlayer;
         for(int i = 0; i < players.size(); i++){
