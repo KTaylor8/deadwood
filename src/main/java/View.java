@@ -171,7 +171,7 @@ public class View implements ActionListener{
             controller.tryTakeRole();
         } else if ("upgrade".equals(buttonText)) {
             // showPopUp("upgrades people, upgrades");
-            controller.tyrUpgrade();
+            controller.tryUpgrade();
         } else if ("rehearse".equals(buttonText)) {
             // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
             controller.tryRehearse();
@@ -191,6 +191,7 @@ public class View implements ActionListener{
         return(options[n] + "");
     }
 
+    // equivalent to Calculator2View's updateResult()
     public void showPopUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
     }
