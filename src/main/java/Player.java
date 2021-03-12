@@ -14,7 +14,7 @@ public class Player{
     private int rehearseTokens;
     private Set location;
     private String roleName;
-    // private UI ui = new UI();
+    // private Controller controller = new Controller();
     private View view;
 
     public Player(Set s, String p, String[] paths){

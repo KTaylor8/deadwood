@@ -7,7 +7,7 @@ public class Card{
     private String sceneDescription;
     private List<Role> onCardRoles;
     private String picturePath = "";
-    private UI ui = new UI();
+    private Controller controller = new Controller();
 
     public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles, String picturePath) {
         this.cardName = name;

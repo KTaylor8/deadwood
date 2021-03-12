@@ -5,7 +5,7 @@ import org.w3c.dom.Document;
 public class Board{
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
-    private UI ui = new UI();
+    private Controller controller = new Controller();
 
     public Board(String boardPath, String cardPath){
         /* Parse XML */

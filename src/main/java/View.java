@@ -18,10 +18,10 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
-    UI ui;
+    Controller controller;
 
-    public View(UI ui){
-        this.ui = ui;
+    public View(Controller controller){
+        this.controller = controller;
     }
 
     public void show(){
@@ -165,22 +165,22 @@ public class View implements ActionListener{
             //     game.refreshPlayerPanel(this);
             // }
 
-            ui.tryMove();
+            controller.tryMove();
         } else if ("take role".equals(buttonText)) {
             // showPopUp("dont take that role, trust me");
-            ui.tryTakeRole();
+            controller.tryTakeRole();
         } else if ("upgrade".equals(buttonText)) {
             // showPopUp("upgrades people, upgrades");
-            ui.tyrUpgrade();
+            controller.tyrUpgrade();
         } else if ("rehearse".equals(buttonText)) {
             // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
-            ui.tryRehearse();
+            controller.tryRehearse();
         } else if ("act".equals(buttonText)) {
             // showPopUp("ha, yea right");
-            ui.tryAct();
+            controller.tryAct();
         }else {
             // game.changeTurn();
-            ui.endTurn();
+            controller.endTurn();
         }
     }
 

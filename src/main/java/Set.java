@@ -17,7 +17,7 @@ public class Set{
     AreaData[] upgradeDollarsAreas, upgradeCreditsAreas;
 
     
-    private UI ui = new UI();
+    private Controller controller = new Controller();
 
     // regular set constructor
     public Set(String s, List<String> n, List<Role> r, List<ShotToken> shotTokens, AreaData areaData){

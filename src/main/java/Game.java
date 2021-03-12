@@ -5,7 +5,7 @@ public class Game{
     private Queue<Player> players = new LinkedList<Player>();
     private int numPlayers;
     private Board board;
-    private UI ui;
+    private Controller controller;
     private String input;
     private View view;
     private boolean hasPlayed = false; 
@@ -15,8 +15,8 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
-        view  = new View(ui);
-        ui = new UI(view);
+        view  = new View(controller);
+        controller = new Controller(view);
     }
 
     public void run(){

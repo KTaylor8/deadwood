@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.*;
 
 public class XMLParser {
-    private UI ui = new UI();
+    private Controller controller = new Controller();
 
     public XMLParser() {}
 
