@@ -29,7 +29,7 @@ public class XMLParser {
             try {
                 doc = db.parse(filename);
             } catch (Exception ex) {
-                ui.print("XML parse failure");
+                view.showPopUp("XML parse failure");
                 ex.printStackTrace();
             }
             return doc;
@@ -265,7 +265,7 @@ public class XMLParser {
             tokens = new ArrayList<ShotToken>();
             takeArea = new AreaData();
 
-            // ui.print("Parsing data for set " + (i + 1));
+            // view.showPopUp("Parsing data for set " + (i + 1));
 
             //reads attributes from the sets/nodes
             set = sets.item(i);
@@ -295,7 +295,7 @@ public class XMLParser {
                             // numTakes++;
 
                             takeNum = Integer.parseInt(take.getAttributes().getNamedItem("number").getNodeValue());
-                            // ui.print("  take number: " + takeNumber);
+                            // view.showPopUp("  take number: " + takeNumber);
 
                             NodeList takeChildrenNodes = take.getChildNodes();
                             for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
@@ -376,7 +376,7 @@ public class XMLParser {
             String picturePath = "src/main/resources/img/card_";
             cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
 
-            // ui.print("Parsing card " + (i + 1));
+            // view.showPopUp("Parsing card " + (i + 1));
 
             if(i < 9){
                 picturePath += (("0"+(i+1)) + ".png");

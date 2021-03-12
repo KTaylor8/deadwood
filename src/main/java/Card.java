@@ -61,9 +61,9 @@ public class Card{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ui.print(e.getMessage());
+            view.showPopUp(e.getMessage());
         }
-        ui.print(cardInfo);
+        view.showPopUp(cardInfo);
     }
 
 }

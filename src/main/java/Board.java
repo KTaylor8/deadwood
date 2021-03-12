@@ -20,10 +20,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            ui.print("Error = " + e);
+            view.showPopUp("Error = " + e);
             return;
         } catch (Exception e) {
-            ui.print("Error parsing cards: ");
+            view.showPopUp("Error parsing cards: ");
             e.printStackTrace();
             return;
         }
@@ -36,10 +36,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            ui.print("Error = " + e);
+            view.showPopUp("Error = " + e);
             return;
         } catch (Exception e) {
-            ui.print("Error parsing sets: ");
+            view.showPopUp("Error parsing sets: ");
             e.printStackTrace();
             return;
         }
@@ -154,7 +154,7 @@ public class Board{
         if( !(role.isOccupied()) ){
             role.occupy();
         } else {
-            ui.print("Can't fill role: role not empty.");
+            view.showPopUp("Can't fill role: role not empty.");
         }
     }
 

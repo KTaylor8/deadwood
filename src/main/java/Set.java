@@ -163,7 +163,7 @@ public class Set{
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
 
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
-        ui.print("Rolling " + (this.currentCard.getBudget()) + " dice");
+        view.showPopUp("Rolling " + (this.currentCard.getBudget()) + " dice");
         for (int i = 0; i < dice.length; i++) {
             dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
         }
@@ -178,7 +178,7 @@ public class Set{
         //hand out bonuses of randomized dice to on card people
         for(int i = 0; i < dice.length; i++){
             (onCardPlayers.get(i%(onCardPlayers.size()))).incDollars(dice[i]);
-            ui.print((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
+            view.showPopUp((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
         }
 
         //hand out bonuses of rank to off card people
@@ -186,7 +186,7 @@ public class Set{
             // SORRY THIS IS CONVOLUTED. NEED TO MAKE (BOARD?) METHOD THAT RETURNS ROLE OBJ/ROLE RANK GIVEN PLAYER
             int playerRoleRank = Integer.parseInt(p.getLocation().getRole(p.getRoleName()).getLevel());
             p.incDollars(playerRoleRank);
-            ui.print(p.getName() + " gets $" + playerRoleRank);
+            view.showPopUp(p.getName() + " gets $" + playerRoleRank);
         }
     }
 
@@ -254,6 +254,6 @@ public class Set{
                 ", h = " + role.getArea().getH();
             }
         } 
-        ui.print(setInfo);
+        view.showPopUp(setInfo);
     }
 }

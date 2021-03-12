@@ -38,7 +38,7 @@ public class Game{
         changeTurn();
         //iterates through the day
         while(numDays != 0){
-            //ui.print("Placing all players in trailers");
+            //view.showPopUp("Placing all players in trailers");
             if(board.sceneNum() > 1){ // this if-statement will probably have to be moved
                 //currentPlayer = players.peek();
                 //players.add(players.remove());
@@ -56,7 +56,7 @@ public class Game{
         }
 
         //calculate winner
-        //ui.print("Calculating winner...");
+        //view.showPopUp("Calculating winner...");
         
         calcWinner();
         //ui.closeScanner();
