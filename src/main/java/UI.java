@@ -3,13 +3,9 @@ import java.util.*;
 public class UI{
 
     private Scanner scan;
-    private View view;
 
-    public UI() {}
-
-    public UI(View view) {
+    public UI() {
         scan = new Scanner(System.in);
-        this.view = view;
     }
 
     public String readInput() {
@@ -37,6 +33,29 @@ public class UI{
         return pl;
     }
 
+
+
+    public void tryMove() {
+        if (game.getCurrentPlayer().getHasPlayed()) {
+            this.print("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            continue;
+        }
+        else if(input.equals("move")){
+            this.print("Please enter a place you want to move after \"move\"");
+        } else {
+            hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)), view);
+        }
+    }
+
+    public void tryTakeRole() {
+        if (currentPlayer.isEmployed() == false) {
+            // LATER: THE METHOD CALLED NEEDS REFACTORING
+            currentPlayer.employ(board, input.substring(10));
+        } else {
+            this.print("You're already employed, so you can't take another role until you finish this one");
+        }   
+    }
+
     //big boi method for each players turn
     public void interact(Player currentPlayer, Board board, Queue<Player> players){
                 
@@ -46,45 +65,17 @@ public class UI{
         
         //while the player doesn't say they want their turn to end
         while(!input.equals("end")){
-            
             input = this.readInput();
 
             if (input.equals("end")) {
                 break;
             }
-            //prints whose turn and dollar and credits
-            else if(input.equals("who")){
-                this.print(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
-            }
-            //prints where current player is
-            else if(input.equals("where")){
-                this.print(currentPlayer.getLocation().getName());
-            }
-            //prints where all players are
-            else if(input.equals("where all")){
-                //print current player first
-                this.print("Current player " + currentPlayer.getName() + " location: " + currentPlayer.getLocation().getName());
-                //print the remaining players 
-                for(int i = 0; i < players.size() - 1; i++){
-                    this.print((players.peek()).getName() + " is located at: " + (players.peek()).getLocation().getName());
-                    //make sure current player is place back at last in queue
-                    players.add(players.remove());
-                }
-                //make sure current player is place back at last in queue
-                players.add(players.remove());
-            }
-            //prints adjacent tiles to player
-            else if(input.equals("neighbors")){
-                List<String> n = board.getNeighbors(currentPlayer.getLocation().getName());
-                this.print("Your neighbors are: ");
-                for(int i = 0; i < n.size(); i++){
-                    this.print("- " + n.get(i));
-                }
-            }
-            else if(input.equals("available roles")){
-                this.print(board.freeRoles(currentPlayer.getLocation().getName()));
-            }
-            
+ 
+            //if player wants to move
+            // else if(input.contains("move")){
+
+            // }
+
             //if player wants to take role and are not employed, let them
             else if(input.contains("take role")){
                 if (currentPlayer.isEmployed() == false) {
@@ -123,21 +114,10 @@ public class UI{
                     this.print("\tLevel " + (i+2) +": " + cc[i] + " credits");
                 }
             }
-            //if player wants to move
-            else if(input.contains("move")){
-                if (hasPlayed) {
-                    this.print("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-                    continue;
-                }
-                else if(input.equals("move")){
-                    this.print("Please enter a place you want to move after \"move\"");
-                } else {
-                    hasPlayed = currentPlayer.moveTo(board.getSet(input.substring(5)), view);
-                }
-            }
+ 
             //if player wants to act
             else if(input.equals("act")){
-                if(!hasPlayed){
+                if(!game.getCurrentPlayer().getHasPlayed()){
                     hasPlayed = currentPlayer.act(
                         view, findPlayers(players, currentPlayer.getLocation().getOnCardRoles()), findPlayers(players, currentPlayer.getLocation().getOffCardRoles())
                     ); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
@@ -161,6 +141,40 @@ public class UI{
             else{
                 this.print("unknown command, try again");
             }
+
+
+                       //prints whose turn and dollar and credits
+            // else if(input.equals("who")){
+            //     this.print(currentPlayer.getName() + "($" + currentPlayer.getDollars() + ", " + currentPlayer.getCredits() + "cr) working as a " + currentPlayer.getRoleName() + " with " + currentPlayer.getRehearseTokens() + " rehearsal tokens.");
+            // }
+            // //prints where current player is
+            // else if(input.equals("where")){
+            //     this.print(currentPlayer.getLocation().getName());
+            // }
+            //prints where all players are
+            // else if(input.equals("where all")){
+            //     //print current player first
+            //     this.print("Current player " + currentPlayer.getName() + " location: " + currentPlayer.getLocation().getName());
+            //     //print the remaining players 
+            //     for(int i = 0; i < players.size() - 1; i++){
+            //         this.print((players.peek()).getName() + " is located at: " + (players.peek()).getLocation().getName());
+            //         //make sure current player is place back at last in queue
+            //         players.add(players.remove());
+            //     }
+            //     //make sure current player is place back at last in queue
+            //     players.add(players.remove());
+            // }
+            //prints adjacent tiles to player
+            // else if(input.equals("neighbors")){
+            //     List<String> n = board.getNeighbors(currentPlayer.getLocation().getName());
+            //     this.print("Your neighbors are: ");
+            //     for(int i = 0; i < n.size(); i++){
+            //         this.print("- " + n.get(i));
+            //     }
+            // }
+            // else if(input.equals("available roles")){
+            //     this.print(board.freeRoles(currentPlayer.getLocation().getName()));
+            // }
         }
     }
 }

@@ -15,19 +15,19 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
-        view  = new View(this);
+        view  = new View(ui);
         ui = new UI(view);
     }
 
     public void run(){
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
-            view.popUp("Invalid input, please enter a player number from 2 to 8");
+            view.showPopUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
 
         //  intro statement
-        //controller.popUp("Welcome to Deadwood!");
+        //controller.showPopUp("Welcome to Deadwood!");
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
@@ -39,25 +39,26 @@ public class Game{
         //iterates through the day
         while(numDays != 0){
             //ui.print("Placing all players in trailers");
-            while(board.sceneNum() > 1){
+            if(board.sceneNum() > 1){ // this if-statement will probably have to be moved
                 //currentPlayer = players.peek();
                 //players.add(players.remove());
-                //view.changeCurrentPlayer(currentPlayer.getName());
+                changeTurn();
+                view.changeCurrentPlayer(currentPlayer.getName());
                 //ui.interact(currentPlayer, board, players);
             }
             //decrement days and reset the roles and board
             numDays--;
-            view.popUp("Its the end of the day! " + numDays + " days remain");
+            view.showPopUp("Its the end of the day! " + numDays + " days remain");
             board.resetBoard(view);
 
             // reset players
-            resetPlayers(players);
+            resetPlayers();
         }
 
         //calculate winner
         //ui.print("Calculating winner...");
         
-        calcWinner(players);
+        calcWinner();
         //ui.closeScanner();
     }
 
@@ -122,9 +123,9 @@ public class Game{
         hasPlayed = b;
     }
 
-    public boolean haveTheyPlayed(){
-        return hasPlayed;
-    }
+    // public boolean haveTheyPlayed(){
+    //     return hasPlayed;
+    // }
 
     public void changeTurn(){
         currentPlayer = players.peek();
@@ -134,7 +135,7 @@ public class Game{
     }
 
     // to reset players
-    public void resetPlayers(Queue<Player> players) {
+    public void resetPlayers() {
         Player curPlayer;
         for(int i = 0; i < players.size(); i++){
             curPlayer = players.peek();
@@ -164,7 +165,7 @@ public class Game{
     }
 
     //to calculate winner
-    private void calcWinner(Queue<Player> players){
+    private void calcWinner(){
         //local class for finding ties
         class ScoreSorter implements Comparator<Player> {
             public int compare(Player p1, Player p2) {
@@ -198,9 +199,9 @@ public class Game{
             for (Player p : winners) {
                 winnersString += p.getName() + " ";
             }
-            view.popUp(winnersString);
+            view.showPopUp(winnersString);
         } else {
-            view.popUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            view.showPopUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
     }
 

@@ -9,7 +9,6 @@ import java.awt.Graphics;
 
 public class View implements ActionListener{
     
-    Game game;
     JFrame frame;
     JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
     JLayeredPane[] places = new JLayeredPane[10];
@@ -19,9 +18,10 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
+    UI ui;
 
-    public View(Game game){
-        this.game = game;
+    public View(UI ui){
+        this.ui = ui;
     }
 
     public void show(){
@@ -155,36 +155,43 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            if (game.haveTheyPlayed()) {
-                popUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-            }
-            else {
-                String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
-                String result = movePopUp(options);
-                game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
-                game.refreshPlayerPanel(this);
-            }
+            // if (game.haveTheyPlayed()) {
+            //     showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            // }
+            // else {
+            //     String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
+            //     String result = moveshowPopUp(options);
+            //     game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
+            //     game.refreshPlayerPanel(this);
+            // }
+
+            ui.tryMove();
         } else if ("take role".equals(buttonText)) {
-            popUp("dont take that role, trust me");
+            // showPopUp("dont take that role, trust me");
+            ui.tryTakeRole();
         } else if ("upgrade".equals(buttonText)) {
-            popUp("upgrades people, upgrades");
+            // showPopUp("upgrades people, upgrades");
+            ui.tyrUpgrade();
         } else if ("rehearse".equals(buttonText)) {
-            popUp("oh honey, you're gonna need something a lil more than rehearsing");
+            // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
+            ui.tryRehearse();
         } else if ("act".equals(buttonText)) {
-            popUp("ha, yea right");
+            // showPopUp("ha, yea right");
+            ui.tryAct();
         }else {
-            game.changeTurn();
+            // game.changeTurn();
+            ui.endTurn();
         }
     }
 
-    public String movePopUp(String[] options){
+    public String moveshowPopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
         return(options[n] + "");
     }
 
-    public void popUp(String notif){
+    public void showPopUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
