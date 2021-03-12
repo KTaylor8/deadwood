@@ -58,6 +58,27 @@ public class Board{
         }
     }
 
+    public void refreshCard(View view){
+        view.clearCard();
+        for(int i = 2; i < boardSets.size(); i++){
+            view.resetCard(boardSets.get(i));
+        }
+    }
+
+    public void refreshShot(View view){
+        view.clearShot();
+        for(int i = 2; i < boardSets.size(); i++){
+            view.resetShot(boardSets.get(i));
+        }
+    }
+
+    public void refreshDice(View view){
+        view.clearDice();
+        for(int i = 2; i < boardSets.size(); i++){
+            //view.resetPlayerDie(boardSets.get(i));
+        }
+    }
+
     // //returns boolean if the set has already been done
     // // obsoleted by Set's isClosed()
     // public boolean setClosed(String pos){

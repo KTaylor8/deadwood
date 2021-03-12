@@ -129,6 +129,16 @@ public class Game{
         }
     }
 
+    public void refreshPlayerPanel(Queue<Player> players, View view) {
+        view.clearDice();
+        Player curPlayer;
+        for(int i = 0; i < players.size(); i++){
+            curPlayer = players.peek();
+            view.resetPlayerDie(curPlayer, i);
+            players.add(players.remove());
+        }
+    }
+
     //to calculate winner
     private void calcWinner(Queue<Player> players){
         //local class for finding ties

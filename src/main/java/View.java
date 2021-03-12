@@ -7,7 +7,7 @@ import java.util.List;
 import java.awt.Graphics;
 
 
-public class View extends JPanel implements ActionListener{
+public class View implements ActionListener{
     
     JFrame frame;
     JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
@@ -154,18 +154,25 @@ public class View extends JPanel implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            //controller.move();
+            movePopUp("you're trying to move! i wont let you!");
         } else if ("take role".equals(buttonText)) {
-            //controller.takeRole();
+            popUp("dont take that role, trust me");
         } else if ("upgrade".equals(buttonText)) {
-            //controller.upgrade();
+            popUp("upgrades people, upgrades");
         } else if ("rehearse".equals(buttonText)) {
-            //controller.rehearse();
+            popUp("oh honey, you're gonna need something a lil more than rehearsing");
         } else if ("act".equals(buttonText)) {
-            //controller.act();
+            popUp("ha, yea right");
         }else {
-            //controller.end();
+            popUp("no");
         }
+    }
+
+    public void movePopUp(String notif){
+        Object[] options = { "OK", "CANCEL", "no" };
+        System.out.println(JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+            null, options, options[0]));
     }
 
     public void popUp(String notif){
@@ -178,6 +185,10 @@ public class View extends JPanel implements ActionListener{
 
     public void changePlayerStats(String stats){ // not functional
         player1.setText("Player 1: \nDollars: \n Credits: ");
+    }
+
+    public void clearCard(){
+        cardPanel.removeAll();
     }
 
     public void resetCard(Set s){
@@ -198,6 +209,10 @@ public class View extends JPanel implements ActionListener{
         cardPanel.add(l);
     }
 
+    public void clearShot(){
+        shotPanel.removeAll();
+    }
+
     public void resetShot(Set s){
         JLabel l;
         AreaData area;
@@ -212,6 +227,11 @@ public class View extends JPanel implements ActionListener{
         }
         //System.out.println("uh " + (s.getCard()).getPicturePath());
         
+    }
+
+    
+    public void clearDice(){
+        dicePanel.removeAll();
     }
 
     // reset a given player's die's location to the trailers

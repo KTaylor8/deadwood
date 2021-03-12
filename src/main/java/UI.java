@@ -139,7 +139,7 @@ public class UI{
             else if(input.equals("act")){
                 if(!hasPlayed){
                     hasPlayed = currentPlayer.act(
-                        findPlayers(players, currentPlayer.getLocation().getOnCardRoles()), findPlayers(players, currentPlayer.getLocation().getOffCardRoles())
+                        view, findPlayers(players, currentPlayer.getLocation().getOnCardRoles()), findPlayers(players, currentPlayer.getLocation().getOffCardRoles())
                     ); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
                 }
                 else{
