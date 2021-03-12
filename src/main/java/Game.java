@@ -8,13 +8,14 @@ public class Game{
     private UI ui;
     private String input;
     private View view;
+    private boolean hasPlayed = false; 
 
     private Player currentPlayer;
 
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
-        view  = new View();
+        view  = new View(this);
         ui = new UI(view);
     }
 
@@ -34,19 +35,19 @@ public class Game{
         // init and show board
         board.resetBoard(view);
         view.show();
-        
+        changeTurn();
         //iterates through the day
         while(numDays != 0){
             //ui.print("Placing all players in trailers");
             while(board.sceneNum() > 1){
-                currentPlayer = players.peek();
-                players.add(players.remove());
-                view.changeCurrentPlayer(currentPlayer.getName());
-                ui.interact(currentPlayer, board, players);
+                //currentPlayer = players.peek();
+                //players.add(players.remove());
+                //view.changeCurrentPlayer(currentPlayer.getName());
+                //ui.interact(currentPlayer, board, players);
             }
             //decrement days and reset the roles and board
             numDays--;
-            ui.print("Its the end of the day! " + numDays + " days remain");
+            view.popUp("Its the end of the day! " + numDays + " days remain");
             board.resetBoard(view);
 
             // reset players
@@ -117,6 +118,21 @@ public class Game{
         return players;
     }
 
+    public void changeHasPlayed(Boolean b){
+        hasPlayed = b;
+    }
+
+    public boolean haveTheyPlayed(){
+        return hasPlayed;
+    }
+
+    public void changeTurn(){
+        currentPlayer = players.peek();
+        players.add(players.remove());
+        view.changeCurrentPlayer(currentPlayer.getName());
+        hasPlayed = false;
+    }
+
     // to reset players
     public void resetPlayers(Queue<Player> players) {
         Player curPlayer;
@@ -127,6 +143,14 @@ public class Game{
             view.resetPlayerDie(curPlayer, i);
             players.add(players.remove());
         }
+    }
+
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    public Set getBoardSet(String s){
+        return board.getSet(s);
     }
 
     public void refreshPlayerPanel(Queue<Player> players, View view) {

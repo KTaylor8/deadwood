@@ -9,6 +9,7 @@ import java.awt.Graphics;
 
 public class View implements ActionListener{
     
+    Game game;
     JFrame frame;
     JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
     JLayeredPane[] places = new JLayeredPane[10];
@@ -19,8 +20,8 @@ public class View implements ActionListener{
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
 
-    public View(){
-
+    public View(Game game){
+        this.game = game;
     }
 
     public void show(){
@@ -154,7 +155,14 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         if ("move".equals(buttonText)) {
-            movePopUp("you're trying to move! i wont let you!");
+            if (game.haveTheyPlayed()) {
+                popUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            }
+            else {
+                Object[] options = { "OK", "CANCEL", "no" };
+                String result = movePopUp(options);
+                game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
+            }
         } else if ("take role".equals(buttonText)) {
             popUp("dont take that role, trust me");
         } else if ("upgrade".equals(buttonText)) {
@@ -164,15 +172,15 @@ public class View implements ActionListener{
         } else if ("act".equals(buttonText)) {
             popUp("ha, yea right");
         }else {
-            popUp("no");
+            game.changeTurn();
         }
     }
 
-    public void movePopUp(String notif){
-        Object[] options = { "OK", "CANCEL", "no" };
-        System.out.println(JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
+    public String movePopUp(Object[] options){
+        int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-            null, options, options[0]));
+            null, options, options[0]);
+        return(options[n] + "");
     }
 
     public void popUp(String notif){
