@@ -9,11 +9,13 @@ public class Player{
     private int rank;
     private int dollars;
     private int credits;
+    private boolean hasPlayed; 
     private boolean employed; 
     private int rehearseTokens;
     private Set location;
     private String roleName;
-    private UI ui = new UI();
+    // private UI ui = new UI();
+    private View view;
 
     public Player(Set s, String p, String[] paths){
         location = s;
@@ -29,6 +31,7 @@ public class Player{
         playerDieArea = new AreaData(0, 0, 46, 46);
         // roles' area w/h = 46
         // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
+        hasPlayed = false;
     }
 
     public Player(Set s, String p, int sr, int sc, String[] paths){
@@ -43,6 +46,7 @@ public class Player{
         employed = false;
         rehearseTokens = 0;
         playerDieArea = new AreaData(0, 0, 46, 46); // roles' area w/h = 46
+        hasPlayed = false;
     } 
     // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
     // trailerX + (i*46)
@@ -92,23 +96,31 @@ public class Player{
             if(desiredLevel > rank && desiredLevel <= costs.length + 1 )
             {
                 if(costs[desiredLevel-2] > currency){
-                    ui.print("You do not have enough dollars for this upgrade");
+                    // view.showPopUp("You do not have enough dollars for this upgrade");
                 }
                 else{
                     //change level
-                    ui.print("You are now level " + desiredLevel);
+                    // view.showPopUp("You are now level " + desiredLevel);
                     this.setRank(desiredLevel);
                     this.incDollars((-1*costs[desiredLevel-2]));
-                    ui.print("And you have " + currency + " remaining");
+                    // view.showPopUp("And you have " + currency + " remaining");
                 }
             }
             else{
-                ui.print("Not a valid level!!!!");
+                // view.showPopUp("Not a valid level!!!!");
             }
         }
         else{
-            ui.print("You are not on the casting office, so you can't upgrade");
+            // view.showPopUp("You are not on the casting office, so you can't upgrade");
         }
+    }
+
+    public boolean getHasPlayed() {
+        return hasPlayed;
+    }
+
+    public void setHasPlayed(boolean newStatus) {
+        hasPlayed = newStatus;
     }
 
     public boolean isEmployed() {
@@ -152,23 +164,23 @@ public class Player{
             try { // this might not be the best way to handle this error...
                 destName = dest.getName(); // null if not a valid Set name
             } catch (NullPointerException e){
-                ui.print("The place you tried to move to isn't a valid set name. Try again..or don't.");
+                view.showPopUp("The place you tried to move to isn't a valid set name. Try again..or don't.");
                 return successfulMove;
             }
 
             if (location.checkNeighbor(destName) ) {
                 location = dest;
                 view.movePlayerDie(this, dest.getArea().getX(), dest.getArea().getY());
-                ui.print("You're now located in " + destName);
+                view.showPopUp("You're now located in " + destName);
                 successfulMove = true;
             }
             else
             {
-                ui.print("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
+                view.showPopUp("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
             }
         }
         else{
-            ui.print("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+            view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
         }
 
         return successfulMove;
@@ -196,17 +208,17 @@ public class Player{
                 {
                     this.giveRole(roleName);
                     board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
-                    ui.print("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
+                    view.showPopUp("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
                 }
                 else{
-                    ui.print("Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
+                    view.showPopUp("Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
                 }
             } else {
-                ui.print("Role " + roleName + " not found at this location. Your role options are" + board.freeRoles(location.getName()));
+                view.showPopUp("Role " + roleName + " not found at this location. Your role options are" + board.freeRoles(location.getName()));
             }
         }
         else{
-            ui.print("This set was already finished!");
+            view.showPopUp("This set was already finished!");
         }
     }
 
@@ -219,29 +231,29 @@ public class Player{
             budget = Integer.valueOf((location.getCard()).getBudget());
             dieVal = 1 + (int)(Math.random() * 6);
 
-            ui.print("The budget of your current job is: " + budget + ", you rolled a: " + dieVal + ", and you have " + rehearseTokens + " rehearsal tokens");
+            view.showPopUp("The budget of your current job is: " + budget + ", you rolled a: " + dieVal + ", and you have " + rehearseTokens + " rehearsal tokens");
             // view.changePlayerDieVal(this, dieVal);
             //if the die is higher than the budget
             if(budget > (dieVal + rehearseTokens)){
                 //for acting failures on card and off card
-                ui.print("Acting failure!");
+                view.showPopUp("Acting failure!");
                 if(location.getCard().hasRole(roleName)){
-                    ui.print("Since you had an important role you get nothing!");
+                    view.showPopUp("Since you had an important role you get nothing!");
                 }
                 else{
-                    ui.print("Since you weren't that important you will get 1 dollar, out of pity");
+                    view.showPopUp("Since you weren't that important you will get 1 dollar, out of pity");
                     this.incDollars(1);
                 }
             }
             else{
                 //for acting successes on card and off card
-                ui.print("Acting success!");
+                view.showPopUp("Acting success!");
                 if(location.getCard().hasRole(roleName)){
-                    ui.print("Since you were important, you get 2 credits");
+                    view.showPopUp("Since you were important, you get 2 credits");
                     this.incCredits(2);
                 }
                 else{
-                    ui.print("Since you weren't that important you get 1 credit and 1 dollar");
+                    view.showPopUp("Since you weren't that important you get 1 credit and 1 dollar");
                     this.incCredits(1);
                     this.incDollars(1);
                 }
@@ -253,22 +265,22 @@ public class Player{
             if(location.getTakesLeft() == 0){
                 
                 if(location.canBonus()){
-                    ui.print("Oh no! That was the last scene! Everyone gets money!");
+                    view.showPopUp("Oh no! That was the last scene! Everyone gets money!");
                     location.bonuses(onCardPlayers, offCardPlayers);
                 }
                 else{
-                    ui.print("That was the last scene, but no ones on card so no one gets money! Aha!");
+                    view.showPopUp("That was the last scene, but no ones on card so no one gets money! Aha!");
                 }
                 location.wrapUp(onCardPlayers, offCardPlayers);
             }
             else{
-                ui.print("There are only " + location.getTakesLeft() + " takes left in this scene!");
+                view.showPopUp("There are only " + location.getTakesLeft() + " takes left in this scene!");
             }
 
             successfulActing = true;
         }
         else{
-            ui.print("You are currently not employed");
+            view.showPopUp("You are currently not employed");
         }
 
         return successfulActing;
@@ -282,13 +294,13 @@ public class Player{
             //and if the player does not have the max number of tokens already
             if(rehearseTokens < 5) {
                 this.incTokens();
-                ui.print("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
+                view.showPopUp("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
                 successfulRehearsal = true;
             } else {
-                ui.print("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
+                view.showPopUp("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
             }
         } else {
-            ui.print("You're not employed? What are you going to rehearse for??");
+            view.showPopUp("You're not employed? What are you going to rehearse for??");
         }
 
         return successfulRehearsal;
