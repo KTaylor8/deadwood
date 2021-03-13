@@ -13,7 +13,7 @@ public class Game{
 
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
-        board = new Board(args[0], args[1]);
+        board = Board.getInstance(args[0], args[1]);
     }
 
     // initializer (w/ args)

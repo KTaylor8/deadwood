@@ -62,7 +62,7 @@ public class Board{
         return uniqueInstance;
     }
     
-    // accessor (no args)
+    // accessor (no args) -- not currently used anywhere, but we can keep it if we want
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
