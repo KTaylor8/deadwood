@@ -7,6 +7,8 @@ public class Board{
     private List<Set> boardSets = new ArrayList<Set>();
     private View view;
 
+    private static Board uniqueInstance;
+
     public Board(String boardPath, String cardPath){
         this.view = View.getInstance();
         view.init();
@@ -50,6 +52,19 @@ public class Board{
         /* Assign cards to sets */
         Collections.shuffle(cardDeck);
 
+    }
+
+    // initializer (w/ args)
+    public static synchronized Board getInstance(String boardPath, String cardPath) {
+        if (uniqueInstance == null) {
+            uniqueInstance = new Board(boardPath, cardPath);
+        }
+        return uniqueInstance;
+    }
+    
+    // accessor (no args)
+    public static synchronized Board getInstance() {
+        return uniqueInstance;
     }
     
     public void resetBoard(){
