@@ -168,8 +168,9 @@ public class Board{
     // }
 
     //returns a string that is a list of free roles card and off card
-    public String freeRoles(String pos){
-        String free = "";
+    /*
+    public String[] freeRoles(String pos){
+        String[] free = "";
         for(Set s: boardSets){
             //if the set name is equal to the name given
             if((s.getName()).equals(pos)){
@@ -195,7 +196,7 @@ public class Board{
             free += "There are no open roles at this location.";
         }
         return free;
-    }
+    } */
 
     //returns the number of sets that have not been finished in one day
     public int getSceneNum(){

@@ -140,10 +140,12 @@ public class Game{
         return result;
     }
 
+
     public void tryMove() {
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
+                //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 if(currentPlayer.getLocation().getFlipStage() == 0){
                     currentPlayer.getLocation().flipSet();
@@ -159,13 +161,25 @@ public class Game{
         }
     }
 
-    public void tryTakeRole(String desiredRole) {
+    public String chooseRole() {
+        String[] roles = currentPlayer.getLocation().getRoleStrings();
+        String result = view.roleShowPopUp(roles);
+        return result;
+    }
+
+    public void tryTakeRole() {
         if (currentPlayer.isEmployed() == false) {
-            // LATER: THE METHOD CALLED NEEDS REFACTORING
-            currentPlayer.takeRole(desiredRole);
-            if (currentPlayer.isEmployed() == true) {
+            if(currentPlayer.getLocation().getName() == "office" || currentPlayer.getLocation().getName() == "trailer"){
+                view.showPopUp("You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
+            }
+            else{
+                // LATER: THE METHOD CALLED NEEDS REFACTORING
                 // board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
+                String chosenRole = chooseRole();
+                currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
+                currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                refreshPlayerPanel();
             }
         } else {
             view.showPopUp("You're already employed, so you can't take another role until you finish this one");
@@ -212,6 +226,7 @@ public class Game{
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
+                board.setBoard();
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
@@ -246,6 +261,7 @@ public class Game{
         if (board.getSceneNum() > 1) { // day continues
             rotateTurn();
             view.changeCurrentPlayer(currentPlayer.getName());
+            view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
         else { // day ends
             if (numDays > 0) { // game continues
@@ -316,10 +332,10 @@ public class Game{
             view.setDie(curPlayer);
             players.add(players.remove());
             
-            System.out.println("post flip: "+ curPlayer.getLocation().getName() + curPlayer.getLocation().getFlipStage());
         }
         board.setBoard();
     }
+
 
     //to calculate winner
     private void calcWinner(){

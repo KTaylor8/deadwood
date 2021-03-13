@@ -216,6 +216,13 @@ public class View implements ActionListener{
         // }
     }
 
+    public String roleShowPopUp(String[] options){
+        int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+            null, options, options[0]);
+        return(options[n] + "");
+    }
+
     public String moveShowPopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -248,18 +255,18 @@ public class View implements ActionListener{
 
         AreaData area = s.getArea();
 
-        System.out.println(s.getName() + " " + s.getFlipStage());
-
-        if(s.getFlipStage() != 1){
-            img = new ImageIcon("src/main/resources/img/cardback.png");
+        if(s.getFlipStage() != 2){
+            if(s.getFlipStage() != 1){
+                img = new ImageIcon("src/main/resources/img/cardback.png");
+            }
+            else{
+                img = new ImageIcon(s.getCard().getPicturePath());
+            }
+            l = new JLabel(img);
+            
+            l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
+            cardPanel.add(l);
         }
-        else{
-            img = new ImageIcon(s.getCard().getPicturePath());
-        }
-        l = new JLabel(img);
-        
-        l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
-        cardPanel.add(l);
     }
 
     public void clearShot(){
@@ -272,7 +279,6 @@ public class View implements ActionListener{
         JLabel l;
         AreaData area;
 
-        //System.out.println(s.getTakesLeft());
 
         for(int i = 0; i < s.getTakesLeft(); i++){
             l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
@@ -280,7 +286,6 @@ public class View implements ActionListener{
             l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
             shotPanel.add(l);
         }
-        //System.out.println("uh " + (s.getCard()).getPicturePath());
         
     }
 
@@ -294,8 +299,8 @@ public class View implements ActionListener{
 
     public void setDie(Player p){
         JLabel l;
-        int x = p.getLocation().getArea().getX();
-        int y = p.getLocation().getArea().getY();
+        int x = p.getAreaData().getX();
+        int y = p.getAreaData().getY();
 
        
 

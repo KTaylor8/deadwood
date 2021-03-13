@@ -147,6 +147,13 @@ public class Player{
     public void setLocation(Set newPos){ // I don't think this is used anywhere
         this.location = newPos;
     }
+
+    public void setAreaData(AreaData a){
+        playerDieArea = a;
+    }
+    public AreaData getAreaData(){
+        return playerDieArea;
+    }
     //to move a player to a neighbor
     // public static boolean canMoveTo(String dest, List<String> neighbors){
     //     for(int i = 0; i < neighbors.size(); i++){
@@ -176,7 +183,8 @@ public class Player{
 
                 if (location.checkNeighbor(destName) ) {
                     location = dest;
-                    view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
+                    setAreaData(dest.getArea());
+                    //view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
                     view.showPopUp("You're now located in " + destName);
                     hasPlayed = true;
                     successfulMove = true;
@@ -215,6 +223,7 @@ public class Player{
                 if(!location.isClosed()){
                     if(rank >= roleLevel)
                     {
+                        employed = true;
                         role = desiredRole;
                         view.showPopUp("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
                     }

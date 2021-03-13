@@ -94,6 +94,28 @@ public class Set{
         return offCardRoles;
     }
 
+    public String[] getRoleStrings(){
+        List<Role> onR= getOnCardRoles();
+        List<Role> offR= getOffCardRoles();
+        String[] n = new String[onR.size() + offR.size()];
+        int i = 0;
+        for(int j = 0; j < onR.size(); j++){
+            if(!onR.get(j).isOccupied())
+            {
+                n[i] = onR.get(j).getName();
+                i++;
+            }
+        }
+        for(int j = 0; j < offR.size(); j++){
+            if(!offR.get(j).isOccupied())
+            {
+                n[i] = offR.get(j).getName();
+                i++;
+            }
+        }
+        return n;
+    }
+
     public Card getCard() {
         return currentCard;
     }

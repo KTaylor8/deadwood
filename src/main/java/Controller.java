@@ -43,8 +43,8 @@ public class Controller{
             game.tryMove();
         } else if (res.equals("take role")) {
             // showPopUp("dont take that role, trust me");
-            String desiredRole = "";// chooseRole(); // need to make function that lets user choose role from those available
-            game.tryTakeRole(desiredRole);
+           // chooseRole(); // need to make function that lets user choose role from those available
+            game.tryTakeRole();
         } else if (res.equals("upgrade")) {
             // showPopUp("upgrades people, upgrades");
 
