@@ -136,10 +136,8 @@ public class Game{
 
     public void tryTakeRole(String desiredRole) {
         if (currentPlayer.isEmployed() == false) {
-            // LATER: THE METHOD CALLED NEEDS REFACTORING
             currentPlayer.takeRole(desiredRole);
             if (currentPlayer.isEmployed() == true) {
-                // board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
                 currentPlayer.getRole().occupy();
             }
         } else {
@@ -148,19 +146,25 @@ public class Game{
     }
 
     public void tryUpgrade(String[] upgradeChosen) {
-        if (upgradeChosen[0].equals("dollars")) {
-            currentPlayer.upgrade(
-                getDollarCost(), 
-                currentPlayer.getDollars(), 
-                Integer.valueOf(upgradeChosen[1])
-            );
-        } 
-        else {
-            currentPlayer.upgrade(
-                getCreditCost(), 
-                currentPlayer.getCredits(), 
-                Integer.valueOf(upgradeChosen[1])
-            );
+        //check to make sure player is in office
+        if(currentPlayer.getLocation().getName().equals("office")){
+            if (upgradeChosen[0].equals("dollars")) {
+                currentPlayer.upgrade(
+                    getDollarCost(), 
+                    currentPlayer.getDollars(), 
+                    Integer.valueOf(upgradeChosen[1])
+                );
+            } 
+            else {
+                currentPlayer.upgrade(
+                    getCreditCost(), 
+                    currentPlayer.getCredits(), 
+                    Integer.valueOf(upgradeChosen[1])
+                );
+            }
+        }
+        else{
+            view.showPopUp("You're not on the casting office, so you can't upgrade");
         }
     }
 
