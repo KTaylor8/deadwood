@@ -248,7 +248,7 @@ public class View implements ActionListener{
 
         AreaData area = s.getArea();
 
-        //System.out.println(s.getName() + " " + s.getFlipStage());
+        System.out.println(s.getName() + " " + s.getFlipStage());
 
         if(s.getFlipStage() != 1){
             img = new ImageIcon("src/main/resources/img/cardback.png");

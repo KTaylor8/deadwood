@@ -144,11 +144,10 @@ public class Game{
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
-                /*if(currentPlayer.getLocation().getFlipStage() == 0){
-                    currentPlayer.getLocation().flipSet();
-                    System.out.println("post flip: "+ currentPlayer.getLocation().getName() + currentPlayer.getLocation().getFlipStage());
-                }*/
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
+                if(currentPlayer.getLocation().getFlipStage() == 0){
+                    currentPlayer.getLocation().flipSet();
+                }
                 refreshPlayerPanel();
             }
             else {
@@ -310,12 +309,16 @@ public class Game{
     public void refreshPlayerPanel() {
         view.clearDice();
         Player curPlayer;
+        
         for(int i = 0; i < players.size(); i++){
             curPlayer = players.peek();
+            
             view.setDie(curPlayer);
             players.add(players.remove());
+            
+            System.out.println("post flip: "+ curPlayer.getLocation().getName() + curPlayer.getLocation().getFlipStage());
         }
-        board.resetBoard();
+        board.setBoard();
     }
 
     //to calculate winner

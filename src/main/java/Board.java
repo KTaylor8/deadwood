@@ -66,6 +66,15 @@ public class Board{
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
+
+    public void setBoard(){
+        view.clearCard();
+        view.clearShot();
+        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
+            view.resetCard(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
+        }
+    }
     
     public void resetBoard(){
         view.clearCard();
