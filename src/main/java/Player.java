@@ -16,13 +16,12 @@ public class Player{
     private Role role;
     // private String roleName;
     // private Controller controller = new Controller();
-    private View view = View.getInstance();;
+    private View view = View.getInstance();
 
-    public Player(Set s, String p, String[] paths, View view){
+    public Player(Set s, String p, String[] paths){
         location = s;
         playerName = p;
         playerDiePaths = paths;
-        // this.view = view;
         
         rank = 1;
         credits = 0;
@@ -36,7 +35,7 @@ public class Player{
         hasPlayed = false;
     }
 
-    public Player(Set s, String p, int sr, int sc, String[] paths, View view){
+    public Player(Set s, String p, int sr, int sc, String[] paths){
         location = s;
         playerName = p;
         rank = sr;
@@ -103,8 +102,8 @@ public class Player{
                 else{
                     //change level
                     view.showPopUp("You are now level " + desiredLevel);
-                    this.setRank(desiredLevel);
-                    this.incDollars((-1*costs[desiredLevel-2]));
+                    setRank(desiredLevel);
+                    incDollars((-1*costs[desiredLevel-2]));
                     view.showPopUp("And you have " + currency + " remaining");
                 }
             }

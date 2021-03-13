@@ -49,37 +49,10 @@ public class Game{
         //creates the player queue with diff values according to num players
         players = initPlayers();
 
-        // init and show board
+        // init and show board and current player
         board.resetBoard();
-        view.show();
-
-        currentPlayer = players.peek(); // or resetPlayers()
-
-        // rotateTurn();
-        //iterates through the day
-        // while(numDays != 0){
-        //     //view.showPopUp("Placing all players in trailers");
-        //     if(board.getSceneNum() > 1){ // this if-statement will probably have to be moved
-        //         //currentPlayer = players.peek();
-        //         //players.add(players.remove());
-        //         changeTurn();
-        //         view.changeCurrentPlayer(currentPlayer.getName());
-        //         //ui.interact(currentPlayer, board, players);
-        //     }
-        //     //decrement days and reset the roles and board
-        //     numDays--;
-        //     view.showPopUp("Its the end of the day! " + numDays + " days remain");
-        //     board.resetBoard();
-
-        //     // reset players
-        //     resetPlayers();
-        // }
-
-        // //calculate winner
-        // //view.showPopUp("Calculating winner...");
-        
-        // calcWinner();
-        // //ui.closeScanner();
+        startNewTurn();
+        view.show(); // show the view as the last step of run()
     }
 
     private Queue<Player> initPlayers() {
@@ -127,10 +100,10 @@ public class Game{
             // Create players
             String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
-                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths, view);
+                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
                 view.resetPlayerDie(p, i);
             } else {
-                p = new Player(startLocation, tempName, dieImgPaths, view);
+                p = new Player(startLocation, tempName, dieImgPaths);
                 view.resetPlayerDie(p, i);
             }
             players.add(p);
@@ -141,7 +114,7 @@ public class Game{
 
     public String chooseNeighbor() {
         String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
-        String result = view.moveShowPopUp(neighbors);
+        String result = view.showMovePopUp(neighbors);
         return result;
     }
 
@@ -224,7 +197,7 @@ public class Game{
         }
     }
 
-    public void rotateTurn(){
+    public void startNewTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
         view.changeCurrentPlayer(currentPlayer.getName());
@@ -245,7 +218,7 @@ public class Game{
 
     public void endTurn() {
         if (board.getSceneNum() > 1) { // day continues
-            rotateTurn();
+            startNewTurn();
             view.changeCurrentPlayer(currentPlayer.getName());
         }
         else { // day ends
