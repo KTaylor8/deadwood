@@ -1,8 +1,20 @@
-// import java.util.*;
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
 // import java.awt.Graphics;
 
 
@@ -226,6 +238,8 @@ public class View implements ActionListener{
 
     public void clearCard(){
         cardPanel.removeAll();
+        cardPanel.revalidate();
+	    cardPanel.repaint();
     }
 
     public void resetCard(Set s){
@@ -233,6 +247,8 @@ public class View implements ActionListener{
         JLabel l;
 
         AreaData area = s.getArea();
+
+        //System.out.println(s.getName() + " " + s.getFlipStage());
 
         if(s.getFlipStage() != 1){
             img = new ImageIcon("src/main/resources/img/cardback.png");
@@ -248,13 +264,15 @@ public class View implements ActionListener{
 
     public void clearShot(){
         shotPanel.removeAll();
+        shotPanel.revalidate();
+	    shotPanel.repaint();
     }
 
     public void resetShot(Set s){
         JLabel l;
         AreaData area;
 
-        System.out.println(s.getTakesLeft());
+        //System.out.println(s.getTakesLeft());
 
         for(int i = 0; i < s.getTakesLeft(); i++){
             l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
@@ -268,7 +286,26 @@ public class View implements ActionListener{
 
     
     public void clearDice(){
+
         dicePanel.removeAll();
+	    dicePanel.revalidate();
+	    dicePanel.repaint();
+    }
+
+    public void setDie(Player p){
+        JLabel l;
+        int x = p.getLocation().getArea().getX();
+        int y = p.getLocation().getArea().getY();
+
+       
+
+        // set 
+        l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
+
+        l.setBounds(x, y, 46, 46); // dice w/h = 46
+        dicePanel.add(l);
+         
+        
     }
 
     // reset a given player's die's location to the trailers
@@ -290,7 +327,7 @@ public class View implements ActionListener{
         l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
 
         l.setBounds(x, y, 46, 46); // dice w/h = 46
-        cardPanel.add(l);
+        dicePanel.add(l);
     }
 
     // moves player's die to specified x and y positions
