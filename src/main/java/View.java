@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 // import java.awt.Graphics;
 
-
+// uses singleton with lazy initialization b/c of args
 public class View implements ActionListener{
     
     JFrame frame;
@@ -171,40 +171,9 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         controller.process(buttonText);
-        // if ("move".equals(buttonText)) {
-        //     // if (game.haveTheyPlayed()) {
-        //     //     showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-        //     // }
-        //     // else {
-        //     //     String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
-        //     //     String result = moveShowPopUp(options);
-        //     //     game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
-        //     //     game.refreshPlayerPanel(this);
-        //     // }
-
-        //     controller.tryMove(buttonText);
-        // } else if ("take role".equals(buttonText)) {
-        //     // showPopUp("dont take that role, trust me");
-        //     String role = chooseRole();
-        //     controller.tryTakeRole(role);
-        // } else if ("upgrade".equals(buttonText)) {
-        //     // showPopUp("upgrades people, upgrades");
-
-        //     String upgradeChoice = chooseUpgrade(); // have a way for user to choose upgrade type and rank, probably should return a String[] w/ the 2 values
-        //     controller.tryUpgrade(upgradeChoice);
-        // } else if ("rehearse".equals(buttonText)) {
-        //     // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
-        //     controller.tryRehearse();
-        // } else if ("act".equals(buttonText)) {
-        //     // showPopUp("ha, yea right");
-        //     controller.tryAct();
-        // }else {
-        //     // game.changeTurn();
-        //     controller.endTurn();
-        // }
     }
 
-    public String moveShowPopUp(String[] options){
+    public String showMovePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);

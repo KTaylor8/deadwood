@@ -5,9 +5,9 @@ public class Controller{
 
     public Controller(String[] args) {
         // scan = new Scanner(System.in);
-        View view = View.getInstance(this);
+        view = View.getInstance(this);
         game = Game.getInstance(args);
-        game.registerObserver(view);
+        // game.registerObserver(view);
     }
 
     public String chooseRole() {

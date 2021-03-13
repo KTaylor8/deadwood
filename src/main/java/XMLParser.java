@@ -7,20 +7,19 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.management.modelmbean.XMLParseException;
+// import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import java.util.*;
 
+ // uses singleton with eager initialization
 public class XMLParser {
     private View view;
     private static XMLParser uniqueInstance = new XMLParser();
 
-    public XMLParser() {
-        this.view = View.getInstance();
-    }
+    public XMLParser() { view = View.getInstance(); }
 
     // accessor -- eager initialization
     public static XMLParser getInstance() {
@@ -274,7 +273,7 @@ public class XMLParser {
             tokens = new ArrayList<ShotToken>();
             takeArea = new AreaData();
 
-            // view.showPopUp("Parsing data for set " + (i + 1));
+            // System.out.println("Parsing data for set " + (i + 1));
 
             //reads attributes from the sets/nodes
             set = sets.item(i);
@@ -304,7 +303,7 @@ public class XMLParser {
                             // numTakes++;
 
                             takeNum = Integer.parseInt(take.getAttributes().getNamedItem("number").getNodeValue());
-                            // view.showPopUp("  take number: " + takeNumber);
+                            // System.out.println("  take number: " + takeNumber);
 
                             NodeList takeChildrenNodes = take.getChildNodes();
                             for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
@@ -385,7 +384,7 @@ public class XMLParser {
             String picturePath = "src/main/resources/img/card_";
             cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
 
-            // view.showPopUp("Parsing card " + (i + 1));
+            // System.out.println("Parsing card " + (i + 1));
 
             if(i < 9){
                 picturePath += (("0"+(i+1)) + ".png");

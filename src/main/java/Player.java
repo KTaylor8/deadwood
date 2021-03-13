@@ -42,7 +42,6 @@ public class Player{
         rank = sr;
         credits = sc;
         playerDiePaths = paths;
-        // this.view = view;
 
         dollars = 0;
         playerDieCurrentNum = 0;
@@ -204,7 +203,6 @@ public class Player{
     }
 
     public void takeRole(String roleName) {
-        // or could pass 2 board-referenced values in as args instead of the whole board
         // Role role; 
         int roleLevel;
         if (!location.getName().equals("office") && !location.getName().equals("trailer")) {

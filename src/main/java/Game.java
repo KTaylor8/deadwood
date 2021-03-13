@@ -1,5 +1,6 @@
 import java.util.*;
 
+// uses singleton with lazy initialization b/c of args
 public class Game{
     private int numDays;
     private Queue<Player> players = new LinkedList<Player>();
@@ -14,6 +15,7 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = Board.getInstance(args[0], args[1]);
+        view = View.getInstance();
     }
 
     // initializer (w/ args)
@@ -29,12 +31,12 @@ public class Game{
         return uniqueInstance;
     }
 
-    public void registerObserver(View view) {
-        this.view = view;
-    }
+    // obsoleted by setting view = View.getInstance() in constructor after board since view is singleton now
+    // public void registerObserver(View view) { 
+    //     this.view = view;
+    // }
 
     public void run(){
-        // view.init(); // init view so other classes can show popUps and reset cards/sets, but don't show it until the board is set-up
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
@@ -50,7 +52,10 @@ public class Game{
         // init and show board
         board.resetBoard();
         view.show();
-        rotateTurn();
+
+        currentPlayer = players.peek(); // or resetPlayers()
+
+        // rotateTurn();
         //iterates through the day
         // while(numDays != 0){
         //     //view.showPopUp("Placing all players in trailers");
