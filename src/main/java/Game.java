@@ -16,12 +16,15 @@ public class Game{
 
     private static Game uniqueInstance;
 
+    // initializer (w/ args)
     public static synchronized Game getInstance(String[] args) {
         if (uniqueInstance == null) {
             uniqueInstance = new Game(args);
         }
         return uniqueInstance;
     }
+    
+    // accessor (no args)
     public static synchronized Game getInstance() {
         return uniqueInstance;
     }
