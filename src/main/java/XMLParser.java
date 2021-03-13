@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,8 +16,16 @@ import java.util.*;
 
 public class XMLParser {
     private View view;
+    private static XMLParser uniqueInstance = new XMLParser();
 
-    public XMLParser() { this.view = View.getInstance(); }
+    public XMLParser() {
+        this.view = View.getInstance();
+    }
+
+    // accessor -- eager initialization
+    public static XMLParser getInstance() {
+        return uniqueInstance;
+    }
 
     // building a document from the XML file
     // returns a Document object after loading the card.xml file.

@@ -15,7 +15,7 @@ public class Board{
 
         /* Parse XML */
         Document doc = null;
-        XMLParser parsing = new XMLParser();
+        XMLParser parsing = XMLParser.getInstance();
 
         try {
             doc = parsing.getDocFromFile(cardPath); // static path: "src/main/resources/xml/cards.xml"
