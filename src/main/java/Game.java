@@ -9,19 +9,22 @@ public class Game{
 
     private Player currentPlayer;
 
+    private static Game uniqueInstance;
+
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = new Board(args[0], args[1]);
     }
 
-    private static Game uniqueInstance;
-
+    // initializer (w/ args)
     public static synchronized Game getInstance(String[] args) {
         if (uniqueInstance == null) {
             uniqueInstance = new Game(args);
         }
         return uniqueInstance;
     }
+    
+    // accessor (no args)
     public static synchronized Game getInstance() {
         return uniqueInstance;
     }

@@ -25,12 +25,15 @@ public class View implements ActionListener{
         this.controller = controller;
     }
 
+    // initializer (w/ args)
     public static synchronized View getInstance(Controller controller) {
         if (uniqueInstance == null) {
             uniqueInstance = new View(controller);
         }
         return uniqueInstance;
     }
+    
+    // accessor (no args)
     public static synchronized View getInstance() {
         return uniqueInstance;
     }
