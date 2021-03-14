@@ -16,6 +16,7 @@ public class Game{
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = Board.getInstance(args[0], args[1]);
+        view = View.getInstance();
     }
 
     // initializer (w/ args)
@@ -49,7 +50,7 @@ public class Game{
         players = initPlayers();
 
         // init and show board and currentPlayer
-        board.resetBoard();
+        board.reloadBoardImgs();
         startNewTurn();
         view.show(); // show view as last step of run()
     }
@@ -160,8 +161,6 @@ public class Game{
                 view.showPopUp("You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
             }
             else{
-                // LATER: THE METHOD CALLED NEEDS REFACTORING
-                // board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
                 String chosenRole = chooseRole();
                 currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
@@ -238,8 +237,8 @@ public class Game{
             if(!currentPlayer.getHasPlayed()){
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
-                currentPlayer.act(onCardPlayers, offCardPlayers); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
-                board.setBoard();
+                currentPlayer.act(onCardPlayers, offCardPlayers);
+                // DONT reset board after every act
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
@@ -281,7 +280,7 @@ public class Game{
                 //decrement days and reset the roles and board
                 numDays--;
                 view.showPopUp("Its the end of the day! " + numDays + " days remain");
-                board.resetBoard();
+                board.reloadBoardImgs();
 
                 // reset players
                 resetPlayers();
@@ -346,7 +345,7 @@ public class Game{
             players.add(players.remove());
             
         }
-        board.setBoard();
+        board.reloadBoardImgs();
     }
 
 
