@@ -2,6 +2,7 @@
 import java.util.*;
 import org.w3c.dom.Document;
 
+// uses singleton with lazy initialization b/c of args
 public class Board{
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
@@ -10,12 +11,12 @@ public class Board{
     private static Board uniqueInstance;
 
     public Board(String boardPath, String cardPath){
-        this.view = View.getInstance();
-        view.init();
+        view = View.getInstance();
+        view.init();  // view needs to be initialized before XMLParser is used
 
         /* Parse XML */
         Document doc = null;
-        XMLParser parsing = new XMLParser();
+        XMLParser parsing = XMLParser.getInstance();
 
         try {
             doc = parsing.getDocFromFile(cardPath); // static path: "src/main/resources/xml/cards.xml"
@@ -62,7 +63,7 @@ public class Board{
         return uniqueInstance;
     }
     
-    // accessor (no args)
+    // accessor (no args) -- not currently used anywhere, but we can keep it if we want
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
@@ -101,25 +102,12 @@ public class Board{
         }
     }
 
-    public void refreshDice(View view){
+    public void refreshDice(){
         view.clearDice();
         for(int i = 2; i < boardSets.size(); i++){
             //view.resetPlayerDie(boardSets.get(i));
         }
     }
-
-    // //returns boolean if the set has already been done
-    // // obsoleted by Set's isClosed()
-    // public boolean setClosed(String pos){
-    //     for(Set s: boardSets){
-    //         if(pos.equals(s.getName())){
-    //             if(s.getFlipStage() == 2){
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
 
     //returns in of the budget of designated set
     public int getBudget(String pos){
@@ -153,9 +141,7 @@ public class Board{
             }
         }
         return false;
-    }
-
-    
+    }    
 
     //returns list of strings of the neighbors of a given set
     public List<String> getNeighbors(String pos){
