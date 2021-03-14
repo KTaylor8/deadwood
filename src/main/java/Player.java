@@ -62,7 +62,7 @@ public class Player{
     }
 
     public String getPlayerDiePath() {
-        return playerDiePaths[playerDieCurrentNum];
+        return playerDiePaths[rank- 1];
     }
 
     public AreaData getPlayerDieArea() {

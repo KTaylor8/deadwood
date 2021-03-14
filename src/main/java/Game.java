@@ -1,6 +1,6 @@
 import java.util.*;
 
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
+//import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 
 public class Game{
     private int numDays;
@@ -195,7 +195,7 @@ public class Game{
     }
 
     public void tryUpgrade() {
-        /*if(currentPlayer.getLocation().getName().equals("office")){
+        if(currentPlayer.getLocation().getName().equals("office")){
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
                 String n = view.upgradeShowPopUp(upgrades);
@@ -218,29 +218,17 @@ public class Game{
                         currentPlayer.setRank(Integer.valueOf(splited[1]));
                     }
                 }
+                refreshPlayerPanel();
+                view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             }
             else{
                 view.showPopUp("You are already max level");
             }
             
         }
-        else{*/
+        else{
             view.showPopUp("You are not located in the office, move to the office");
-        //}
-        /*if (upgradeChosen[0].equals("dollars")) {
-            currentPlayer.upgrade(
-                getDollarCost(), 
-                currentPlayer.getDollars(), 
-                Integer.valueOf(upgradeChosen[1])
-            );
-        } 
-        else {
-            currentPlayer.upgrade(
-                getCreditCost(), 
-                currentPlayer.getCredits(), 
-                Integer.valueOf(upgradeChosen[1])
-            );
-        }*/
+        }
     }
 
     public void tryRehearse() {
