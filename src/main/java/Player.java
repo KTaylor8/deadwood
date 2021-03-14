@@ -24,7 +24,7 @@ public class Player{
         playerDiePaths = paths;
         // this.view = view;
         
-        rank = 1;
+        rank = 5;
         credits = 300;
         dollars = 300;
         playerDieCurrentNum = 0;

@@ -29,6 +29,10 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
+    
+    
+        //panel for the top information about current player
+    JPanel displayPanel = new JPanel();
     Controller controller;
 
     private static View uniqueInstance;
@@ -57,8 +61,6 @@ public class View implements ActionListener{
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //panel for the top information about current player
-        JPanel displayPanel = new JPanel();
 
         display = new JLabel("Current player: ", JLabel.CENTER);
         display.setPreferredSize(new Dimension(leftMargin, 50));
@@ -235,8 +237,22 @@ public class View implements ActionListener{
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
-    public void changeCurrentPlayer(String playerName){
-        display.setText("Current Player: " + playerName);
+    public void changeCurrentPlayer(String playerName, String path){
+        displayPanel.removeAll();
+        displayPanel.revalidate();
+	    displayPanel.repaint();
+
+        display = new JLabel("Current player: " + playerName, JLabel.CENTER);
+        display.setPreferredSize(new Dimension(300, 50));
+        display.setOpaque(false);
+        display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
+
+        displayPanel.add(display);
+
+        JLabel l = new JLabel(new ImageIcon(path));
+
+        l.setBounds(100, 25, 46, 46); // dice w/h = 46
+        displayPanel.add(l);
     }
 
     public void changePlayerStats(String stats){ // not functional

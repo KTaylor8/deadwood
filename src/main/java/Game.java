@@ -246,7 +246,7 @@ public class Game{
     public void rotateTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
-        view.changeCurrentPlayer(currentPlayer.getName());
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
         currentPlayer.setHasPlayed(false);
     }
 
@@ -266,7 +266,7 @@ public class Game{
     public void endTurn() {
         if (board.getSceneNum() > 1) { // day continues
             rotateTurn();
-            view.changeCurrentPlayer(currentPlayer.getName());
+            view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
         else { // day ends
