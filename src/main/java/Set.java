@@ -56,6 +56,20 @@ public class Set{
         return area;
     }
 
+    public String[] getUpgradeStrings(int j){
+        String[] u = new String[(upgradeCostCredits.length*2) - ((j)*2)];
+        int k = 0;
+        for(int i = j; i < upgradeCostCredits.length; i++){
+            u[k] = "Level " + (i+1) + " = " + upgradeCostCredits[i] + " credits";
+            k++;
+            u[k] = "Level " + (i+1) + " : " + upgradeCostDollars[i] + " dollars";
+            k++;
+        }
+        
+        return u;
+    }
+
+
     public void resetSet(Card newCard){
         for(int i = 0; i < offCardRoles.size(); i++ ){
             (offCardRoles.get(i)).unoccupy();
@@ -182,6 +196,8 @@ public class Set{
 
     //hands out bonuses based on on card and off card people
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
+        // this.view = View.getInstance();
+
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
         view.showPopUp("Rolling " + (this.currentCard.getBudget()) + " dice");
         for (int i = 0; i < dice.length; i++) {

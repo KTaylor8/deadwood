@@ -2,7 +2,6 @@
 import java.util.*;
 import org.w3c.dom.Document;
 
-// uses singleton with lazy initialization b/c of args
 public class Board{
     private List<Card> cardDeck = new Stack<Card>();
     private List<Set> boardSets = new ArrayList<Set>();
@@ -11,12 +10,12 @@ public class Board{
     private static Board uniqueInstance;
 
     public Board(String boardPath, String cardPath){
-        view = View.getInstance();
-        view.init(); // view needs to be initialized before XMLParser is used
+        this.view = View.getInstance();
+        view.init();
 
         /* Parse XML */
         Document doc = null;
-        XMLParser parsing = XMLParser.getInstance();
+        XMLParser parsing = new XMLParser();
 
         try {
             doc = parsing.getDocFromFile(cardPath); // static path: "src/main/resources/xml/cards.xml"
@@ -63,7 +62,7 @@ public class Board{
         return uniqueInstance;
     }
     
-    // accessor (no args) -- not currently used anywhere, but we can keep it if we want
+    // accessor (no args)
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
@@ -102,7 +101,7 @@ public class Board{
         }
     }
 
-    public void refreshDice(){
+    public void refreshDice(View view){
         view.clearDice();
         for(int i = 2; i < boardSets.size(); i++){
             //view.resetPlayerDie(boardSets.get(i));
@@ -168,6 +167,15 @@ public class Board{
         }
         return null;
     }
+
+    //occupies a designated role -- obsoleted by assigning Role obj to Player obj
+    // public void fillRole(Set location, Role role){
+    //     if( !(role.isOccupied()) ){
+    //         role.occupy();
+    //     } else {
+    //         view.showPopUp("Can't fill role: role not empty.");
+    //     }
+    // }
 
     //returns a string that is a list of free roles card and off card
     /*
