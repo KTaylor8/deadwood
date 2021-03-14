@@ -50,7 +50,7 @@ public class Game{
         players = initPlayers();
 
         // init and show board and currentPlayer
-        board.reloadBoardImgs();
+        board.resetBoard();
         startNewTurn();
         view.show(); // show view as last step of run()
     }
@@ -235,7 +235,7 @@ public class Game{
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers);
-                // DONT reset board after every act
+                board.reloadImgs();
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
@@ -277,7 +277,7 @@ public class Game{
                 //decrement days and reset the roles and board
                 numDays--;
                 view.showPopUp("Its the end of the day! " + numDays + " days remain");
-                board.reloadBoardImgs();
+                board.resetBoard();
 
                 // reset players
                 resetPlayers();
@@ -342,7 +342,7 @@ public class Game{
             players.add(players.remove());
             
         }
-        board.reloadBoardImgs();
+        board.reloadImgs();
     }
 
 

@@ -68,13 +68,21 @@ public class Board{
         return uniqueInstance;
     }
 
-    
-    public void reloadBoardImgs(){
+    public void resetBoard(){
         view.clearCard();
         view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
-            //System.out.println("hello");
+            // System.out.println("Set name: " + boardSets.get(i).getName() + "; flip stage: " + boardSets.get(i).getFlipStage());
+            view.resetCard(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
+        }
+    }
+    
+    public void reloadImgs(){
+        view.clearCard();
+        view.clearShot();
+        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             view.resetCard(boardSets.get(i));
             view.resetShot(boardSets.get(i));
         }
