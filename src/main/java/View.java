@@ -240,7 +240,7 @@ public class View implements ActionListener{
         JLabel l;
 
         AreaData area = s.getArea();
-
+System.out.println(s.getName() + " " + s.getFlipStage());
         if(s.getFlipStage() != 2){
             if(s.getFlipStage() != 1){
                 img = new ImageIcon("src/main/resources/img/cardback.png");
