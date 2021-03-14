@@ -146,6 +146,10 @@ public class Set{
         return shotTokens;
     }
 
+    public int getTotalTakes(){
+        return totalTakes;
+    }
+
     public int getTakesLeft(){
         return takesLeft;
     }
