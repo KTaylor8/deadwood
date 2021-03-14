@@ -7,6 +7,7 @@ public class Game{
     private int numPlayers;
     private Board board;
     private View view;
+    private Player[] playerArray;
 
     private Player currentPlayer;
 
@@ -109,6 +110,11 @@ public class Game{
             }
             players.add(p);
         }
+        playerArray = new Player[players.size()];
+        for(int i = 0; i < players.size(); i++){
+            playerArray[i] = players.peek();
+            players.add(players.remove());
+        }
 
         return players;
     }
@@ -173,7 +179,7 @@ public class Game{
         if(currentPlayer.getLocation().getName().equals("office")){
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
-                String n = view.upgradeShowPopUp(upgrades);
+                String n = view.showUpgradePopUp(upgrades);
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){

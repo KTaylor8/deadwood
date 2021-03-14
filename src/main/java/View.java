@@ -29,6 +29,8 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
+    JPanel leftPlayers = new JPanel();
+    JPanel rightPlayers = new JPanel();
     
     
         //panel for the top information about current player
@@ -79,22 +81,43 @@ public class View implements ActionListener{
             b.addActionListener(this);
             actionPanel.add(b);
         }
-
-        JPanel leftPlayers = new JPanel();
+        /*
+        places[0] = new JLayeredPane();
+        places[1] = new JLayeredPane();
+        places[2] = new JLayeredPane();
+        places[3] = new JLayeredPane();
+        places[4] = new JLayeredPane();
+        places[5] = new JLayeredPane();
+        places[6] = new JLayeredPane();
+        places[7] = new JLayeredPane();
+        places[8] = new JLayeredPane();
+        places[9] = new JLayeredPane();
+*/
         leftPlayers.setLayout(new GridLayout(4, 1));
-        leftPlayers.setSize(new Dimension(800, 1200));
-        for (int i = 1; i <= 7; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            leftPlayers.add(b);
-        }
+        leftPlayers.setBounds(0,0, 400, 1000);
+        //leftPlayers.add(player1);
+        //leftPlayers.add(player3);
+        //leftPlayers.add(player5);
+        //leftPlayers.add(player7);
+        /*
+        leftPlayers.setSize(new Dimension(50,400));
+        */
+        //for (int i = 1; i <= 7; i = i+2) {
+            //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            //leftPlayers.add(b);
+        //}
 
-        JPanel rightPlayers = new JPanel();
         rightPlayers.setLayout(new GridLayout(4, 1));
-        rightPlayers.setSize(new Dimension(800, 1200));
-        for (int i = 2; i <= 8; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            rightPlayers.add(b);
-        }
+        rightPlayers.setBounds(0,0, 400, 1000);
+        //rightPlayers.add(player2);
+        //rightPlayers.add(player4);
+        //rightPlayers.add(player6);
+        //rightPlayers.add(player8);
+        
+        //for (int i = 2; i <= 8; i = i+2) {
+            //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            //rightPlayers.add(b);
+        //}
 
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
@@ -134,6 +157,8 @@ public class View implements ActionListener{
         controller.process(buttonText);
     }
 
+     
+
     public String showRolePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -148,7 +173,7 @@ public class View implements ActionListener{
         return(options[n] + "");
     }
 
-    public String upgradeShowPopUp(String[] options){
+    public String showUpgradePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "What Upgrade would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
@@ -158,6 +183,28 @@ public class View implements ActionListener{
     // equivalent to Calculator2View's updateResult()
     public void showPopUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
+    }
+
+    public void updateSidePanel(Player[] players){
+        leftPlayers.removeAll();
+        leftPlayers.revalidate();
+        leftPlayers.repaint();
+
+        rightPlayers.removeAll();
+        rightPlayers.revalidate();
+        rightPlayers.repaint();
+        System.out.println(players.length);
+
+        for (int i = 1; i < players.length; i++) {
+            
+            JLabel b = new JLabel("<html>" + players[i].getName() + "<br/>Location: " + players[i].getLocation().getName() + "<br/>Level: " + players[i].getRank() + "<br/>Is Employed?: " + players[i].isEmployed() + "<br/>Dollars: " + players[i].getDollars() + "<br/>Credits: " + players[i].getCredits() + "<br/>Rehearse Tokens: " + players[i].getRehearseTokens() + "</html>", JLabel.CENTER);
+            if(i%2 == 0){
+               leftPlayers.add(b);
+            }
+            else{
+               rightPlayers.add(b);
+            }
+        }
     }
 
     public void changeCurrentPlayer(String playerName, String path){
