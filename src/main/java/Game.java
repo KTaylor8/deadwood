@@ -109,11 +109,11 @@ public class Game{
             }
             players.add(p);
         }
-        playerArray = new Player[players.size()];
-        for(int i = 0; i < players.size(); i++){
-            playerArray[i] = players.peek();
-            players.add(players.remove());
-        }
+        //playerArray = new Player[players.size()];
+        //for(int i = 0; i < players.size(); i++){
+            //playerArray[i] = players.peek();
+            //players.add(players.remove());
+        //}
 
         return players;
     }
@@ -147,6 +147,9 @@ public class Game{
 
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
+        for(int i = 0; i < roles.length; i++){
+            System.out.println(i + " " + roles[i]);
+        }
         String result = view.showRolePopUp(roles);
         return result;
     }
