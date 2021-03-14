@@ -1,8 +1,20 @@
-// import java.util.*;
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
 // import java.awt.Graphics;
 
 // uses singleton with lazy initialization b/c of args
@@ -17,6 +29,10 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
+    
+    
+        //panel for the top information about current player
+    JPanel displayPanel = new JPanel();
     Controller controller;
 
     private static View uniqueInstance;
@@ -45,8 +61,6 @@ public class View implements ActionListener{
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //panel for the top information about current player
-        JPanel displayPanel = new JPanel();
 
         display = new JLabel("Current player: ", JLabel.CENTER);
         display.setPreferredSize(new Dimension(leftMargin, 50));
@@ -173,6 +187,13 @@ public class View implements ActionListener{
         controller.process(buttonText);
     }
 
+    public String showRolePopUp(String[] options){
+        int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+            null, options, options[0]);
+        return(options[n] + "");
+    }
+
     public String showMovePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -185,8 +206,22 @@ public class View implements ActionListener{
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
-    public void changeCurrentPlayer(String playerName){
-        display.setText("Current Player: " + playerName);
+    public void changeCurrentPlayer(String playerName, String path){
+        displayPanel.removeAll();
+        displayPanel.revalidate();
+	    displayPanel.repaint();
+
+        display = new JLabel("Current player: " + playerName, JLabel.CENTER);
+        display.setPreferredSize(new Dimension(300, 50));
+        display.setOpaque(false);
+        display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
+
+        displayPanel.add(display);
+
+        JLabel l = new JLabel(new ImageIcon(path));
+
+        l.setBounds(100, 25, 46, 46); // dice w/h = 46
+        displayPanel.add(l);
     }
 
     public void changePlayerStats(String stats){ // not functional
@@ -195,6 +230,8 @@ public class View implements ActionListener{
 
     public void clearCard(){
         cardPanel.removeAll();
+        cardPanel.revalidate();
+	    cardPanel.repaint();
     }
 
     public void resetCard(Set s){
@@ -203,27 +240,30 @@ public class View implements ActionListener{
 
         AreaData area = s.getArea();
 
-        if(s.getFlipStage() != 1){
-            img = new ImageIcon("src/main/resources/img/cardback.png");
+        if(s.getFlipStage() != 2){
+            if(s.getFlipStage() != 1){
+                img = new ImageIcon("src/main/resources/img/cardback.png");
+            }
+            else{
+                img = new ImageIcon(s.getCard().getPicturePath());
+            }
+            l = new JLabel(img);
+            
+            l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
+            cardPanel.add(l);
         }
-        else{
-            img = new ImageIcon(s.getCard().getPicturePath());
-        }
-        l = new JLabel(img);
-        
-        l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
-        cardPanel.add(l);
     }
 
     public void clearShot(){
         shotPanel.removeAll();
+        shotPanel.revalidate();
+	    shotPanel.repaint();
     }
 
     public void resetShot(Set s){
         JLabel l;
         AreaData area;
 
-        System.out.println(s.getTakesLeft());
 
         for(int i = 0; i < s.getTakesLeft(); i++){
             l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
@@ -231,13 +271,31 @@ public class View implements ActionListener{
             l.setBounds(area.getX(), area.getY(), area.getW(), area.getH());
             shotPanel.add(l);
         }
-        //System.out.println("uh " + (s.getCard()).getPicturePath());
         
     }
 
     
     public void clearDice(){
+
         dicePanel.removeAll();
+	    dicePanel.revalidate();
+	    dicePanel.repaint();
+    }
+
+    public void setDie(Player p){
+        JLabel l;
+        int x = p.getAreaData().getX();
+        int y = p.getAreaData().getY();
+
+       
+
+        // set 
+        l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
+
+        l.setBounds(x, y, 46, 46); // dice w/h = 46
+        dicePanel.add(l);
+         
+        
     }
 
     // reset a given player's die's location to the trailers
@@ -259,7 +317,7 @@ public class View implements ActionListener{
         l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
 
         l.setBounds(x, y, 46, 46); // dice w/h = 46
-        cardPanel.add(l);
+        dicePanel.add(l);
     }
 
     // moves player's die to specified x and y positions

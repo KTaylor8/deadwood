@@ -23,9 +23,9 @@ public class Player{
         playerName = p;
         playerDiePaths = paths;
         
-        rank = 1;
-        credits = 0;
-        dollars = 0;
+        rank = 5;
+        credits = 300;
+        dollars = 300;
         playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
@@ -138,6 +138,28 @@ public class Player{
         this.location = newPos;
     }
 
+    public void setAreaData(AreaData a){
+        playerDieArea = a;
+    }
+
+    public void setOnCardAreaData(AreaData a){
+        AreaData b = new AreaData((a.getX() + location.getArea().getX()) - 2, (a.getY() + location.getArea().getY())  - 2, playerDieArea.getW(), playerDieArea.getH());
+        playerDieArea = b;
+    }
+    public AreaData getAreaData(){
+        return playerDieArea;
+    }
+    //to move a player to a neighbor
+    // public static boolean canMoveTo(String dest, List<String> neighbors){
+    //     for(int i = 0; i < neighbors.size(); i++){
+    //         //if the designated neighbor exists return true
+    //         if(dest.equals(neighbors.get(i)))
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
     public boolean moveTo(String destName, Set dest) {
         boolean successfulMove = false;
         // String destName;
@@ -156,7 +178,8 @@ public class Player{
 
                 if (location.checkNeighbor(destName) ) {
                     location = dest;
-                    view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
+                    setAreaData(dest.getArea());
+                    //view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
                     view.showPopUp("You're now located in " + destName);
                     hasPlayed = true;
                     successfulMove = true;
@@ -192,15 +215,13 @@ public class Player{
             if(!location.isClosed()){
                 if(rank >= roleLevel)
                 {
+                    employed = true;
                     role = desiredRole;
                     view.showPopUp("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
                 }
                 else{
                     view.showPopUp("Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
                 }
-            }
-            else{
-                view.showPopUp("This set was already finished!");
             }
         }
         else {

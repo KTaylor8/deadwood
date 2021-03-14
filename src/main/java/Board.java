@@ -67,8 +67,19 @@ public class Board{
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
+
+    public void setBoard(){
+        view.clearCard();
+        view.clearShot();
+        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
+            view.resetCard(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
+        }
+    }
     
     public void resetBoard(){
+        view.clearCard();
+        view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
             //System.out.println("hello");
@@ -135,6 +146,16 @@ public class Board{
         return null;
     }
 
+    public boolean isOnCard(String st, Set s){
+        List<Role> r = s.getOffCardRoles();
+        for(int i = 0; i < r.size(); i++){
+            if(r.get(i).getName().equals(st)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     
 
     //returns list of strings of the neighbors of a given set
@@ -149,8 +170,9 @@ public class Board{
     }
 
     //returns a string that is a list of free roles card and off card
-    public String freeRoles(String pos){
-        String free = "";
+    /*
+    public String[] freeRoles(String pos){
+        String[] free = "";
         for(Set s: boardSets){
             //if the set name is equal to the name given
             if((s.getName()).equals(pos)){
@@ -176,7 +198,7 @@ public class Board{
             free += "There are no open roles at this location.";
         }
         return free;
-    }
+    } */
 
     //returns the number of sets that have not been finished in one day
     public int getSceneNum(){

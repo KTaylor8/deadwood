@@ -118,11 +118,16 @@ public class Game{
         return result;
     }
 
+
     public void tryMove() {
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
+                //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
+                if(currentPlayer.getLocation().getFlipStage() == 0){
+                    currentPlayer.getLocation().flipSet();
+                }
                 refreshPlayerPanel();
             }
             else {
@@ -134,11 +139,31 @@ public class Game{
         }
     }
 
-    public void tryTakeRole(String desiredRole) {
+    public String chooseRole() {
+        String[] roles = currentPlayer.getLocation().getRoleStrings();
+        String result = view.showRolePopUp(roles);
+        return result;
+    }
+
+    public void tryTakeRole() {
         if (currentPlayer.isEmployed() == false) {
-            currentPlayer.takeRole(desiredRole);
-            if (currentPlayer.isEmployed() == true) {
+            if(currentPlayer.getLocation().getName() == "office" || currentPlayer.getLocation().getName() == "trailer"){
+                view.showPopUp("You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
+            }
+            else{
+                // LATER: THE METHOD CALLED NEEDS REFACTORING
+                // board.fillRole(location, role); // <-- this method needs to be simplified later; it's hard to follow currently
+                String chosenRole = chooseRole();
+                currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
+                if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
+                    currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
+                    System.out.println("on card");
+                }
+                else{
+                    currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                }
+                refreshPlayerPanel();
             }
         } else {
             view.showPopUp("You're already employed, so you can't take another role until you finish this one");
@@ -191,6 +216,7 @@ public class Game{
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers); //passing in find...CardPlayers b/c otherwise I'd have to pass in the queue of all the players and that seems like too much info
+                board.setBoard();
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
@@ -204,7 +230,7 @@ public class Game{
     public void startNewTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
-        view.changeCurrentPlayer(currentPlayer.getName());
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
         currentPlayer.setHasPlayed(false);
     }
 
@@ -218,12 +244,14 @@ public class Game{
             view.resetPlayerDie(curPlayer, i);
             players.add(players.remove());
         }
+
     }
 
     public void endTurn() {
         if (board.getSceneNum() > 1) { // day continues
             startNewTurn();
-            view.changeCurrentPlayer(currentPlayer.getName());
+            view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+            view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
         else { // day ends
             if (numDays > 0) { // game continues
@@ -287,12 +315,17 @@ public class Game{
     public void refreshPlayerPanel() {
         view.clearDice();
         Player curPlayer;
+        
         for(int i = 0; i < players.size(); i++){
             curPlayer = players.peek();
-            view.resetPlayerDie(curPlayer, i);
+            
+            view.setDie(curPlayer);
             players.add(players.remove());
+            
         }
+        board.setBoard();
     }
+
 
     //to calculate winner
     private void calcWinner(){
