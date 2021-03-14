@@ -38,7 +38,7 @@ public class Game{
 
     public void run(){
         //make sure user enters valid number
-        while(!(numPlayers > 1) && !(numPlayers < 9)){
+        if((numPlayers < 1) || (numPlayers > 9)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
@@ -53,7 +53,7 @@ public class Game{
         board.resetBoard();
         startNewTurn();
         view.show(); // show view as last step of run()
-        board.resetBoardTest(); //TEST
+       // board.resetBoardTest(); //TEST
     }
 
     private Queue<Player> initPlayers() {
@@ -131,10 +131,6 @@ public class Game{
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
-                if (destStr.equals("")) {
-                    view.showPopUp("No option selected. Try again.");
-                    return;
-                }
                 //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 if(currentPlayer.getLocation().getFlipStage() == 0){
@@ -156,7 +152,8 @@ public class Game{
                     i++;
                 }
                 currentPlayer.getLocation().decTakesLeft();
-                board.reloadImgsTest(currentPlayer, tokenSum);
+                refreshPlayerPanel();
+                //board.reloadImgsTest(currentPlayer, tokenSum);
                 
             }
             else {
@@ -210,10 +207,6 @@ public class Game{
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
                 String n = view.showUpgradePopUp(upgrades);
-                if (n.equals("")) {
-                    view.showPopUp("No option selected. Try again.");
-                    return;
-                }
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
@@ -269,7 +262,8 @@ public class Game{
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers);
-                board.reloadImgs();
+                //board.reloadImgs();
+                refreshPlayerPanel();
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");

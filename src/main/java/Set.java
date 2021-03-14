@@ -57,9 +57,13 @@ public class Set{
     }
 
     public String[] getUpgradeStrings(int j){
-        String[] u = new String[(upgradeCostCredits.length*2) - ((j)*2)];
+        int test = (upgradeCostCredits.length*2) - ((j)*2);
+        if(test < 0){
+            test = 0;
+        }
+        String[] u = new String[test];
         int k = 0;
-        for(int i = j; i < upgradeCostCredits.length; i++){
+        for(int i = j; i < u.length; i++){
             u[k] = "Level " + (i+1) + " = " + upgradeCostCredits[i] + " credits";
             k++;
             u[k] = "Level " + (i+1) + " : " + upgradeCostDollars[i] + " dollars";
