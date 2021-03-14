@@ -81,7 +81,6 @@ public class View implements ActionListener{
             b.addActionListener(this);
             actionPanel.add(b);
         }
-<<<<<<< HEAD
         /*
         places[0] = new JLayeredPane();
         places[1] = new JLayeredPane();
@@ -107,19 +106,8 @@ public class View implements ActionListener{
             //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
             //leftPlayers.add(b);
         //}
-=======
-
-        JPanel leftPlayers = new JPanel();
-        leftPlayers.setLayout(new GridLayout(4, 1));
-        leftPlayers.setSize(new Dimension(800, 1200));
-        for (int i = 1; i <= 7; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            leftPlayers.add(b);
-        }
->>>>>>> be135bf719a88526107ad26063814662a43cef15
 
         rightPlayers.setLayout(new GridLayout(4, 1));
-<<<<<<< HEAD
         rightPlayers.setBounds(0,0, 400, 1000);
         //rightPlayers.add(player2);
         //rightPlayers.add(player4);
@@ -130,13 +118,6 @@ public class View implements ActionListener{
             //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
             //rightPlayers.add(b);
         //}
-=======
-        rightPlayers.setSize(new Dimension(800, 1200));
-        for (int i = 2; i <= 8; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            rightPlayers.add(b);
-        }
->>>>>>> be135bf719a88526107ad26063814662a43cef15
 
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
