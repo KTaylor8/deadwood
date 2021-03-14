@@ -178,7 +178,13 @@ public class Game{
                 String chosenRole = chooseRole();
                 currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
-                currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
+                    currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
+                    System.out.println("on card");
+                }
+                else{
+                    currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                }
                 refreshPlayerPanel();
             }
         } else {

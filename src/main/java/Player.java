@@ -25,8 +25,8 @@ public class Player{
         // this.view = view;
         
         rank = 1;
-        credits = 0;
-        dollars = 0;
+        credits = 300;
+        dollars = 300;
         playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
@@ -150,6 +150,11 @@ public class Player{
 
     public void setAreaData(AreaData a){
         playerDieArea = a;
+    }
+
+    public void setOnCardAreaData(AreaData a){
+        AreaData b = new AreaData((a.getX() + location.getArea().getX()) - 2, (a.getY() + location.getArea().getY())  - 2, playerDieArea.getW(), playerDieArea.getH());
+        playerDieArea = b;
     }
     public AreaData getAreaData(){
         return playerDieArea;

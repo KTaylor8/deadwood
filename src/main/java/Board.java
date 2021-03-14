@@ -145,6 +145,16 @@ public class Board{
         return null;
     }
 
+    public boolean isOnCard(String st, Set s){
+        List<Role> r = s.getOffCardRoles();
+        for(int i = 0; i < r.size(); i++){
+            if(r.get(i).getName().equals(st)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     
 
     //returns list of strings of the neighbors of a given set
