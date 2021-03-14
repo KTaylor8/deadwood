@@ -246,6 +246,7 @@ public class Player{
             view.showPopUp("Acting success!");
             //decrement takesLeft
             location.decTakesLeft();
+            // determine pay for sucessful shot
             if(location.getCard().hasRole(role)){
                 view.showPopUp("Since you were important, you get 2 credits");
                 incCredits(2);
