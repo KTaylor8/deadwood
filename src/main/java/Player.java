@@ -271,7 +271,7 @@ public class Player{
             location.wrapUp(onCardPlayers, offCardPlayers);
         }
         else{
-            view.showPopUp("There are only " + location.getTakesLeft() + " takes left in this scene!");
+            view.showPopUp("There are " + location.getTakesLeft() + " takes left in this scene.");
         }
         hasPlayed = true;
         successfulActing = true;

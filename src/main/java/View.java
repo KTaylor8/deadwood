@@ -163,21 +163,36 @@ public class View implements ActionListener{
         int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
-        return(options[n] + "");
+        if (n == -1) {
+            return "";
+        }
+        else {
+            return(options[n] + "");
+        }
     }
 
     public String showMovePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
-        return(options[n] + "");
+        if (n == -1) {
+            return "";
+        }
+        else {
+            return(options[n] + "");
+        }
     }
 
     public String showUpgradePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "What Upgrade would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
-        return(options[n] + "");
+        if (n == -1) {
+            return "";
+        }
+        else {
+            return(options[n] + "");
+        }
     }
 
     // equivalent to Calculator2View's updateResult()
