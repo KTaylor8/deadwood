@@ -196,7 +196,6 @@ public class Set{
 
     //hands out bonuses based on on card and off card people
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
-        // this.view = View.getInstance();
 
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
         view.showPopUp("Rolling " + (this.currentCard.getBudget()) + " dice");

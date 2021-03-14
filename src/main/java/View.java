@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 // import java.awt.Graphics;
 
-
+// uses singleton with lazy initialization b/c of args
 public class View implements ActionListener{
     
     JFrame frame;
@@ -81,6 +81,7 @@ public class View implements ActionListener{
             b.addActionListener(this);
             actionPanel.add(b);
         }
+<<<<<<< HEAD
         /*
         places[0] = new JLayeredPane();
         places[1] = new JLayeredPane();
@@ -106,8 +107,19 @@ public class View implements ActionListener{
             //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
             //leftPlayers.add(b);
         //}
+=======
+
+        JPanel leftPlayers = new JPanel();
+        leftPlayers.setLayout(new GridLayout(4, 1));
+        leftPlayers.setSize(new Dimension(800, 1200));
+        for (int i = 1; i <= 7; i = i+2) {
+            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            leftPlayers.add(b);
+        }
+>>>>>>> be135bf719a88526107ad26063814662a43cef15
 
         rightPlayers.setLayout(new GridLayout(4, 1));
+<<<<<<< HEAD
         rightPlayers.setBounds(0,0, 400, 1000);
         //rightPlayers.add(player2);
         //rightPlayers.add(player4);
@@ -118,14 +130,18 @@ public class View implements ActionListener{
             //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
             //rightPlayers.add(b);
         //}
-
-        //cardPanel.setLayout(null);
+=======
+        rightPlayers.setSize(new Dimension(800, 1200));
+        for (int i = 2; i <= 8; i = i+2) {
+            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            rightPlayers.add(b);
+        }
+>>>>>>> be135bf719a88526107ad26063814662a43cef15
 
         ImageIcon img = new ImageIcon("src/main/resources/img/board.png");
         layeredPane.setSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
         JLabel board = new JLabel(img, JLabel.CENTER);
         board.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
-        //layeredPane.add(board, 100);
         cardPanel.setBounds(leftMargin, 0, img.getIconWidth(), img.getIconHeight());
         cardPanel.setOpaque(false);
         cardPanel.setLayout(null);
@@ -138,40 +154,13 @@ public class View implements ActionListener{
         layeredPane.add(dicePanel, 0);
         layeredPane.add(shotPanel, 1);
         layeredPane.add(cardPanel, 2);
-        layeredPane.add(board, 3);
-        //layeredPane.add(cardPanel, 0);
-        
-        /*for(int i = 0; i < 10; i++){
-            (places[i]).setSize(new Dimension(300,300));
-            layeredPane.add(places[i]);
-        }*/
-
-        
-
-        //JLabel b = new JLabel(img);
-        //boardPanel.add(b, BorderLayout.CENTER);
-        //lPane.add(boardPanel, 0);
-        //JLayeredPane board = new JLayeredPane();
-        //board.setLayout(new BorderLayout());
-
-        //board.setPreferredSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
-
-        //JButton please = new JButton("please");
-        //board.add(b, 0);
-        //board.setVisible(true);
-        //board.setMaximumSize(new Dimension(100, 100));
-
-        //JLabel board = new JLabel(new ImageIcon("src/main/resources/img/board.png"));
-        //board.setBounds(0,0,img.getIconWidth(), img.getIconHeight());
-
-        
+        layeredPane.add(board, 3);   
 
         frame.add(layeredPane, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
         frame.add(actionPanel, BorderLayout.PAGE_END);
         frame.add(leftPlayers, BorderLayout.LINE_START);
         frame.add(rightPlayers, BorderLayout.LINE_END);
-        //frame.add(mainStreet);
 
         frame.pack();
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -185,56 +174,25 @@ public class View implements ActionListener{
         String buttonText = ((JButton) e.getSource()).getText();
 
         controller.process(buttonText);
-        // if ("move".equals(buttonText)) {
-        //     // if (game.haveTheyPlayed()) {
-        //     //     showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
-        //     // }
-        //     // else {
-        //     //     String[] options = ((game.getCurrentPlayer()).getLocation()).getNeighborStrings();
-        //     //     String result = moveShowPopUp(options);
-        //     //     game.changeHasPlayed((game.getCurrentPlayer()).moveTo(game.getBoardSet(result), this));
-        //     //     game.refreshPlayerPanel(this);
-        //     // }
-
-        //     controller.tryMove(buttonText);
-        // } else if ("take role".equals(buttonText)) {
-        //     // showPopUp("dont take that role, trust me");
-        //     String role = chooseRole();
-        //     controller.tryTakeRole(role);
-        // } else if ("upgrade".equals(buttonText)) {
-        //     // showPopUp("upgrades people, upgrades");
-
-        //     String upgradeChoice = chooseUpgrade(); // have a way for user to choose upgrade type and rank, probably should return a String[] w/ the 2 values
-        //     controller.tryUpgrade(upgradeChoice);
-        // } else if ("rehearse".equals(buttonText)) {
-        //     // showPopUp("oh honey, you're gonna need something a lil more than rehearsing");
-        //     controller.tryRehearse();
-        // } else if ("act".equals(buttonText)) {
-        //     // showPopUp("ha, yea right");
-        //     controller.tryAct();
-        // }else {
-        //     // game.changeTurn();
-        //     controller.endTurn();
-        // }
     }
 
      
 
-    public String roleShowPopUp(String[] options){
+    public String showRolePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
         return(options[n] + "");
     }
 
-    public String moveShowPopUp(String[] options){
+    public String showMovePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);
         return(options[n] + "");
     }
 
-    public String upgradeShowPopUp(String[] options){
+    public String showUpgradePopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "What Upgrade would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
             null, options, options[0]);

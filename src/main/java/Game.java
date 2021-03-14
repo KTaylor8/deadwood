@@ -1,6 +1,6 @@
 import java.util.*;
 
-
+// uses singleton with lazy initialization b/c of args
 public class Game{
     private int numDays;
     private Queue<Player> players = new LinkedList<Player>();
@@ -15,7 +15,7 @@ public class Game{
 
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
-        board = new Board(args[0], args[1]);
+        board = Board.getInstance(args[0], args[1]);
     }
 
     // initializer (w/ args)
@@ -31,12 +31,11 @@ public class Game{
         return uniqueInstance;
     }
 
-    public void registerObserver(View view) {
-        this.view = view;
-    }
+    // obsoleted by setting view = View.getInstance() in constructor after board since view is singleton now
+    // public void registerObserver(View view) { 
+    //     this.view = view;
 
     public void run(){
-        // view.init(); // init view so other classes can show popUps and reset cards/sets, but don't show it until the board is set-up
         //make sure user enters valid number
         while(!(numPlayers > 1) && !(numPlayers < 9)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
@@ -49,42 +48,20 @@ public class Game{
         //creates the player queue with diff values according to num players
         players = initPlayers();
 
-        // init and show board
+        // init and show board and currentPlayer
         board.resetBoard();
-        view.show();
-        rotateTurn();
-        //iterates through the day
-        // while(numDays != 0){
-        //     //view.showPopUp("Placing all players in trailers");
-        //     if(board.getSceneNum() > 1){ // this if-statement will probably have to be moved
-        //         //currentPlayer = players.peek();
-        //         //players.add(players.remove());
-        //         changeTurn();
-        //         view.changeCurrentPlayer(currentPlayer.getName());
-        //         //ui.interact(currentPlayer, board, players);
-        //     }
-        //     //decrement days and reset the roles and board
-        //     numDays--;
-        //     view.showPopUp("Its the end of the day! " + numDays + " days remain");
-        //     board.resetBoard();
-
-        //     // reset players
-        //     resetPlayers();
-        // }
-
-        // //calculate winner
-        // //view.showPopUp("Calculating winner...");
-        
-        // calcWinner();
-        // //ui.closeScanner();
+        startNewTurn();
+        view.show(); // show view as last step of run()
     }
 
     private Queue<Player> initPlayers() {
         Queue<Player> players = new LinkedList<Player>();
         Player p;
         // set default values
-        Set startLocation = board.getSet("trailer");
-        int startRank = 1;
+        // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
+        Set startLocation = board.getSet("Saloon"); // FOR TESTING ONLY; DELETE AFTERWARD
+        // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
+        int startRank = 6; // FOR TESTING ONLY; DELETE AFTERWARD
         int startCredits = 0;
         numDays = 4;
 
@@ -124,10 +101,10 @@ public class Game{
             // Create players
             String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
-                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths, view);
+                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
                 view.resetPlayerDie(p, i);
             } else {
-                p = new Player(startLocation, tempName, dieImgPaths, view);
+                p = new Player(startLocation, tempName, startRank, dieImgPaths);
                 view.resetPlayerDie(p, i);
             }
             players.add(p);
@@ -143,7 +120,7 @@ public class Game{
 
     public String chooseNeighbor() {
         String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
-        String result = view.moveShowPopUp(neighbors);
+        String result = view.showMovePopUp(neighbors);
         return result;
     }
 
@@ -170,7 +147,7 @@ public class Game{
 
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
-        String result = view.roleShowPopUp(roles);
+        String result = view.showRolePopUp(roles);
         return result;
     }
 
@@ -203,7 +180,7 @@ public class Game{
         if(currentPlayer.getLocation().getName().equals("office")){
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
-                String n = view.upgradeShowPopUp(upgrades);
+                String n = view.showUpgradePopUp(upgrades);
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
@@ -270,7 +247,7 @@ public class Game{
         }
     }
 
-    public void rotateTurn(){
+    public void startNewTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
         view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
@@ -292,7 +269,7 @@ public class Game{
 
     public void endTurn() {
         if (board.getSceneNum() > 1) { // day continues
-            rotateTurn();
+            startNewTurn();
             view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
