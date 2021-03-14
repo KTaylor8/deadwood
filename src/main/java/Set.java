@@ -7,7 +7,7 @@ public class Set{
     private Card currentCard;
     //this is so we know whether it has not been flipped(0) or if it is flipped and people can move on it(1), or if it is re-flipped over(2)
     private int flipStage;
-    private int finalTakes = 0;
+    private int totalTakes = 0;
     private int takesLeft; // field should be private if other classes use a getter method to access them, right?
     private List<ShotToken> shotTokens;
     private AreaData area;
@@ -26,7 +26,7 @@ public class Set{
         this.shotTokens = shotTokens;
         this.area = areaData;
 
-        this.finalTakes = shotTokens.size();
+        this.totalTakes = shotTokens.size();
     }
 
     // office constructor
@@ -75,7 +75,7 @@ public class Set{
             (offCardRoles.get(i)).unoccupy();
         }
         this.currentCard = newCard;
-        this.takesLeft = finalTakes;
+        this.takesLeft = totalTakes;
         flipStage = 0;
     }
 
@@ -144,6 +144,10 @@ public class Set{
 
     public List<ShotToken> getShotTokens(){
         return shotTokens;
+    }
+
+    public int getTotalTakes(){
+        return totalTakes;
     }
 
     public int getTakesLeft(){

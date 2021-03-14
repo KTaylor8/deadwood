@@ -50,9 +50,10 @@ public class Game{
         players = initPlayers();
 
         // init and show board and currentPlayer
-        board.reloadBoardImgs();
+        board.resetBoard();
         startNewTurn();
         view.show(); // show view as last step of run()
+        board.resetBoardTest(); //TEST
     }
 
     private Queue<Player> initPlayers() {
@@ -60,7 +61,7 @@ public class Game{
         Player p;
         // set default values
         // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
-        Set startLocation = board.getSet("Saloon"); // FOR TESTING ONLY; DELETE AFTERWARD
+        Set startLocation = board.getSet("trailer"); // FOR TESTING ONLY; DELETE AFTERWARD
         // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
         int startRank = 6; // FOR TESTING ONLY; DELETE AFTERWARD
         int startCredits = 0;
@@ -130,12 +131,33 @@ public class Game{
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
+                if (destStr.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 if(currentPlayer.getLocation().getFlipStage() == 0){
                     currentPlayer.getLocation().flipSet();
                 }
-                refreshPlayerPanel();
+                // refreshPlayerPanel(); // this is layering more components over the others
+                // board.resetBoard2(); //TEST
+
+                // JUST A TEST FOR REMOVING A SHOT
+                // get index of last shot token in your current player's set
+                int i = 2;
+                int tokenSum = 0;
+                while (i<=10) {
+                    Set curSet = board.getAllSets().get(i);
+                    tokenSum = tokenSum + curSet.getTotalTakes();
+                    if (curSet.getName().equals(currentPlayer.getLocation().getName())) { 
+                        break;
+                    }
+                    i++;
+                }
+                currentPlayer.getLocation().decTakesLeft();
+                board.reloadImgsTest(currentPlayer, tokenSum);
+                
             }
             else {
                 view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
@@ -162,8 +184,13 @@ public class Game{
             }
             else{
                 String chosenRole = chooseRole();
+                if (chosenRole.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
+
                 if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
                     currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
                     System.out.println("on card");
@@ -183,6 +210,10 @@ public class Game{
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
                 String n = view.showUpgradePopUp(upgrades);
+                if (n.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
@@ -238,7 +269,7 @@ public class Game{
                 findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers);
-                // DONT reset board after every act
+                board.reloadImgs();
             }
             else{
                 view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
@@ -280,7 +311,7 @@ public class Game{
                 //decrement days and reset the roles and board
                 numDays--;
                 view.showPopUp("Its the end of the day! " + numDays + " days remain");
-                board.reloadBoardImgs();
+                board.resetBoard();
 
                 // reset players
                 resetPlayers();
@@ -345,7 +376,7 @@ public class Game{
             players.add(players.remove());
             
         }
-        board.reloadBoardImgs();
+        board.reloadImgs();
     }
 
 
