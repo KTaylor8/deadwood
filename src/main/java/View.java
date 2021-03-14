@@ -29,6 +29,8 @@ public class View implements ActionListener{
     JPanel cardPanel = new JPanel();
     JPanel shotPanel = new JPanel();
     JPanel dicePanel = new JPanel();
+    JPanel leftPlayers = new JPanel();
+    JPanel rightPlayers = new JPanel();
     
     
         //panel for the top information about current player
@@ -91,9 +93,8 @@ public class View implements ActionListener{
         places[8] = new JLayeredPane();
         places[9] = new JLayeredPane();
 */
-        JPanel leftPlayers = new JPanel();
         leftPlayers.setLayout(new GridLayout(4, 1));
-        leftPlayers.setSize(new Dimension(800, 1200));
+        leftPlayers.setBounds(0,0, 400, 1000);
         //leftPlayers.add(player1);
         //leftPlayers.add(player3);
         //leftPlayers.add(player5);
@@ -101,23 +102,22 @@ public class View implements ActionListener{
         /*
         leftPlayers.setSize(new Dimension(50,400));
         */
-        for (int i = 1; i <= 7; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            leftPlayers.add(b);
-        }
+        //for (int i = 1; i <= 7; i = i+2) {
+            //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            //leftPlayers.add(b);
+        //}
 
-        JPanel rightPlayers = new JPanel();
         rightPlayers.setLayout(new GridLayout(4, 1));
-        rightPlayers.setSize(new Dimension(800, 1200));
+        rightPlayers.setBounds(0,0, 400, 1000);
         //rightPlayers.add(player2);
         //rightPlayers.add(player4);
         //rightPlayers.add(player6);
         //rightPlayers.add(player8);
         
-        for (int i = 2; i <= 8; i = i+2) {
-            JLabel b = new JLabel("Player " + i, JLabel.LEFT);
-            rightPlayers.add(b);
-        }
+        //for (int i = 2; i <= 8; i = i+2) {
+            //JLabel b = new JLabel("Player " + i, JLabel.LEFT);
+            //rightPlayers.add(b);
+        //}
 
         //cardPanel.setLayout(null);
 
@@ -218,6 +218,8 @@ public class View implements ActionListener{
         // }
     }
 
+     
+
     public String roleShowPopUp(String[] options){
         int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -242,6 +244,28 @@ public class View implements ActionListener{
     // equivalent to Calculator2View's updateResult()
     public void showPopUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
+    }
+
+    public void updateSidePanel(Player[] players){
+        leftPlayers.removeAll();
+        leftPlayers.revalidate();
+        leftPlayers.repaint();
+
+        rightPlayers.removeAll();
+        rightPlayers.revalidate();
+        rightPlayers.repaint();
+        System.out.println(players.length);
+
+        for (int i = 1; i < players.length; i++) {
+            
+            JLabel b = new JLabel("<html>" + players[i].getName() + "<br/>Location: " + players[i].getLocation().getName() + "<br/>Level: " + players[i].getRank() + "<br/>Is Employed?: " + players[i].isEmployed() + "<br/>Dollars: " + players[i].getDollars() + "<br/>Credits: " + players[i].getCredits() + "<br/>Rehearse Tokens: " + players[i].getRehearseTokens() + "</html>", JLabel.CENTER);
+            if(i%2 == 0){
+               leftPlayers.add(b);
+            }
+            else{
+               rightPlayers.add(b);
+            }
+        }
     }
 
     public void changeCurrentPlayer(String playerName, String path){

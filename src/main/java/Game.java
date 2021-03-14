@@ -1,6 +1,5 @@
 import java.util.*;
 
-//import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 
 public class Game{
     private int numDays;
@@ -8,6 +7,7 @@ public class Game{
     private int numPlayers;
     private Board board;
     private View view;
+    private Player[] playerArray;
 
     private Player currentPlayer;
 
@@ -131,6 +131,11 @@ public class Game{
                 view.resetPlayerDie(p, i);
             }
             players.add(p);
+        }
+        playerArray = new Player[players.size()];
+        for(int i = 0; i < players.size(); i++){
+            playerArray[i] = players.peek();
+            players.add(players.remove());
         }
 
         return players;

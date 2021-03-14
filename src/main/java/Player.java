@@ -25,8 +25,8 @@ public class Player{
         // this.view = view;
         
         rank = 1;
-        credits = 300;
-        dollars = 300;
+        credits = 0;
+        dollars = 0;
         playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
