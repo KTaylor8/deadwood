@@ -244,6 +244,8 @@ public class Player{
         else{
             //for acting successes on card and off card
             view.showPopUp("Acting success!");
+            //decrement takesLeft
+            location.decTakesLeft();
             if(location.getCard().hasRole(role)){
                 view.showPopUp("Since you were important, you get 2 credits");
                 incCredits(2);
@@ -253,8 +255,6 @@ public class Player{
                 incCredits(1);
                 incDollars(1);
             }
-            //decrement takesLeft
-            location.decTakesLeft();
         }
 
         //if it was the last scene and someone was on card hand out bonuses

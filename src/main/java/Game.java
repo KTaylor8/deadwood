@@ -130,6 +130,10 @@ public class Game{
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
+                if (destStr.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 if(currentPlayer.getLocation().getFlipStage() == 0){
@@ -159,6 +163,10 @@ public class Game{
             }
             else{
                 String chosenRole = chooseRole();
+                if (chosenRole.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 currentPlayer.takeRole(chosenRole);
                 currentPlayer.getRole().occupy();
                 if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
@@ -180,6 +188,10 @@ public class Game{
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
             if(upgrades.length != 0){
                 String n = view.showUpgradePopUp(upgrades);
+                if (n.equals("")) {
+                    view.showPopUp("No option selected. Try again.");
+                    return;
+                }
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
