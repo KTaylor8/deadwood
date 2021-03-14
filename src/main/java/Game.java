@@ -60,7 +60,7 @@ public class Game{
         Player p;
         // set default values
         // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
-        Set startLocation = board.getSet("Saloon"); // FOR TESTING ONLY; DELETE AFTERWARD
+        Set startLocation = board.getSet("trailer"); // FOR TESTING ONLY; DELETE AFTERWARD
         // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
         int startRank = 6; // FOR TESTING ONLY; DELETE AFTERWARD
         int startCredits = 0;

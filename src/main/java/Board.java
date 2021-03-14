@@ -70,35 +70,46 @@ public class Board{
 
     public void resetBoard(){
         view.clearCard();
-        view.clearShot();
+        view.clearShotPanel();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
             // System.out.println("Set name: " + boardSets.get(i).getName() + "; flip stage: " + boardSets.get(i).getFlipStage());
             view.resetCard(boardSets.get(i));
-            view.resetShot(boardSets.get(i));
+            view.resetShotPanel(boardSets.get(i));
         }
     }
     
-    public void reloadImgs(){
+    public void reloadImgs(){ // WE MIGHT WANT TO MAKE SEPARATE METHODS FOR AFTER MOVE/TAKEROLE/ACT INSTEAD OF RELOADING THE WHOLE BOARD'S IMGS EACH TIME, BUT THIS IS OK FOR NOW
         view.clearCard();
-        view.clearShot();
+        view.clearShotPanel();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             view.resetCard(boardSets.get(i));
-            view.resetShot(boardSets.get(i));
+            view.resetShotPanel(boardSets.get(i));
         }
+        view.refreshShotPanel();
     }
 
-    public void refreshCard(){
+    // public void testRemoveShot() {
+    //     view.clearCard();
+    //     view.clearShotPanel();
+    //     for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
+    //         view.resetCard(boardSets.get(i));
+    //         view.resetShotPanel(boardSets.get(i));
+    //     }
+    //     view.refreshShotPanel();
+    // }
+
+    public void refreshCards(){
         view.clearCard();
         for(int i = 2; i < boardSets.size(); i++){
             view.resetCard(boardSets.get(i));
         }
     }
 
-    public void refreshShot(){
-        view.clearShot();
+    public void refreshShots(){
+        view.clearShotPanel();
         for(int i = 2; i < boardSets.size(); i++){
-            view.resetShot(boardSets.get(i));
+            view.resetShotPanel(boardSets.get(i));
         }
     }
 

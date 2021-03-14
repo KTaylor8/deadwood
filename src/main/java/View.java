@@ -270,16 +270,23 @@ public class View implements ActionListener{
         }
     }
 
-    public void clearShot(){
+    // public void removeShot(Set s) { // doesn't work
+    //     shotPanel.remove(shotPanel.getComponentCount()-1);
+    // }
+
+    public void clearShotPanel(){
         shotPanel.removeAll();
-        shotPanel.revalidate();
-	    shotPanel.repaint();
+    //     shotPanel.revalidate();
+	//     shotPanel.repaint();
     }
 
-    public void resetShot(Set s){
+    public void resetShotPanel(Set s){
         JLabel l;
         AreaData area;
 
+        if (s.getName().equals("Saloon")) {
+            System.out.println("Set: " + s.getName() + " has " + s.getTakesLeft() + " takes left");
+        }
 
         for(int i = 0; i < s.getTakesLeft(); i++){
             l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
@@ -288,6 +295,11 @@ public class View implements ActionListener{
             shotPanel.add(l);
         }
         
+    }
+
+    public void refreshShotPanel() {
+        shotPanel.revalidate();
+	    shotPanel.repaint();
     }
 
     

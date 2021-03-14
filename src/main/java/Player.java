@@ -244,8 +244,11 @@ public class Player{
         else{
             //for acting successes on card and off card
             view.showPopUp("Acting success!");
-            //decrement takesLeft
+
+            // decrement takesLeft/shots
             location.decTakesLeft();
+            // view.removeShot(location);
+
             // determine pay for sucessful shot
             if(location.getCard().hasRole(role)){
                 view.showPopUp("Since you were important, you get 2 credits");
@@ -271,7 +274,7 @@ public class Player{
             location.wrapUp(onCardPlayers, offCardPlayers);
         }
         else{
-            view.showPopUp("There are " + location.getTakesLeft() + " takes left in this scene.");
+            view.showPopUp("The number of takes left in this scene is " + location.getTakesLeft() + ".");
         }
         hasPlayed = true;
         successfulActing = true;
