@@ -242,6 +242,7 @@ public class Game{
                     else{
                         currentPlayer.incDollars(-1*(Integer.valueOf(splited[3])));
                         currentPlayer.setRank(Integer.valueOf(splited[1]));
+                        view.showPopUp("You are now level " + splited[1]);
                     }
                 }
                 else{
@@ -251,6 +252,8 @@ public class Game{
                     else{
                         currentPlayer.incCredits(-1*(Integer.valueOf(splited[3])));
                         currentPlayer.setRank(Integer.valueOf(splited[1]));
+                        view.showPopUp("You are now level " + splited[1]);
+                        
                     }
                 }
                 refreshPlayerPanel();

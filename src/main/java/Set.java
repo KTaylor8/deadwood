@@ -120,24 +120,25 @@ public class Set{
 
     /**
      * returns an array of all of the available levels above a given level, as well as the costs
-     * @param j
+     * @param rank
      * @return String[]
      */
-    public String[] getUpgradeStrings(int j){
-        int test = (upgradeCostCredits.length*2) - ((j)*2);
+    public String[] getUpgradeStrings(int rank){
+        rank = rank-1;
+        int test = (upgradeCostCredits.length*2) - ((rank)*2);
         if(test < 0){
             test = 0;
         }
-        String[] u = new String[test];
-        int k = 0;
-        for(int i = j; i < u.length; i++){
-            u[k] = "Level " + (i+1) + " = " + upgradeCostCredits[i] + " credits";
-            k++;
-            u[k] = "Level " + (i+1) + " : " + upgradeCostDollars[i] + " dollars";
-            k++;
+        String[] upgrades = new String[test];
+        int index = 0;
+        for(int i = rank; i < upgradeCostCredits.length; i++){
+            upgrades[index] = "Level " + (i+2) + " = " + upgradeCostCredits[i] + " credits";
+            index++;
+            upgrades[index] = "Level " + (i+2) + " = " + upgradeCostDollars[i] + " dollars";
+            index++;
         }
         
-        return u;
+        return upgrades;
     }
 
     /**
