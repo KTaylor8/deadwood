@@ -168,6 +168,15 @@ public class View implements ActionListener{
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
+    public void showErrorPopUp(String notif){
+        JOptionPane.showMessageDialog(
+            frame,
+            notif,
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        ); 
+    }
+
     public void updateSidePanel(Player[] players){
         leftPlayers.removeAll();
         leftPlayers.revalidate();

@@ -37,7 +37,7 @@ public class XMLParser {
             try {
                 doc = db.parse(filename);
             } catch (Exception ex) {
-                view.showPopUp("XML parse failure");
+                view.showErrorPopUp("XML document parse failure");
                 ex.printStackTrace();
             }
             return doc;
