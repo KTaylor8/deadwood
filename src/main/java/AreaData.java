@@ -7,8 +7,18 @@ public class AreaData{
     private int h;
     private int w;
 
+    /**
+     * Base constructor
+     */
     AreaData() {}
 
+    /**
+     * Constructor for when the area information is given using strings
+     * @param x
+     * @param y
+     * @param h
+     * @param w
+     */
     AreaData(String x, String y, String h, String w) {
         this.x = Integer.parseInt(x);
         this.y = Integer.parseInt(y);
@@ -16,6 +26,13 @@ public class AreaData{
         this.w = Integer.parseInt(w);
     }
 
+    /**
+     * Constructor for when the area information is given using ints
+     * @param x
+     * @param y
+     * @param h
+     * @param w
+     */
     AreaData(int x, int y, int h, int w) {
         this.x = x;
         this.y = y;

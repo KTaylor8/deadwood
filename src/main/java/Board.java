@@ -10,6 +10,11 @@ public class Board{
 
     private static Board uniqueInstance;
 
+    /**
+     * Constructor for the board that creates the board based off of the xml files
+     * @param boardPath
+     * @param cardPath
+     */
     public Board(String boardPath, String cardPath){
         view = View.getInstance();
         view.init();  // view needs to be initialized before XMLParser is used
@@ -55,7 +60,12 @@ public class Board{
 
     }
 
-    // initializer (w/ args)
+    /**
+     * initializer (w/ args)
+     * @param boardPath
+     * @param cardPath
+     * @return
+     */
     public static synchronized Board getInstance(String boardPath, String cardPath) {
         if (uniqueInstance == null) {
             uniqueInstance = new Board(boardPath, cardPath);
@@ -63,11 +73,21 @@ public class Board{
         return uniqueInstance;
     }
     
-    // accessor (no args) -- not currently used anywhere, but we can keep it if we want
+    /**
+     * accessor (no args)
+     * @return
+     */
     public static synchronized Board getInstance() {
         return uniqueInstance;
     }
 
+    public List<Set> getAllSets(){
+        return boardSets;
+    }
+
+    /**
+     * Resets the views cards and shots, as well as sets new cards down in the places of sets
+     */
     public void resetBoard(){
         view.clearCard();
         view.clearShot();
@@ -78,6 +98,9 @@ public class Board{
         }
     }
     
+    /**
+     * Reloads the images of the board without setting down new cards, to update inbetween turns
+     */
     public void reloadImgs(){
         view.clearCard();
         view.clearShot();
@@ -87,6 +110,9 @@ public class Board{
         }
     }
 
+    /**
+     * refreshes the cards on the board incase they were flipped or removed.
+     */
     public void refreshCards(){
         view.clearCard();
         for(int i = 2; i < boardSets.size(); i++){
@@ -94,6 +120,9 @@ public class Board{
         }
     }
 
+    /**
+     * refreshes the takes on the baord incares they were removed or added
+     */
     public void refreshShots(){
         view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){
@@ -101,14 +130,11 @@ public class Board{
         }
     }
 
-    public void refreshDice(){
-        view.clearDice();
-        for(int i = 2; i < boardSets.size(); i++){
-            //view.resetPlayerDie(boardSets.get(i));
-        }
-    }
-
-    //returns in of the budget of designated set
+    /**
+     * returns the budget of the set that has the name equal to the string given
+     * @param pos
+     * @return
+     */
     public int getBudget(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.getName())){
@@ -118,11 +144,13 @@ public class Board{
         return 0;
     }
 
-    public List<Set> getAllSets(){
-        return boardSets;
-    }
+    
 
-    //returns set with the string name given
+    /**
+     * returns the set with the given string name
+     * @param pos
+     * @return
+     */
     public Set getSet(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.getName())){
@@ -132,6 +160,12 @@ public class Board{
         return null;
     }
 
+    /**
+     * returns a boolean if the given name string is equal to a role that is on card for the set given
+     * @param st
+     * @param s
+     * @return
+     */
     public boolean isOnCard(String st, Set s){
         List<Role> r = s.getOffCardRoles();
         for(int i = 0; i < r.size(); i++){
@@ -142,7 +176,12 @@ public class Board{
         return false;
     }    
 
-    //returns list of strings of the neighbors of a given set
+    
+    /**
+     * gets all of the neighbors of the set that has the name equal to the name string given
+     * @param pos
+     * @return
+     */
     public List<String> getNeighbors(String pos){
         for(Set s: boardSets){
             if(pos.equals(s.getName()))
@@ -153,38 +192,10 @@ public class Board{
         return null;
     }
 
-    //returns a string that is a list of free roles card and off card
-    /*
-    public String[] freeRoles(String pos){
-        String[] free = "";
-        for(Set s: boardSets){
-            //if the set name is equal to the name given
-            if((s.getName()).equals(pos)){
-                //add off card roles to the string
-                for(int i = 0; i < (s.getOffCardRoles()).size(); i++){
-                    if(!((s.getOffCardRoles()).get(i)).isOccupied()){
-                        free += "\nOff card role: " + ((s.getOffCardRoles()).get(i)).getName() +" must be level: " + ((s.getOffCardRoles()).get(i)).getLevel();
-                    }
-                }
-                //add the on card roles to the string
-                if (s.getCard() != null) {
-                    for(int i = 0; i < ((s.getCard()).getOnCardRoles()).size(); i++){
-                        if(!(((s.getCard()).getOnCardRoles()).get(i)).isOccupied()){
-                            free += "\nOn card role: " + (((s.getCard()).getOnCardRoles()).get(i)).getName() +" must be level: " + (((s.getCard()).getOnCardRoles()).get(i)).getLevel() + "";
-                            
-                        }
-                    }
-                }  
-            }
-        }
-        //check to see if the string is empty and then return the string
-        if(free.equals("")){
-            free += "There are no open roles at this location.";
-        }
-        return free;
-    } */
-
-    //returns the number of sets that have not been finished in one day
+    /**
+     * returns the number of scenes remaining on the board that have not been wrapped up
+     * @return
+     */
     public int getSceneNum(){
         int numScene = 0;
         for(Set s: boardSets){

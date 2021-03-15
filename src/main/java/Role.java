@@ -11,6 +11,13 @@ public class Role{
         
     }
 
+    /**
+     * Constructor for the roles
+     * @param name
+     * @param level
+     * @param line
+     * @param areaData
+     */
     public Role(String name, String level, String line, AreaData areaData) {
         this.roleName = name;
         this.roleLevel = level;
