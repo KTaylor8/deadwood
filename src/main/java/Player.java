@@ -248,7 +248,7 @@ public class Player{
         boolean successfulRehearsal = false;
 
         //if the player does not have the max number of tokens already
-        if(rehearseTokens < 5) {
+        if(rehearseTokens < Integer.valueOf(getLocation().getCard().getBudget()) - 1) {
             this.incTokens();
             view.showPopUp("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
             hasPlayed = true;
