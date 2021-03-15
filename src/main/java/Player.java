@@ -183,6 +183,7 @@ public class Player{
         }
     }
 
+    //Returns boolean
     public boolean act(List<Player> onCardPlayers, List<Player> offCardPlayers) {
         int dieVal;
         int budget;
@@ -244,6 +245,8 @@ public class Player{
         return successfulActing;
     }
 
+    // Returns boolean
+    // determines if the player needs to rehearse, and if they can then they are given a rehearsal token
     public boolean rehearse() {
         boolean successfulRehearsal = false;
 
@@ -260,6 +263,8 @@ public class Player{
         return successfulRehearsal;
     }
 
+    // Returns int
+    // returns the score of the player based on their dollar, credit, and rank
     public int calcFinalScore(){
         return (dollars + credits + (5 * rank));
     }

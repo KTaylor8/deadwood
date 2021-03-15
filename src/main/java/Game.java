@@ -299,13 +299,13 @@ public class Game{
     }
 
     public void endTurn() {
-        if (board.getSceneNum() > 9) { // day continues
+        if (board.getSceneNum() > 1) { // day continues
             startNewTurn();
             view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
         else { // day ends
-            if (numDays > 2) { // game continues
+            if (numDays > 0) { // game continues
                 //decrement days and reset the roles and board
                 numDays--;
                 view.showPopUp("Its the end of the day! " + numDays + " days remain");
