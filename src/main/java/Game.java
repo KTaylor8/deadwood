@@ -148,11 +148,17 @@ public class Game{
 
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
-        for(int i = 0; i < roles.length; i++){
-            System.out.println(i + " " + roles[i]);
+        if(roles.length <= 0){
+            view.showPopUp("There are no more available roles on this card!");
+            return "";
         }
-        String result = view.showRolePopUp(roles);
-        return result;
+        else{
+            for(int i = 0; i < roles.length; i++){
+                System.out.println(i + " " + roles[i]);
+            }
+            String result = view.showRolePopUp(roles);
+            return result;
+        }
     }
 
     public void tryTakeRole() {
@@ -163,7 +169,7 @@ public class Game{
             else{
                 String chosenRole = chooseRole();
                 if (chosenRole.equals("")) {
-                    view.showPopUp("No option selected. Try again.");
+                    
                     return;
                 }
                 currentPlayer.takeRole(chosenRole);
