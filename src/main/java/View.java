@@ -270,73 +270,13 @@ System.out.println(s.getName() + " " + s.getFlipStage());
         }
     }
 
-    public void clearShotPanel(){
+    public void clearShot(){
         shotPanel.removeAll();
         shotPanel.revalidate();
-        shotPanel.repaint();
-        // shotPanel.setVisible(false); // if I uncomment this here it hides all the tokens
-
-        JLabel l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
-        l.setBounds(450, 200, 300, 300);
-        System.out.println(shotPanel.getComponentCount());
-        shotPanel.add(l);
-        // shotPanel.removeAll(); // vv also works
-        // l.setVisible(false); // this hides my random token in middle of board tho...
+	    shotPanel.repaint();
     }
 
-    public void clearShotPanelTest(){ //TEST
-        // shotPanel.removeAll();
-        shotPanel.revalidate();
-        shotPanel.repaint();
-        // shotPanel.setVisible(false); // if I uncomment this here it hides all the tokens
-
-        JLabel l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
-        l.setBounds(450, 300, 300, 300);
-        System.out.println(shotPanel.getComponentCount());
-        shotPanel.add(l); // adds to view
-        System.out.println(shotPanel.getComponentCount());
-        // shotPanel.removeAll(); // vv also works
-        // l.setVisible(false); // this hides my random token in middle of board tho...
-        Component[] components = shotPanel.getComponents();
-        // components[12].setVisible(false); // should hide 3 in main street
-        components[13].setVisible(false); // should hide 2 in main street
-        // components[22].setVisible(false); // this hid the one in the saloon...why tho?
-        // components[23].setVisible(false); // this hid the one I just made
-        // components[0].setVisible(false); // this hid the one I made at the start in clearShotPanel()
-
-        // shotPanel.setVisible(true);
-    }
-
-    public void clearShotPanelTest2(){
-        // shotPanel.removeAll();
-    //     shotPanel.revalidate();
-    //     shotPanel.repaint();
-        // shotPanel.setVisible(false); // doesn't do anything if I uncomment it
-
-        // shotPanel.removeAll();
-        shotPanel.revalidate();
-        shotPanel.repaint();
-        // shotPanel.setVisible(false); // if I uncomment this here it hides all the tokens
-
-        JLabel l = new JLabel(new ImageIcon("src/main/resources/img/shot.png"));
-        l.setBounds(450, 350, 300, 300);
-        System.out.println(shotPanel.getComponentCount());
-        l.setVisible(true);
-        shotPanel.add(l); // hmm doesn't add it to the view like the previous one did, but increases panel component count
-        System.out.println(shotPanel.getComponentCount());
-        // shotPanel.removeAll(); // vv also works
-        // l.setVisible(false); // this hides my random token in middle of board tho...
-        Component[] components = shotPanel.getComponents();
-        components[12].setVisible(false); // should hide 3 in main street -- but doesn't
-        // components[13].setVisible(false); // should hide 2 in main street
-        // components[22].setVisible(false); // this hid the one in the saloon...why tho?
-        // components[23].setVisible(false); // this hid the one I just made
-        // components[0].setVisible(false); // this hid the one I made at the start in clearShotPanel()
-
-        components[22].setVisible(true); // this only works on the component i just made
-    }
-
-    public void resetShotPanel(Set s){
+    public void resetShot(Set s){
         JLabel l;
         AreaData area;
 
@@ -348,40 +288,6 @@ System.out.println(s.getName() + " " + s.getFlipStage());
         }
         
     }
-
-    public void refreshShotPanelTest(Player p, int tokenSum) {
-        // shotPanel.removeAll();
-        // shotPanel.revalidate();
-        // shotPanel.repaint();
-        // shotPanel.setVisible(false);
-        // shotPanel.revalidate();
-	    // shotPanel.repaint();
-        // shotPanel.setVisible(false);
-
-        // Component[] components = shotPanel.getComponents();
-        // for(int i =0; i<15; i++){
-        //     components[i].setVisible(false);
-        // }
-
-        Component[] components = shotPanel.getComponents();
-        components[12].setVisible(false); // should hide 3 in main street
-        components[13].setVisible(false); // should hide 2 in main street
-
-        // hides used shot tokens
-
-        // int lastToken = tokenSum-1;
-        // int takesUsed = p.getLocation().getTotalTakes() - p.getLocation().getTakesLeft();
-        // takesUsed = 2; // for testing only
-        // Component[] components = shotPanel.getComponents();
-        //     for (int j = lastToken; j>(lastToken-takesUsed); j--) {
-        //         System.out.println("#" + j + ": " + components[j].toString());
-        //         shotPanel.getComponent(j).setVisible(false);
-        //     }
-
-        shotPanel.revalidate();
-	    shotPanel.repaint();
-    }
-
     
     public void clearDice(){
 
@@ -402,8 +308,6 @@ System.out.println(s.getName() + " " + s.getFlipStage());
 
         l.setBounds(x, y, 46, 46); // dice w/h = 46
         dicePanel.add(l);
-         
-        
     }
 
     // reset a given player's die's location to the trailers

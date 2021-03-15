@@ -53,7 +53,6 @@ public class Game{
         board.resetBoard();
         startNewTurn();
         view.show(); // show view as last step of run()
-       // board.resetBoardTest(); //TEST
     }
 
     private Queue<Player> initPlayers() {
@@ -61,7 +60,7 @@ public class Game{
         Player p;
         // set default values
         // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
-        Set startLocation = board.getSet("trailer"); // FOR TESTING ONLY; DELETE AFTERWARD
+        Set startLocation = board.getSet("Saloon"); // FOR TESTING ONLY; DELETE AFTERWARD
         // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
         int startRank = 6; // FOR TESTING ONLY; DELETE AFTERWARD
         int startCredits = 0;
@@ -136,25 +135,7 @@ public class Game{
                 if(currentPlayer.getLocation().getFlipStage() == 0){
                     currentPlayer.getLocation().flipSet();
                 }
-                // refreshPlayerPanel(); // this is layering more components over the others
-                // board.resetBoard2(); //TEST
-
-                // JUST A TEST FOR REMOVING A SHOT
-                // get index of last shot token in your current player's set
-                int i = 2;
-                int tokenSum = 0;
-                while (i<=10) {
-                    Set curSet = board.getAllSets().get(i);
-                    tokenSum = tokenSum + curSet.getTotalTakes();
-                    if (curSet.getName().equals(currentPlayer.getLocation().getName())) { 
-                        break;
-                    }
-                    i++;
-                }
-                currentPlayer.getLocation().decTakesLeft();
-                refreshPlayerPanel();
-                //board.reloadImgsTest(currentPlayer, tokenSum);
-                
+                refreshPlayerPanel(); // this is layering more components over the others but if it works it works
             }
             else {
                 view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");

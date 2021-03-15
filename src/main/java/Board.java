@@ -70,45 +70,21 @@ public class Board{
 
     public void resetBoard(){
         view.clearCard();
-        view.clearShotPanel();
+        view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
             // System.out.println("Set name: " + boardSets.get(i).getName() + "; flip stage: " + boardSets.get(i).getFlipStage());
             view.resetCard(boardSets.get(i));
-            view.resetShotPanel(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
         }
     }
-
-    public void resetBoardTest(){ //TEST
-        // view.clearCard();
-        view.clearShotPanelTest();
-        for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
-            // boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove  -
-            // System.out.println("Set name: " + boardSets.get(i).getName() + "; flip stage: " + boardSets.get(i).getFlipStage());
-            // view.resetCard(boardSets.get(i));
-            // view.resetShotPanel(boardSets.get(i));
-        }
-    }
-
-    // TEST
-    public void reloadImgsTest(Player p, int j){ // WE MIGHT WANT TO MAKE SEPARATE METHODS FOR AFTER MOVE/TAKEROLE/ACT INSTEAD OF RELOADING THE WHOLE BOARD'S IMGS EACH TIME, BUT THIS IS OK FOR NOW
-    // view.clearCard();
-    view.clearShotPanelTest2();
-
-    // view.refreshShotPanelTest(p, j);
     
-    // for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
-    //     view.resetCard(boardSets.get(i));
-    //     // view.resetShotPanel(boardSets.get(i));
-    // }
-    
-    }
-    
-    public void reloadImgs(){ // WE MIGHT WANT TO MAKE SEPARATE METHODS FOR AFTER MOVE/TAKEROLE/ACT INSTEAD OF RELOADING THE WHOLE BOARD'S IMGS EACH TIME, BUT THIS IS OK FOR NOW
+    public void reloadImgs(){
         view.clearCard();
+        view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
             view.resetCard(boardSets.get(i));
-            view.resetShotPanel(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
         }
     }
 
@@ -120,9 +96,9 @@ public class Board{
     }
 
     public void refreshShots(){
-        view.clearShotPanel();
+        view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){
-            view.resetShotPanel(boardSets.get(i));
+            view.resetShot(boardSets.get(i));
         }
     }
 
@@ -177,15 +153,6 @@ public class Board{
         }
         return null;
     }
-
-    //occupies a designated role -- obsoleted by assigning Role obj to Player obj
-    // public void fillRole(Set location, Role role){
-    //     if( !(role.isOccupied()) ){
-    //         role.occupy();
-    //     } else {
-    //         view.showPopUp("Can't fill role: role not empty.");
-    //     }
-    // }
 
     //returns a string that is a list of free roles card and off card
     /*
