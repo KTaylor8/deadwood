@@ -18,7 +18,14 @@ public class Set{
 
     private View view = View.getInstance();
 
-    // regular set constructor
+    /**
+     * constructor for the sets that will have roles on them
+     * @param s
+     * @param n
+     * @param r
+     * @param shotTokens
+     * @param areaData
+     */
     public Set(String s, List<String> n, List<Role> r, List<ShotToken> shotTokens, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
@@ -29,7 +36,16 @@ public class Set{
         this.totalTakes = shotTokens.size();
     }
 
-    // office constructor
+    /**
+     * office constructor
+     * @param s
+     * @param n
+     * @param upgradeD
+     * @param upgradeC
+     * @param upgradeDAreas
+     * @param upgradeCAreas
+     * @param areaData
+     */
     public Set(String s, List<String> n, int[] upgradeD, int[] upgradeC, AreaData[]upgradeDAreas, AreaData[] upgradeCAreas, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
@@ -40,7 +56,12 @@ public class Set{
         this.area = areaData;
     }
 
-    // trailers constructor
+    /**
+     * Set Constructor
+     * @param s
+     * @param n
+     * @param areaData
+     */
     public Set(String s, List<String> n, AreaData areaData){
         this.setName = s;
         this.neighbors = n;
@@ -54,90 +75,6 @@ public class Set{
 
     public AreaData getArea() {
         return area;
-    }
-
-    public String[] getUpgradeStrings(int j){
-        int test = (upgradeCostCredits.length*2) - ((j)*2);
-        if(test < 0){
-            test = 0;
-        }
-        String[] u = new String[test];
-        int k = 0;
-        for(int i = j; i < u.length; i++){
-            u[k] = "Level " + (i+1) + " = " + upgradeCostCredits[i] + " credits";
-            k++;
-            u[k] = "Level " + (i+1) + " : " + upgradeCostDollars[i] + " dollars";
-            k++;
-        }
-        
-        return u;
-    }
-
-
-    public void resetSet(Card newCard){
-        for(int i = 0; i < offCardRoles.size(); i++ ){
-            (offCardRoles.get(i)).unoccupy();
-        }
-        this.currentCard = newCard;
-        this.takesLeft = totalTakes;
-        flipStage = 0;
-    }
-
-    public List<String> getNeighbors(){
-        return neighbors;
-    }
-
-    public String[] getNeighborStrings() {
-        String[] n = new String[neighbors.size()];
-        for(int i = 0; i < neighbors.size(); i++){
-            n[i] = (neighbors.get(i)) ;
-        }
-        return n;
-    }
-    
-    public boolean checkNeighbor(String s) {
-        boolean isNeighbor = false;
-        for (int i = 0; i < neighbors.size(); i++) {
-            if (s.equals(neighbors.get(i))) {
-                isNeighbor = true;
-            }
-        }
-        return isNeighbor;
-    }
-
-    public List<Role> getOnCardRoles() {
-        return currentCard.getOnCardRoles();
-    }
-    public List<Role> getOffCardRoles() {
-        return offCardRoles;
-    }
-
-    public String[] getRoleStrings(){
-        List<Role> onR= getOnCardRoles();
-        List<Role> offR= getOffCardRoles();
-        List<Role> allR = new ArrayList<Role>();
-        for(int j = 0; j < onR.size(); j++){
-            if(!onR.get(j).isOccupied())
-            {
-                allR.add(onR.get(j));
-            }
-        }
-        for(int j = 0; j < offR.size(); j++){
-            if(!offR.get(j).isOccupied())
-            {
-                allR.add(offR.get(j));
-            }
-        }
-        String[] n = new String[allR.size()];
-        int i = 0;
-        for(int j = 0; j < allR.size(); j++){
-            if(!allR.get(j).isOccupied())
-            {
-                n[i] = allR.get(j).getName();
-                i++;
-            }
-        }
-        return n;
     }
 
     public Card getCard() {
@@ -181,7 +118,126 @@ public class Set{
         return (flipStage == 2);
     }
 
-    //returns true if someone is on card
+    /**
+     * returns an array of all of the available levels above a given level, as well as the costs
+     * @param j
+     * @return String[]
+     */
+    public String[] getUpgradeStrings(int j){
+        int test = (upgradeCostCredits.length*2) - ((j)*2);
+        if(test < 0){
+            test = 0;
+        }
+        String[] u = new String[test];
+        int k = 0;
+        for(int i = j; i < u.length; i++){
+            u[k] = "Level " + (i+1) + " = " + upgradeCostCredits[i] + " credits";
+            k++;
+            u[k] = "Level " + (i+1) + " : " + upgradeCostDollars[i] + " dollars";
+            k++;
+        }
+        
+        return u;
+    }
+
+    /**
+     * gives the set a new card and resets the state of the card filp and resets the number of takes remaining
+     * @param newCard
+     */
+    public void resetSet(Card newCard){
+        for(int i = 0; i < offCardRoles.size(); i++ ){
+            (offCardRoles.get(i)).unoccupy();
+        }
+        this.currentCard = newCard;
+        this.takesLeft = totalTakes;
+        flipStage = 0;
+    }
+
+    
+    public List<String> getNeighbors(){
+        return neighbors;
+    }
+
+    /**
+     * returns the neighbors but as a string array so that they can be displayed in the view
+     * @return String[]
+     */
+    public String[] getNeighborStrings() {
+        String[] n = new String[neighbors.size()];
+        for(int i = 0; i < neighbors.size(); i++){
+            n[i] = (neighbors.get(i)) ;
+        }
+        return n;
+    }
+    
+    /**
+     * reuturns tha the given string is a neighbor of the set
+     * @param s
+     * @return boolean
+     */
+    public boolean checkNeighbor(String s) {
+        boolean isNeighbor = false;
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (s.equals(neighbors.get(i))) {
+                isNeighbor = true;
+            }
+        }
+        return isNeighbor;
+    }
+
+    /**
+     * returns the roles of the set that are on the card
+     * @return List<Role>
+     */
+    public List<Role> getOnCardRoles() {
+        return currentCard.getOnCardRoles();
+    }
+
+    /**
+     * retrusn the roles of the set that are off the card
+     * @return List<Role>
+     */
+    public List<Role> getOffCardRoles() {
+        return offCardRoles;
+    }
+
+    /**
+     * returns all of the roles as a string array so that view can use it as options of a popup
+     * @return String[]
+     */
+    public String[] getRoleStrings(){
+        List<Role> onR= getOnCardRoles();
+        List<Role> offR= getOffCardRoles();
+        List<Role> allR = new ArrayList<Role>();
+        for(int j = 0; j < onR.size(); j++){
+            if(!onR.get(j).isOccupied())
+            {
+                allR.add(onR.get(j));
+            }
+        }
+        for(int j = 0; j < offR.size(); j++){
+            if(!offR.get(j).isOccupied())
+            {
+                allR.add(offR.get(j));
+            }
+        }
+        String[] n = new String[allR.size()];
+        int i = 0;
+        for(int j = 0; j < allR.size(); j++){
+            if(!allR.get(j).isOccupied())
+            {
+                n[i] = allR.get(j).getName();
+                i++;
+            }
+        }
+        return n;
+    }
+
+
+    /**
+     * Returns if there is a player that has a role on card
+     * @return boolean
+     */
     public boolean canBonus(){
         for(int i = 0; i < ((this.getCard()).getOnCardRoles()).size(); i ++){
             if((((this.getCard()).getOnCardRoles()).get(i)).isOccupied()){
@@ -191,7 +247,11 @@ public class Set{
         return false;
     }
 
-    //returns Role object
+    /**
+     * Returns the role with a name that matches the string given
+     * @param roleName
+     * @return
+     */
     public Role getRole(String roleName){
         for(Role r: offCardRoles){
             if(roleName.equals(r.getName())){
@@ -208,7 +268,11 @@ public class Set{
         return null;
     }
 
-    //hands out bonuses based on on card and off card people
+    /**
+     * gives bonuses to players based on whether they were on card or off card and what the budget of the scene was
+     * @param onCardPlayers
+     * @param offCardPlayers
+     */
     public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
 
         int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
@@ -238,7 +302,11 @@ public class Set{
         }
     }
 
-    //wraps up a set and resets the roles,
+    /**
+     * iterates through the different roles and makes sure that they are not occupied, and make ssure the set can be reused for the day
+     * @param onCardPlayers
+     * @param offCardPlayers
+     */
     public void wrapUp(List<Player> onCardPlayers, List<Player> offCardPlayers){
         for(Player p: onCardPlayers){
             p.resetRole();

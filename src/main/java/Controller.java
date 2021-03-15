@@ -2,23 +2,19 @@ public class Controller{
     View view;
     Game game;
 
+    /**
+     * Constructor that connects the view to the game
+     * @param args
+     */
     public Controller(String[] args) {
         view = View.getInstance(this);
         game = Game.getInstance(args);
     }
 
-    public String chooseRole() {
-        String roleChosen = "";
-        // lets user choose role from interface
-        return roleChosen;
-    }
-
-    public String[] chooseUpgrade() {
-        String[] upgradeChosen = {"dollars", "2"};
-        // lets user choose upgrade from interface
-        return upgradeChosen;
-    }
-
+    /**
+     * Processes the information that is given from view and calls the correct method within game to do the action
+     * @param res
+     */
     public void process(String res) {
         if (res.equals("move")) {
             game.tryMove();
@@ -26,7 +22,6 @@ public class Controller{
             game.tryTakeRole();
         } else if (res.equals("upgrade")) {
             game.tryUpgrade();
-
         } else if (res.equals("rehearse")) {
             game.tryRehearse();
         } else if (res.equals("act")) {

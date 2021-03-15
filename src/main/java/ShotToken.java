@@ -4,6 +4,11 @@ public class ShotToken {
     private int shotNum;
     private AreaData area;
 
+    /**
+     * Constructor for the Shot Tokens
+     * @param shotNum
+     * @param area
+    */
     ShotToken(int shotNum, AreaData area) {
         this.shotNum = shotNum;
         this.area = area;

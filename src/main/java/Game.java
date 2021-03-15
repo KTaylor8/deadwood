@@ -13,13 +13,21 @@ public class Game{
 
     private static Game uniqueInstance;
 
+    /**
+     * Creates the elements of the game
+     * @param args
+     */
     public Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = Board.getInstance(args[0], args[1]);
         view = View.getInstance();
     }
 
-    // initializer (w/ args)
+    /**
+     * initializer (w/ args)
+     * @param args
+     * @return
+     */
     public static synchronized Game getInstance(String[] args) {
         if (uniqueInstance == null) {
             uniqueInstance = new Game(args);
@@ -27,15 +35,17 @@ public class Game{
         return uniqueInstance;
     }
     
-    // accessor (no args)
+    /**
+     * accessor (no args)
+     * @return
+     */
     public static synchronized Game getInstance() {
         return uniqueInstance;
     }
 
-    // obsoleted by setting view = View.getInstance() in constructor after board since view is singleton now
-    // public void registerObserver(View view) { 
-    //     this.view = view;
-
+    /**
+     * runs the elements of game to create the board and let the player play it
+     */
     public void run(){
         //make sure user enters valid number
         if((numPlayers < 1) || (numPlayers > 9)){
@@ -43,8 +53,6 @@ public class Game{
             System.exit(0);
         }
 
-        //  intro statement
-        //controller.showPopUp("Welcome to Deadwood!");
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
@@ -55,14 +63,17 @@ public class Game{
         view.show(); // show view as last step of run()
     }
 
+    /**
+     * Initializes the queue of players, as well as the array of players (for the side panels of the view)
+     * based on the number of players that are in the game 
+     * @return Queue<Player>
+     */
     private Queue<Player> initPlayers() {
         Queue<Player> players = new LinkedList<Player>();
         Player p;
         // set default values
-        // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
-        Set startLocation = board.getSet("trailer"); // FOR TESTING ONLY; DELETE AFTERWARD
-        // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
-        int startRank = 1; // FOR TESTING ONLY; DELETE AFTERWARD
+        Set startLocation = board.getSet("trailer"); 
+        int startRank = 1; 
         int startCredits = 0;
         numDays = 4;
 
@@ -104,17 +115,15 @@ public class Game{
                 dieImgPaths[j] = dieImgPathStub + playerDieLetters[i] + (j+1) + imgExtension;
             }
             // Create players
-            String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
+            String tempName = "player" + (i+1); 
             if (numPlayers >= 5) {
                 p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
                 p.setAreaData(startLocation.getArea());
                 view.setDie(p);
-                //view.resetPlayerDie(p, i);
             } else {
                 p = new Player(startLocation, tempName, startRank, dieImgPaths);
                 p.setAreaData(startLocation.getArea());
                 view.setDie(p);
-                //view.resetPlayerDie(p, i);
             }
             players.add(p);
         }
@@ -127,13 +136,20 @@ public class Game{
         return players;
     }
 
+    /**
+     * Grabs the available neighbors and creates a popup with the options, returns the chosen option
+     * @return String
+     */
     public String chooseNeighbor() {
         String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
         String result = view.showMovePopUp(neighbors);
         return result;
     }
 
-
+    /**
+     * If the player has not already played, and if they are not employed, prompt the location they would like to move to,
+     * set that as their location and refresh the view with the players dice
+     */
     public void tryMove() {
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
@@ -155,6 +171,10 @@ public class Game{
         view.updateSidePanel(playerArray);
     }
 
+    /**
+     * Grabs the available roles and gives a popup with the options that the player can choose from. Returns the resulting string.
+     * @return String
+     */
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
         if(roles.length <= 0){
@@ -167,6 +187,11 @@ public class Game{
         }
     }
 
+    /**
+     * If the player is not employed, and theyre in a location that has roles, prompt the roles that they could take,
+     * once a role is chosen, give the player that role and occupy it so future players cannot take it, updates the view
+     * in the position of the role.
+     */
     public void tryTakeRole() {
         if (currentPlayer.isEmployed() == false) {
             if(currentPlayer.getLocation().getName() == "office" || currentPlayer.getLocation().getName() == "trailer"){
@@ -198,9 +223,12 @@ public class Game{
             view.showPopUp("You're already employed, so you can't take another role until you finish this one");
         }   
         view.updateSidePanel(playerArray);
-        //System.out.println(currentPlayer.getAreaData().getX() + " " + currentPlayer.getAreaData().getY());
     }
 
+    /**
+     * If the player is located in the office and are not already max level, give a popup with the upgrade options and their prices
+     * check if the player can afford the one that theyve chosen, and assign the player their new rank, update their die on the board
+     */
     public void tryUpgrade() {
         if(currentPlayer.getLocation().getName().equals("office")){
             String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
@@ -239,6 +267,9 @@ public class Game{
         view.updateSidePanel(playerArray);
     }
 
+    /**
+     * If the player is employed and they are not already at rehearsal tokens needed to succeed, give the player a rehearsal token, refreshe the board
+     */
     public void tryRehearse() {
         if (currentPlayer.isEmployed() == true) {
             if(!currentPlayer.getHasPlayed()){
@@ -254,6 +285,11 @@ public class Game{
         view.updateSidePanel(playerArray);
     }
 
+    /**
+     * if the player is employed, let them attempt to act. If they are successful, pay them the amount that they are owed and remove a shot token
+     * if that was the last shot, then wrapup the scene and pay dues if there are players on the card. release the actors from their roles
+     * and update the board with the changes that were made.
+     */
     public void tryAct() {
 
         List<Player> onCardPlayers = new ArrayList<Player>();
@@ -276,6 +312,9 @@ public class Game{
         view.updateSidePanel(playerArray);
     }
 
+    /**
+     * change who is next in the queue and place the old current back in the queue, update the view with who is currently playing
+     */
     public void startNewTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
@@ -283,7 +322,9 @@ public class Game{
         currentPlayer.setHasPlayed(false);
     }
 
-    // to reset players
+    /**
+     * for all of the players, remove them from any current roles, place them in the trailer and update the board
+     */
     public void resetPlayers() {
         Player curPlayer;
         for(int i = 0; i < players.size(); i++){
@@ -292,12 +333,15 @@ public class Game{
             curPlayer.setLocation(board.getSet("trailer"));
             curPlayer.setAreaData(curPlayer.getLocation().getArea());
             view.setDie(curPlayer);
-            //view.resetPlayerDie(curPlayer, i);
             players.add(players.remove());
         }
 
     }
 
+    /**
+     * When the player wants to end their turn, check to see if there is 1 scene remaining, if there is, end the day
+     * If that day was the last one, calculate who is the winner and display it, end the game.
+     */
     public void endTurn() {
         if (board.getSceneNum() > 1) { // day continues
             startNewTurn();
@@ -329,6 +373,13 @@ public class Game{
 
     }
 
+    
+    /**
+     * Returns a lsit of all of the people who are employed in a list of roles, this is used to see who else works in a scene 
+     * to see who gets paid for a scene wrap up
+     * @param rl
+     * @return List<Player>
+     */
     public List<Player> findPlayers(List<Role> rl) {
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
@@ -341,11 +392,19 @@ public class Game{
         return pl;
     }
 
+    /**
+     * returns the set with the name given
+     * @param s
+     * @return Set
+     */
     public Set getBoardSet(String s){
         return board.getSet(s);
     }
 
-
+    /**
+     * clears the panel with the dice on is, and then iterates through the players to set them back down in their new positions if 
+     * those positions were changed.
+     */
     public void refreshPlayerPanel() {
         view.clearDice();
         Player curPlayer;
@@ -360,8 +419,10 @@ public class Game{
         board.reloadImgs();
     }
 
-
-    //to calculate winner
+    /**
+     * Goes through each of the players and compares the final values with eachother to see who got the most amount of points
+     *then displays the winner(s) 
+     */
     private void calcWinner(){
         //local class for finding ties
         class ScoreSorter implements Comparator<Player> {
@@ -376,7 +437,7 @@ public class Game{
         // convert queue of players into List<Player> for determining winner(s)
         while (players.size() > 0) {
             winners.add(players.remove());
-        } // don't think we need "players" at this point?
+        } 
 
         // scoreSorter's compare() should sort in descending order by calcFinalScore()
         // Arrays.sort(winnersPre, new scoreSorter()); // only works w/ normal arrays :(

@@ -15,6 +15,14 @@ public class Player{
     private Role role;
     private View view = View.getInstance();
 
+    /**
+     * Constructor for the player, when there arent enough people where credits need to be gived
+     *
+     * @param s
+     * @param p
+     * @param sr
+     * @param paths
+     */
     public Player(Set s, String p, int sr, String[] paths){
         location = s;
         playerName = p;
@@ -26,11 +34,17 @@ public class Player{
         employed = false;
         rehearseTokens = 0;
         playerDieArea = new AreaData(0, 0, 46, 46);
-        // roles' area w/h = 46
-        // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
         hasPlayed = false;
     }
 
+    /**
+     * Constructor for the player, when there are enough player that credits need to be gived
+     * @param s
+     * @param p
+     * @param sr
+     * @param sc
+     * @param paths
+     */
     public Player(Set s, String p, int sr, int sc, String[] paths){
         location = s;
         playerName = p;
@@ -71,6 +85,7 @@ public class Player{
     public int getDollars(){
         return dollars;
     }
+
     public void incDollars(int dollar){
         this.dollars += dollar;
     }
@@ -112,6 +127,15 @@ public class Player{
         playerDieArea = a;
     }
 
+    
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * Sets the AreaData if the area is on a card, so the image moves to the roles actual location
+     * @param a
+     */
     public void setOnCardAreaData(AreaData a){
         AreaData b = new AreaData((a.getX() + location.getArea().getX()) - 2, (a.getY() + location.getArea().getY())  - 2, playerDieArea.getW(), playerDieArea.getH());
         
@@ -121,6 +145,13 @@ public class Player{
         return playerDieArea;
     }
     
+    
+    /**
+     * Checks to make sure the location is valid and then sets the players location to that set
+     * @param destName
+     * @param dest
+     * @return boolean
+     */
     public boolean moveTo(String destName, Set dest) {
         boolean successfulMove = false;
 
@@ -134,7 +165,6 @@ public class Player{
         if (location.checkNeighbor(destName) ) {
             location = dest;
             setAreaData(dest.getArea());
-            //view.movePlayerPosition(this, dest.getArea().getX(), dest.getArea().getY());
             view.showPopUp("You're now located in " + destName);
             hasPlayed = true;
             successfulMove = true;
@@ -147,15 +177,21 @@ public class Player{
         return successfulMove;
     }
     
-    public Role getRole() {
-        return role;
-    }
+    /**
+     * Resets the players rehearse token and employment status for after scene wraps up
+     */
     public void resetRole(){
         role = null;
         this.rehearseTokens = 0;
         this.employed = false;
     }
 
+    /**
+     * Checks to make sure the player has the correct level, and that the set that they want to be employed at is open
+     * And then sets the players employed status to true, and sets their role
+     *
+     * @param roleName
+     */
     public void takeRole(String roleName) {
         int roleLevel;
         if (!location.getName().equals("office") && !location.getName().equals("trailer")) {
@@ -183,7 +219,14 @@ public class Player{
         }
     }
 
-    //Returns boolean
+    /**
+     * Rolls a die and adds that value to players number of rehearsal tokens, if the act is a success, pays player if they are on or off card
+     * Then decriments the set tokens if a success. If that was the last set token of the scene, then wraps up the scene and resets the
+     * players role and employment status
+     * @param onCardPlayers
+     * @param offCardPlayers
+     * @return boolean
+     */
     public boolean act(List<Player> onCardPlayers, List<Player> offCardPlayers) {
         int dieVal;
         int budget;
@@ -245,8 +288,12 @@ public class Player{
         return successfulActing;
     }
 
-    // Returns boolean
-    // determines if the player needs to rehearse, and if they can then they are given a rehearsal token
+    /**
+     * determines if the player needs to rehearse, and if they can then they are given a rehearsal token, returns true
+     * if the rehearsal was successful
+     *
+     * @return boolean
+     */
     public boolean rehearse() {
         boolean successfulRehearsal = false;
 
@@ -263,8 +310,10 @@ public class Player{
         return successfulRehearsal;
     }
 
-    // Returns int
-    // returns the score of the player based on their dollar, credit, and rank
+    /**
+     * returns the score of the player based on their dollar, credit, and rank
+     * @return int
+     */
     public int calcFinalScore(){
         return (dollars + credits + (5 * rank));
     }

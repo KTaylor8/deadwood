@@ -7,8 +7,16 @@ public class Card{
     private String sceneDescription;
     private List<Role> onCardRoles;
     private String picturePath = "";
-    // private Controller controller = new Controller();
 
+    /**
+     * constructor of the cards
+     * @param name
+     * @param budget
+     * @param sceneNumber
+     * @param sceneDescription
+     * @param cardRoles
+     * @param picturePath
+     */
     public Card(String name, String budget, String sceneNumber, String sceneDescription, List<Role> cardRoles, String picturePath) {
         this.cardName = name;
         this.budget = budget;
@@ -30,6 +38,11 @@ public class Card{
         return onCardRoles;
     }
 
+    /**
+     * returns a boolean if the card contains a given role
+     * @param role
+     * @return
+     */
     public boolean hasRole(Role role) {
         boolean hasRole = false;
         for (Role r : onCardRoles) {
