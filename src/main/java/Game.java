@@ -74,16 +74,20 @@ public class Game{
         String imgExtension = ".png";
 
         //changes player values according to number of players
+        if((numPlayers < 2) || (numPlayers > 8)){
+            System.out.println("Please enter a number from 2 to 8");
+            System.exit(0);
+        }
         if (numPlayers >= 7){
             startRank = 2;
             startCredits = 0;
         }
         else if (numPlayers == 6){
-            startRank = 0;
+            startRank = 1;
             startCredits = 4;
         }
         else if (numPlayers == 5){
-            startRank = 0;
+            startRank = 1;
             startCredits = 2;
         }
         else if (numPlayers == 4){
@@ -325,10 +329,6 @@ public class Game{
 
     }
 
-    public Player getCurrentPlayer(){
-        return currentPlayer;
-    }
-
     public List<Player> findPlayers(List<Role> rl) {
         List<Player> pl = new ArrayList<Player>();
         for(Player p: players){
@@ -345,26 +345,6 @@ public class Game{
         return board.getSet(s);
     }
 
-
-    //returns the dollar cost of upgrades from the office
-    public int[] getDollarCost(){
-        for(Set s: board.getAllSets()){
-            if((s.getName()).equals("office")){
-                return (s.getUpgradeCD());
-            }
-        }
-        return null;
-    }
-
-    //returns the credit cost of upgrades from the office
-    public int[] getCreditCost(){
-        for(Set s: board.getAllSets()){
-            if((s.getName()).equals("office")){
-                return (s.getUpgradeCC());
-            }
-        }
-        return null;
-    }
 
     public void refreshPlayerPanel() {
         view.clearDice();
