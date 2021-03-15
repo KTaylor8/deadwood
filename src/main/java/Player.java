@@ -88,26 +88,6 @@ public class Player{
         this.credits += credits;
     }
 
-    public void upgrade(int[] costs, int currency, int desiredLevel) {
-        //make sure the level is greater than current level and in the upgrades list
-        if(desiredLevel > rank)
-        {
-            if(costs[desiredLevel-2] > currency){
-                view.showPopUp("You do not have enough dollars for this upgrade");
-            }
-            else{
-                //change level
-                view.showPopUp("You are now level " + desiredLevel);
-                this.setRank(desiredLevel);
-                this.incDollars((-1*costs[desiredLevel-2]));
-                view.showPopUp("And you have " + currency + " remaining");
-            }
-        }
-        else{
-            view.showPopUp("That would be a downgrade, not an upgrade, silly. YOur rank is already " + rank);
-        }
-    }
-
     public boolean getHasPlayed() {
         return hasPlayed;
     }
