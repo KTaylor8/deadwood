@@ -142,7 +142,7 @@ public class Game{
             }
         }
         else{                    
-            view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+            view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
         }
     }
 
@@ -226,7 +226,7 @@ public class Game{
                 currentPlayer.rehearse();
             }
             else{                    
-                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
             }
         }
         else {
@@ -247,7 +247,7 @@ public class Game{
                 refreshPlayerPanel();
             }
             else{
-                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or type `end` to end your turn.");
+                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
             }
         }
         else {

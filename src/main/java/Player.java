@@ -259,7 +259,7 @@ public class Player{
         }
 
         //if it was the last scene and someone was on card hand out bonuses
-        if(location.getTakesLeft() == 0){
+        if(location.getTakesLeft() <= 0){
             
             if(location.canBonus()){
                 view.showPopUp("Oh no! That was the last scene! Everyone gets money!");
