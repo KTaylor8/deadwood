@@ -8,28 +8,27 @@
         ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {player number}
 
 ## How to Play Deadwood
-
-    (WARNING: ALL THINGS ARE CASE SENSITIVE, COMMANDS ARE LOWERCASE AND LOCATIONS SHOWN HAVE EXACT SAME CAPITALIZATION
-        ex1: to move:  
-            - "move Secret Hideout"
-            - "take role Sleeping Drunkard"
-    Get exact names of roles and neighboring places if you are unsure of capitalization)
     
-    1. Once code is running, you will be prompted to enter names of all of your players, this will also be in the same order that they play.
+    1. Once code is running, the current player will be displayed on the top of the screen
     2. During a turn you can pick from these options:
         - "end" to end the turn
-        - "who" to see current character and their currency
-        - "where" to see the current character position
-        - "where all" to see every characters position
-        - "neighbors" to get a list of the surrounding spots
-        - "move {neighbor to move to}" to move your character to a spot if not working
-        - "available roles" to get a list of the available roles where current player is at
-        - "take role {role you want to take}" to become employed in a role if you are not already employed
-        - "upgrade d {level you want to upgrade to}" to try and upgrade to that level using dollars
-        - "upgrade c {level you want to upgrade to}" to try and upgrade to that level using credits
-        - "upgrade costs" to get the cost of each upgrade from both credits and dollars
-        - "act" when employed to act
-        - "rehearse" to add a rehearse token to the current player
+        - "move"
+            - You will then be prompted to pick from the surrounding areas with a pop upgrade
+            - Pick where you would like to move
+        - "take role" 
+            - You will then be prompted to pick a role from the set you are act
+            - Look at the board and see the rank you must be for the roles (indicated by the dice above it)
+            - Look at the names that are printed on the role and pick one, select the same name on the popUp that appeared
+        - "upgrade"
+            - If you are located in the office, you have the option to upgrade
+            - When you press upgrade, you will be prompted to pick an upgrade based on either the currency dollars or credits
+            - If you can't pay for it you will be told
+            - You will then lose that corresponding amount of currency and become the corresponding level
+        - "act" 
+            - If you are employed you will either have a successful or failed act attempt, and given the corresponding amount of money
+            - Scene tokens will decrement until none remain and the set will be wrapped up, bonuses will be distributed if necessary
+        - "rehearse"
+            - If you are employed you can rehearse once per turn to increase your odds of a successful act until its garunteed
         Note: You are allowed to many of these things any amount of times, but you can only do one of the following (once) per turn:
             act
             move
