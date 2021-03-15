@@ -103,10 +103,14 @@ public class Game{
             String tempName = "player" + (i+1); // PROBABLY WILL LET USERS CHOOSE THEIR OWN NAMES LATER
             if (numPlayers >= 5) {
                 p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
-                view.resetPlayerDie(p, i);
+                p.setAreaData(startLocation.getArea());
+                view.setDie(p);
+                //view.resetPlayerDie(p, i);
             } else {
                 p = new Player(startLocation, tempName, startRank, dieImgPaths);
-                view.resetPlayerDie(p, i);
+                p.setAreaData(startLocation.getArea());
+                view.setDie(p);
+                //view.resetPlayerDie(p, i);
             }
             players.add(p);
         }
@@ -282,7 +286,9 @@ public class Game{
             curPlayer = players.peek();
             curPlayer.resetRole();
             curPlayer.setLocation(board.getSet("trailer"));
-            view.resetPlayerDie(curPlayer, i);
+            curPlayer.setAreaData(curPlayer.getLocation().getArea());
+            view.setDie(curPlayer);
+            //view.resetPlayerDie(curPlayer, i);
             players.add(players.remove());
         }
 
@@ -302,7 +308,6 @@ public class Game{
                 
                 view.clearDice();
                 board.resetBoard();
-
                 // reset players
                 resetPlayers();
             }

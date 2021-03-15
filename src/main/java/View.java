@@ -293,7 +293,6 @@ public class View implements ActionListener{
         int x = p.getAreaData().getX();
         int y = p.getAreaData().getY();
 
-       
 
         // set 
         l = new JLabel(new ImageIcon(p.getPlayerDiePath()));
