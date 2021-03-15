@@ -211,13 +211,17 @@ public class View implements ActionListener{
     }
 
     /**
-     * Displays a pop up with the given string to notify the player about an event that has occured 
+     * Displays a pop up with the given string to notify the player about an event that has occurred 
      * @param notif
      */
     public void showPopUp(String notif){
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
+    /**
+     * Displays a pop up with the given string to notify the player about an error that has occurred 
+     * @param notif
+     */
     public void showErrorPopUp(String notif){
         JOptionPane.showMessageDialog(
             frame,
