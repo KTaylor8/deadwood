@@ -160,9 +160,7 @@ public class View implements ActionListener{
      
 
     public String showRolePopUp(String[] options){
-        int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Warning",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-            null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null, "Which role would you like?", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         if (n == -1) {
             return "";
         }
@@ -172,9 +170,7 @@ public class View implements ActionListener{
     }
 
     public String showMovePopUp(String[] options){
-        int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Warning",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-            null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null, "Where would you like to move to?", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         if (n == -1) {
             return "";
         }
@@ -184,9 +180,7 @@ public class View implements ActionListener{
     }
 
     public String showUpgradePopUp(String[] options){
-        int n = JOptionPane.showOptionDialog(null, "What Upgrade would you like?", "Warning",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-            null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(null, "What upgrade would you like?", "Options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         if (n == -1) {
             return "";
         }
