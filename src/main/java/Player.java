@@ -140,6 +140,7 @@ public class Player{
 
     public void setOnCardAreaData(AreaData a){
         AreaData b = new AreaData((a.getX() + location.getArea().getX()) - 2, (a.getY() + location.getArea().getY())  - 2, playerDieArea.getW(), playerDieArea.getH());
+        
         playerDieArea = b;
     }
     public AreaData getAreaData(){

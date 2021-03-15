@@ -202,9 +202,8 @@ public class View implements ActionListener{
         rightPlayers.removeAll();
         rightPlayers.revalidate();
         rightPlayers.repaint();
-        //System.out.println(players.length);
 
-        for (int i = 1; i < players.length; i++) {
+        for (int i = 0; i < players.length; i++) {
             
             JLabel b = new JLabel("<html>" + players[i].getName() + "<br/>Location: " + players[i].getLocation().getName() + "<br/>Level: " + players[i].getRank() + "<br/>Is Employed?: " + players[i].isEmployed() + "<br/>Dollars: " + players[i].getDollars() + "<br/>Credits: " + players[i].getCredits() + "<br/>Rehearse Tokens: " + players[i].getRehearseTokens() + "</html>", JLabel.CENTER);
             if(i%2 == 0){
@@ -249,7 +248,6 @@ public class View implements ActionListener{
         JLabel l;
 
         AreaData area = s.getArea();
-//System.out.println(s.getName() + " " + s.getFlipStage());
         if(s.getFlipStage() != 2){
             if(s.getFlipStage() != 1){
                 img = new ImageIcon("src/main/resources/img/cardback.png");

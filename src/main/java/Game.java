@@ -60,9 +60,9 @@ public class Game{
         Player p;
         // set default values
         // Set startLocation = board.getSet("trailer"); // UNCOMMENT AFTER DONE TESTING
-        Set startLocation = board.getSet("Saloon"); // FOR TESTING ONLY; DELETE AFTERWARD
+        Set startLocation = board.getSet("trailer"); // FOR TESTING ONLY; DELETE AFTERWARD
         // int startRank = 1;  // UNCOMMENT AFTER DONE TESTING
-        int startRank = 6; // FOR TESTING ONLY; DELETE AFTERWARD
+        int startRank = 1; // FOR TESTING ONLY; DELETE AFTERWARD
         int startCredits = 0;
         numDays = 4;
 
@@ -110,12 +110,12 @@ public class Game{
             }
             players.add(p);
         }
-        //playerArray = new Player[players.size()];
-        //for(int i = 0; i < players.size(); i++){
-            //playerArray[i] = players.peek();
-            //players.add(players.remove());
-        //}
-
+        playerArray = new Player[players.size()];
+        for(int i = 0; i < players.size(); i++){
+            playerArray[i] = players.peek();
+            players.add(players.remove());
+        }
+            view.updateSidePanel(playerArray);
         return players;
     }
 
@@ -144,6 +144,7 @@ public class Game{
         else{                    
             view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
         }
+        view.updateSidePanel(playerArray);
     }
 
     public String chooseRole() {
@@ -153,9 +154,6 @@ public class Game{
             return "";
         }
         else{
-            for(int i = 0; i < roles.length; i++){
-                System.out.println(i + " " + roles[i]);
-            }
             String result = view.showRolePopUp(roles);
             return result;
         }
@@ -167,7 +165,11 @@ public class Game{
                 view.showPopUp("You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
             }
             else{
-                String chosenRole = chooseRole();
+                if(currentPlayer.getLocation().getFlipStage() == 2){
+                    view.showPopUp("This scene has already finished! You're too late!!");
+                }
+                else{
+                    String chosenRole = chooseRole();
                 if (chosenRole.equals("")) {
                     
                     return;
@@ -177,16 +179,18 @@ public class Game{
 
                 if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
                     currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
-                    System.out.println("on card");
                 }
                 else{
                     currentPlayer.setAreaData(currentPlayer.getRole().getArea());
                 }
                 refreshPlayerPanel();
+                }
             }
         } else {
             view.showPopUp("You're already employed, so you can't take another role until you finish this one");
         }   
+        view.updateSidePanel(playerArray);
+        //System.out.println(currentPlayer.getAreaData().getX() + " " + currentPlayer.getAreaData().getY());
     }
 
     public void tryUpgrade() {
@@ -224,6 +228,7 @@ public class Game{
         else{
             view.showPopUp("You are not located in the office, move to the office");
         }
+        view.updateSidePanel(playerArray);
     }
 
     public void tryRehearse() {
@@ -238,6 +243,7 @@ public class Game{
         else {
             view.showPopUp("You're not employed, so you need to take a role before you can rehearse.");
         }
+        view.updateSidePanel(playerArray);
     }
 
     public void tryAct() {
@@ -246,8 +252,8 @@ public class Game{
         List<Player> offCardPlayers = new ArrayList<Player>();
         if (currentPlayer.isEmployed() == true) {
             if(!currentPlayer.getHasPlayed()){
-                findPlayers(currentPlayer.getLocation().getOnCardRoles());
-                findPlayers(currentPlayer.getLocation().getOffCardRoles());
+                onCardPlayers = findPlayers(currentPlayer.getLocation().getOnCardRoles());
+                offCardPlayers = findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers);
                 //board.reloadImgs();
                 refreshPlayerPanel();
@@ -259,6 +265,7 @@ public class Game{
         else {
             view.showPopUp("You're not employed, so you need to take a role before you can act.");
         }
+        view.updateSidePanel(playerArray);
     }
 
     public void startNewTurn(){
@@ -282,16 +289,18 @@ public class Game{
     }
 
     public void endTurn() {
-        if (board.getSceneNum() > 1) { // day continues
+        if (board.getSceneNum() > 9) { // day continues
             startNewTurn();
             view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
         else { // day ends
-            if (numDays > 0) { // game continues
+            if (numDays > 2) { // game continues
                 //decrement days and reset the roles and board
                 numDays--;
                 view.showPopUp("Its the end of the day! " + numDays + " days remain");
+                
+                view.clearDice();
                 board.resetBoard();
 
                 // reset players
@@ -300,9 +309,15 @@ public class Game{
             else { // game ends
                 view.showPopUp("Calculating winner...");
                 calcWinner();
+                System.exit(0);
                 // do something to freeze the screen and not allow 
             }
+            startNewTurn();
+            view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+            view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
+        view.updateSidePanel(playerArray);
+
     }
 
     public Player getCurrentPlayer(){

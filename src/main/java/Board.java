@@ -72,8 +72,7 @@ public class Board{
         view.clearCard();
         view.clearShot();
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
-            boardSets.get(i).resetSet(cardDeck.get(i)); // get from shuffled, not remove
-            // System.out.println("Set name: " + boardSets.get(i).getName() + "; flip stage: " + boardSets.get(i).getFlipStage());
+            boardSets.get(i).resetSet(cardDeck.remove(i-2)); // get from shuffled, not remove
             view.resetCard(boardSets.get(i));
             view.resetShot(boardSets.get(i));
         }
