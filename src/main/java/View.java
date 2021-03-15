@@ -94,7 +94,7 @@ public class View implements ActionListener{
         places[9] = new JLayeredPane();
 */
         leftPlayers.setLayout(new GridLayout(4, 1));
-        leftPlayers.setBounds(0,0, 400, 1000);
+        leftPlayers.setBounds(10,0, 400, 1000);
         //leftPlayers.add(player1);
         //leftPlayers.add(player3);
         //leftPlayers.add(player5);
@@ -136,6 +136,12 @@ public class View implements ActionListener{
         layeredPane.add(shotPanel, 1);
         layeredPane.add(cardPanel, 2);
         layeredPane.add(board, 3);   
+
+        int borderThickness = 10;
+        layeredPane.setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness, borderThickness));
+        displayPanel.setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness, borderThickness));
+        leftPlayers.setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness, borderThickness));
+        rightPlayers.setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness, borderThickness));
 
         frame.add(layeredPane, BorderLayout.CENTER);
         frame.add(displayPanel,BorderLayout.PAGE_START);
