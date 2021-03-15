@@ -4,7 +4,6 @@ public class Player{
 
     private String playerName;
     private String[] playerDiePaths;
-    private int playerDieCurrentNum;
     private AreaData playerDieArea;
     private int rank;
     private int dollars;
@@ -14,8 +13,6 @@ public class Player{
     private int rehearseTokens;
     private Set location;
     private Role role;
-    // private String roleName;
-    // private Controller controller = new Controller();
     private View view = View.getInstance();
 
     public Player(Set s, String p, int sr, String[] paths){
@@ -26,7 +23,6 @@ public class Player{
         rank = sr;
         credits = 0;
         dollars = 0;
-        playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
         playerDieArea = new AreaData(0, 0, 46, 46);
@@ -43,14 +39,12 @@ public class Player{
         playerDiePaths = paths;
 
         dollars = 0;
-        playerDieCurrentNum = 0;
         employed = false;
         rehearseTokens = 0;
         playerDieArea = new AreaData(0, 0, 46, 46); // roles' area w/h = 46
         hasPlayed = false;
     } 
-    // player die position gets set when Game calls view.resetPlayerDie(); I don't think player should be able to call view
-    // trailerX + (i*46)
+    
 
     public String getName(){
         return playerName;
@@ -126,17 +120,7 @@ public class Player{
     public AreaData getAreaData(){
         return playerDieArea;
     }
-    //to move a player to a neighbor
-    // public static boolean canMoveTo(String dest, List<String> neighbors){
-    //     for(int i = 0; i < neighbors.size(); i++){
-    //         //if the designated neighbor exists return true
-    //         if(dest.equals(neighbors.get(i)))
-    //         {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    
     public boolean moveTo(String destName, Set dest) {
         boolean successfulMove = false;
 
