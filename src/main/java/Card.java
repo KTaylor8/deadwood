@@ -39,31 +39,4 @@ public class Card{
         }
         return hasRole;
     }
-
-    public void printInfo() {
-        String cardInfo = "";
-        Role role;
-        cardInfo += ("\nCard name: " + cardName);
-        cardInfo += ("\n\tCard budget: " + budget);
-        cardInfo += ("\n\tScene number: " + sceneNumber);
-        cardInfo += ("\n\tScene description: " + sceneDescription);
-        try {
-            for (int i = 0; i < onCardRoles.size(); i++) {
-                role = onCardRoles.get(i);
-                cardInfo += "\n\tOn-card role #" + (i+1) + ":";
-                cardInfo += "\n\t\tOn-card role name: " + role.getName();
-                cardInfo += "\n\t\tOn-card role level: " + role.getLevel();
-                cardInfo += "\n\t\tCard area: x = " + role.getArea().getX() + 
-                            ", y = " + role.getArea().getY() +
-                            ", w = " + role.getArea().getW() +
-                            ", h = " + role.getArea().getH();
-                cardInfo += "\n\t\tOn-card role line: " + role.getLine();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            View.getInstance().showPopUp(e.getMessage());
-        }
-        View.getInstance().showPopUp(cardInfo);
-    }
-
 }

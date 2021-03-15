@@ -1,4 +1,4 @@
-// import java.util.*;
+
 
 public class Role{
     private String roleName;
@@ -47,16 +47,4 @@ public class Role{
         this.occupied = false;
     }
 
-    // //returns boolean if the role is on card of a set
-    // // was replaced by Card's hasRole()
-    // private boolean isOnCard(Set s){
-    //     boolean isOnCard = false;
-    //     List<Role> tester = s.getOnCardRoles();
-    //     for(int i = 0; i < tester.size(); i++){
-    //         if(this.equals(tester.get(i))){
-    //             return true;
-    //         }
-    //     }
-    //     return isOnCard;
-    // }
 }
