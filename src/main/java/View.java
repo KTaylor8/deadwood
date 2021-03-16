@@ -254,8 +254,8 @@ public class View implements ActionListener{
         displayPanel.revalidate();
 	    displayPanel.repaint();
 
-        display = new JLabel("Days left in game: " + numDaysLeft + ",  Current player: " + playerName, JLabel.CENTER);
-        display.setPreferredSize(new Dimension(400, 50));
+        display = new JLabel("Days left: " + numDaysLeft + ",  Current player: " + playerName, JLabel.CENTER);
+        display.setPreferredSize(new Dimension(500, 50));
         display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 

@@ -253,7 +253,7 @@ public class Player{
             //for acting failures on card and off card
             view.showPopUp(isComputer, "Acting failure!");
             if(location.getCard().hasRole(role)){
-                view.showPopUp(isComputer, "Since you had an important role you get nothing!");
+                view.showPopUp(isComputer, "You had an important role, but you get nothing!");
             }
             else{
                 view.showPopUp(isComputer, "Since you weren't that important you will get 1 dollar, out of pity");
@@ -281,11 +281,11 @@ public class Player{
         if(location.getTakesLeft() <= 0){
             
             if(location.canBonus()){
-                view.showPopUp(isComputer, "Oh no! That was the last scene! Everyone gets money!");
+                view.showPopUp(isComputer, "That was the last shot in the set! Everyone gets money!");
                 location.bonuses(isComputer, onCardPlayers, offCardPlayers);
             }
             else{
-                view.showPopUp(isComputer, "That was the last scene, but no ones on card so no one gets money! Aha!");
+                view.showPopUp(isComputer, "That was the last shot in the set, but no ones on card so no one gets money! Aha!");
             }
             location.wrapUp(onCardPlayers, offCardPlayers);
         }

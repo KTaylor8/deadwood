@@ -193,7 +193,7 @@ public class Board{
     }
 
     /**
-     * returns the number of scenes remaining on the board that have not been wrapped up
+     * returns the number of sets remaining on the board that have not been wrapped up
      * @return
      */
     public int getSceneNum(){

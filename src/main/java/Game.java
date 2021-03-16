@@ -461,11 +461,14 @@ public class Game{
 
     public void endTurn() {
         if (board.getSceneNum() <= 1) { // day ends
+            numDays--;
             if (numDays > 0) { // game continues
-                //decrement days and reset the roles and board
-                numDays--;
-                if (currentPlayer.isComputer() == false) {
-                    view.showPopUp(currentPlayer.isComputer(), "Its the end of the day! " + numDays + " days remain");
+                //reset the roles and board
+
+                // show end day message as long as there is at least 1 human player
+                if (numTotalPlayers != numComputerPlayers) {
+                    boolean overridingFalse = false;
+                    view.showPopUp(overridingFalse, "Its the end of the day! " + numDays + " days remain");
                 }
                 
                 view.clearDice();
