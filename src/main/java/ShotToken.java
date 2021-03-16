@@ -9,7 +9,7 @@ public class ShotToken {
      * @param shotNum
      * @param area
     */
-    ShotToken(int shotNum, AreaData area) {
+    public ShotToken(int shotNum, AreaData area) {
         this.shotNum = shotNum;
         this.area = area;
     }

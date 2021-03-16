@@ -22,8 +22,6 @@ public class View implements ActionListener{
     
     private JFrame frame;
     private JLabel display;
-    private JLabel mainStreet = new JLabel();
-    private JLabel mainStreet2 = new JLabel();
     private JLayeredPane layeredPane = new JLayeredPane();
     private JPanel cardPanel = new JPanel();
     private JPanel shotPanel = new JPanel();
@@ -33,8 +31,8 @@ public class View implements ActionListener{
     
     
         //panel for the top information about current player
-    JPanel displayPanel = new JPanel();
-    Controller controller;
+    private JPanel displayPanel = new JPanel();
+    private Controller controller;
 
     private static View uniqueInstance;
 
@@ -42,7 +40,7 @@ public class View implements ActionListener{
      * constructor for the view that connects to the controller.
      * @param controller
      */
-    public View(Controller controller){
+    private View(Controller controller){
         this.controller = controller;
     }
 

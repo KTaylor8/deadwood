@@ -10,7 +10,7 @@ public class AreaData{
     /**
      * Base constructor
      */
-    AreaData() {}
+    public AreaData() {}
 
     /**
      * Constructor for when the area information is given using strings
@@ -19,7 +19,7 @@ public class AreaData{
      * @param h
      * @param w
      */
-    AreaData(String x, String y, String h, String w) {
+    public AreaData(String x, String y, String h, String w) {
         this.x = Integer.parseInt(x);
         this.y = Integer.parseInt(y);
         this.h = Integer.parseInt(h);
@@ -33,7 +33,7 @@ public class AreaData{
      * @param h
      * @param w
      */
-    AreaData(int x, int y, int h, int w) {
+    public AreaData(int x, int y, int h, int w) {
         this.x = x;
         this.y = y;
         this.h = h;
