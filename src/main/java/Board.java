@@ -14,7 +14,7 @@ public class Board{
      * @param boardPath
      * @param cardPath
      */
-    public Board(String boardPath, String cardPath){
+    private Board(String boardPath, String cardPath){
         view = View.getInstance();
         view.init();  // view needs to be initialized before XMLParser is used
 

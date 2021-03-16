@@ -17,7 +17,7 @@ public class Game{
      * Creates the elements of the game
      * @param args
      */
-    public Game (String[] args) {
+    private Game (String[] args) {
         numPlayers = Integer.valueOf(args[2]); 
         board = Board.getInstance(args[0], args[1]);
         view = View.getInstance();
@@ -26,7 +26,7 @@ public class Game{
     /**
      * initializer (w/ args)
      * @param args
-     * @return
+     * @return Game
      */
     public static synchronized Game getInstance(String[] args) {
         if (uniqueInstance == null) {

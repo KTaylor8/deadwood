@@ -1,6 +1,6 @@
 public class Controller{
-    View view;
-    Game game;
+    private View view;
+    private Game game;
 
     /**
      * Constructor that connects the view to the game

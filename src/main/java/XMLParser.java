@@ -18,7 +18,7 @@ public class XMLParser {
     private View view;
     private static XMLParser uniqueInstance = new XMLParser();
 
-    public XMLParser() { view = View.getInstance(); }
+    private XMLParser() { view = View.getInstance(); }
 
     // accessor -- eager initialization
     public static XMLParser getInstance() {

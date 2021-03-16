@@ -7,22 +7,18 @@ import javax.swing.JPanel;
 // uses singleton with lazy initialization b/c of args
 public class View implements ActionListener{
     
-    JFrame frame;
-    JLabel display, player1, player2, player3, player4, player5, player6, player7, player8;
-    JLayeredPane[] places = new JLayeredPane[10];
-    JLabel mainStreet = new JLabel();
-    JLabel mainStreet2 = new JLabel();
-    JLayeredPane layeredPane = new JLayeredPane();
-    JPanel cardPanel = new JPanel();
-    JPanel shotPanel = new JPanel();
-    JPanel dicePanel = new JPanel();
-    JPanel leftPlayers = new JPanel();
-    JPanel rightPlayers = new JPanel();
-    
+    private JFrame frame;
+    private JLabel display;
+    private JLayeredPane layeredPane = new JLayeredPane();
+    private JPanel cardPanel = new JPanel();
+    private JPanel shotPanel = new JPanel();
+    private JPanel dicePanel = new JPanel();
+    private JPanel leftPlayers = new JPanel();
+    private JPanel rightPlayers = new JPanel();
     
     //panel for the top information about current player
-    JPanel displayPanel = new JPanel();
-    Controller controller;
+    private JPanel displayPanel = new JPanel();
+    private Controller controller;
 
     private static View uniqueInstance;
 
@@ -30,7 +26,7 @@ public class View implements ActionListener{
      * constructor for the view that connects to the controller.
      * @param controller
      */
-    public View(Controller controller){
+    private View(Controller controller){
         this.controller = controller;
     }
 
