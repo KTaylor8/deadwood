@@ -16,7 +16,7 @@ public class Player{
     private View view = View.getInstance();
 
     /**
-     * Constructor for the player, when there arent enough people where credits need to be gived
+     * Constructor for the player, when there aren't enough people where credits need to be given
      *
      * @param s
      * @param p
@@ -38,7 +38,7 @@ public class Player{
     }
 
     /**
-     * Constructor for the player, when there are enough player that credits need to be gived
+     * Constructor for the player, when there are enough player that credits need to be given
      * @param s
      * @param p
      * @param sr
@@ -221,7 +221,7 @@ public class Player{
 
     /**
      * Rolls a die and adds that value to players number of rehearsal tokens, if the act is a success, pays player if they are on or off card
-     * Then decriments the set tokens if a success. If that was the last set token of the scene, then wraps up the scene and resets the
+     * Then decrements the set tokens if a success. If that was the last set token of the scene, then wraps up the scene and resets the
      * players role and employment status
      * @param onCardPlayers
      * @param offCardPlayers
@@ -255,7 +255,7 @@ public class Player{
             view.showPopUp("Acting success!");
             //decrement takesLeft
             location.decTakesLeft();
-            // determine pay for sucessful shot
+            // determine pay for successful shot
             if(location.getCard().hasRole(role)){
                 view.showPopUp("Since you were important, you get 2 credits");
                 incCredits(2);

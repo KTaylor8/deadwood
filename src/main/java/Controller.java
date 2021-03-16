@@ -7,7 +7,7 @@ public class Controller{
      * @param args
      */
     public Controller(String[] args) {
-        view = View.getInstance(this);
+        view = View.getInstance(this); // first instantiation of view sets controller
         game = Game.getInstance(args);
     }
 

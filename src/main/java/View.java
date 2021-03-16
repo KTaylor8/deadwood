@@ -108,7 +108,7 @@ public class View implements ActionListener{
         dicePanel.setOpaque(false);
         dicePanel.setLayout(null);
 
-        //Layered pane that imposes the different pngs witht the board as the base and the dice as the top
+        //Layered pane that imposes the different pngs with the board as the base and the dice as the top
         layeredPane.add(dicePanel, 0);
         layeredPane.add(shotPanel, 1);
         layeredPane.add(cardPanel, 2);
@@ -132,7 +132,7 @@ public class View implements ActionListener{
     }
 
     /**
-     * sets the fram to be shown
+     * sets the frame to be shown
      */
     public void show() {
         frame.setVisible(true);
@@ -146,7 +146,6 @@ public class View implements ActionListener{
 
         controller.process(buttonText);
     }
-
      
     /**
      * Displays the different roles that are given in the parameters, and when the player chooses one, returns that string unless it is empty
@@ -306,7 +305,7 @@ public class View implements ActionListener{
     }
 
     /**
-     * places the remaining number of takes at the specified set that is given in the place that theyre supposed to.
+     * places the remaining number of takes at the specified set that is given in the place that they're supposed to.
      * @param set
      */
     public void resetShot(Set set){

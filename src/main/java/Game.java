@@ -188,7 +188,7 @@ public class Game{
     }
 
     /**
-     * If the player is not employed, and theyre in a location that has roles, prompt the roles that they could take,
+     * If the player is not employed, and they're in a location that has roles, prompt the roles that they could take,
      * once a role is chosen, give the player that role and occupy it so future players cannot take it, updates the view
      * in the position of the role.
      */
@@ -227,7 +227,7 @@ public class Game{
 
     /**
      * If the player is located in the office and are not already max level, give a popup with the upgrade options and their prices
-     * check if the player can afford the one that theyve chosen, and assign the player their new rank, update their die on the board
+     * check if the player can afford the one that they've chosen, and assign the player their new rank, update their die on the board
      */
     public void tryUpgrade() {
         if(currentPlayer.getLocation().getName().equals("office")){
@@ -271,7 +271,7 @@ public class Game{
     }
 
     /**
-     * If the player is employed and they are not already at rehearsal tokens needed to succeed, give the player a rehearsal token, refreshe the board
+     * If the player is employed and they are not already at rehearsal tokens needed to succeed, give the player a rehearsal token, refresh the board
      */
     public void tryRehearse() {
         if (currentPlayer.isEmployed() == true) {
@@ -290,7 +290,7 @@ public class Game{
 
     /**
      * if the player is employed, let them attempt to act. If they are successful, pay them the amount that they are owed and remove a shot token
-     * if that was the last shot, then wrapup the scene and pay dues if there are players on the card. release the actors from their roles
+     * if that was the last shot, then wrap up the scene and pay dues if there are players on the card. release the actors from their roles
      * and update the board with the changes that were made.
      */
     public void tryAct() {
@@ -378,7 +378,7 @@ public class Game{
 
     
     /**
-     * Returns a lsit of all of the people who are employed in a list of roles, this is used to see who else works in a scene 
+     * Returns a list of all of the people who are employed in a list of roles, this is used to see who else works in a scene 
      * to see who gets paid for a scene wrap up
      * @param rl
      * @return List<Player>
@@ -423,7 +423,7 @@ public class Game{
     }
 
     /**
-     * Goes through each of the players and compares the final values with eachother to see who got the most amount of points
+     * Goes through each of the players and compares the final values with each other to see who got the most amount of points
      *then displays the winner(s) 
      */
     private void calcWinner(){

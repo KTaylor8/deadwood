@@ -98,7 +98,7 @@ public class Board{
     }
     
     /**
-     * Reloads the images of the board without setting down new cards, to update inbetween turns
+     * Reloads the images of the board without setting down new cards, to update in between turns
      */
     public void reloadImgs(){
         view.clearCard();
@@ -120,7 +120,7 @@ public class Board{
     }
 
     /**
-     * refreshes the takes on the baord incares they were removed or added
+     * refreshes the takes on the board in case they were removed or added
      */
     public void refreshShots(){
         view.clearShot();

@@ -142,7 +142,7 @@ public class Set{
     }
 
     /**
-     * gives the set a new card and resets the state of the card filp and resets the number of takes remaining
+     * gives the set a new card and resets the state of the card flip and resets the number of takes remaining
      * @param newCard
      */
     public void resetSet(Card newCard){
@@ -172,7 +172,7 @@ public class Set{
     }
     
     /**
-     * reuturns tha the given string is a neighbor of the set
+     * returns tha the given string is a neighbor of the set
      * @param s
      * @return boolean
      */
@@ -195,7 +195,7 @@ public class Set{
     }
 
     /**
-     * retrusn the roles of the set that are off the card
+     * returns the roles of the set that are off the card
      * @return List<Role>
      */
     public List<Role> getOffCardRoles() {
@@ -304,7 +304,7 @@ public class Set{
     }
 
     /**
-     * iterates through the different roles and makes sure that they are not occupied, and make ssure the set can be reused for the day
+     * iterates through the different roles and makes sure that they are not occupied, and make sure the set can be reused for the day
      * @param onCardPlayers
      * @param offCardPlayers
      */
