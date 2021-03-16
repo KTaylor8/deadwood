@@ -7,7 +7,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-// import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,22 +25,23 @@ public class XMLParser {
         return uniqueInstance;
     }
 
-    // building a document from the XML file
-    // returns a Document object after loading the card.xml file.
+    /**
+     * building a document from the XML file
+     * @param String accepts a filename string that is the path to the xml file
+     * @return returns a Document object after loading the card.xml file.
+     */
     public Document getDocFromFile(String filename) throws ParserConfigurationException {
-        {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = null;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = null;
 
-            try {
-                doc = db.parse(filename);
-            } catch (Exception ex) {
-                view.showPopUp("XML parse failure");
-                ex.printStackTrace();
-            }
-            return doc;
-        } // exception handling
+        try {
+            doc = db.parse(filename);
+        } catch (Exception ex) {
+            view.showErrorPopUp("XML document parse failure");
+            ex.printStackTrace();
+        }
+        return doc;
     }
 
     /**
@@ -79,10 +79,10 @@ public class XMLParser {
 
 
     /**
-     * Parse role/part data
+     * Parse role/part data 
      * @param roleObj
      * @param part accepts a single Node part
-     * @return
+     * @return populated Role object
      */
     private Role getPartData(Role roleObj, Node part){
         // Declare vars for part data handling
@@ -94,7 +94,6 @@ public class XMLParser {
         String partName;
         String partLevel;
         String partLine = "";
-
 
         //read part's attributes and text
         partName = part.getAttributes().getNamedItem("name").getNodeValue();
@@ -121,9 +120,9 @@ public class XMLParser {
 
 
     /**
-     * Parse office data into Set
+     * Parse office data into a new Set
      * @param root -- document root
-     * @return
+     * @return Set
      */
     private Set getOfficeData(Element root){
         // Declare vars for office data handling
@@ -136,13 +135,12 @@ public class XMLParser {
 
         // Upgrade vars
         NodeList upgradesList;
-        // UNSURE IF QUEUE IS RIGHT DATA STRUCTURE FOR THIS
         Queue<Node> filteredUpgrades; /* Intermediary storage helps parse upgrades */
         Node upgradesListSub;
         int upgradeCost;
         int numUpgradeOptions = 5;
         AreaData[] upgradeDollarsArea = new AreaData[numUpgradeOptions];
-        int[] upgradeDollars = new int[numUpgradeOptions]; // number of upgrade options currently hard-coded, but we might make it dynamic later
+        int[] upgradeDollars = new int[numUpgradeOptions];
         AreaData[] upgradeCreditsArea = new AreaData[numUpgradeOptions];
         int[] upgradeCredits = new int[numUpgradeOptions];
 
@@ -207,7 +205,11 @@ public class XMLParser {
     }
 
 
-    /* Parse trailer data into Set */
+    /**
+     * Parse office data into a new Set
+     * @param root -- document root
+     * @return Set
+     */
     private Set getTrailerData(Element root){
         // Declare vars for trailer data handling
         Node trailer; /* Element with tag name "trailer" */
@@ -234,6 +236,11 @@ public class XMLParser {
         return new Set("trailer", neighbors, trailerArea);
     }
 
+    /**
+     * Parse regular sets' data into a new Set
+     * @param root -- document root
+     * @return List<Set>
+     */
     private List<Set> addSets(Element root, List<Set> setList) {
         // declare class objects and their Lists
         Role role;
@@ -255,7 +262,6 @@ public class XMLParser {
         Node takeListSub;
         Node take;
         int takeNum;
-        // int numTakes;
         AreaData takeArea;
         List<ShotToken> tokens;
 
@@ -266,14 +272,11 @@ public class XMLParser {
             role = new Role();
             setRoles = new ArrayList<Role>();
             neighbors = new ArrayList<String>();
-            // numTakes = 0;
 
             setRoles = new ArrayList<Role>(); // want a new List each time, don't try to clear and reuse the same one
 
             tokens = new ArrayList<ShotToken>();
             takeArea = new AreaData();
-
-            // System.out.println("Parsing data for set " + (i + 1));
 
             //reads attributes from the sets/nodes
             set = sets.item(i);
@@ -294,16 +297,13 @@ public class XMLParser {
                 } else if ("takes".equals(setChildSub.getNodeName())) {
                     //read attributes for takes and their area children
                     takeList = setChildSub.getChildNodes();
-                    // numTakes = 0;
                     for (int k = 1; k < takeList.getLength(); k++) {
                         takeListSub = takeList.item(k);
                         // not all items in takeList are actual "take"s
                         if ("take".equals(takeListSub.getNodeName())) {
                             take = takeListSub;
-                            // numTakes++;
 
                             takeNum = Integer.parseInt(take.getAttributes().getNamedItem("number").getNodeValue());
-                            // System.out.println("  take number: " + takeNumber);
 
                             NodeList takeChildrenNodes = take.getChildNodes();
                             for (int l = 0; l < takeChildrenNodes.getLength(); l++) {
@@ -336,7 +336,11 @@ public class XMLParser {
         return setList;
     }
 
-    // reads data in board.xml, stores it in Set objects, stores those objects in a List and returns List
+    /**
+     * reads data in board.xml and stores it in Set objects and stores those objects in a List
+     * @param Document d
+     * @return List<Set>
+     */
     public List<Set> parseBoardData(Document d) {
         List<Set> setList = new ArrayList<Set>(); /* List of all board tiles */
         Element root = d.getDocumentElement();
@@ -354,7 +358,11 @@ public class XMLParser {
 
     }//readBoardData() method
 
-    // reads card data from XML file, stores it in Card objects, stores those objects in a List and returns List
+    /**
+     * reads card data from XML file, stores it in Card objects, and stores those objects in a List
+     * @param Document d
+     * @return List<Card>
+     */
     public List<Card> parseCardData(Document d) {
         // Declare vars for card data handling
         NodeList cards;
@@ -383,8 +391,6 @@ public class XMLParser {
         for (int i = 0; i < cards.getLength(); i++) {
             String picturePath = "src/main/resources/img/card_";
             cardRoles = new ArrayList<Role>(); // want a new ArrayList each time, don't try to clear and reuse the same one
-
-            // System.out.println("Parsing card " + (i + 1));
 
             if(i < 9){
                 picturePath += (("0"+(i+1)) + ".png");

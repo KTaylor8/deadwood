@@ -31,10 +31,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            view.showPopUp("Error = " + e);
+            view.showErrorPopUp("Error = " + e);
             return;
         } catch (Exception e) {
-            view.showPopUp("Error parsing cards: ");
+            view.showErrorPopUp("Error parsing cards: ");
             e.printStackTrace();
             return;
         }
@@ -47,10 +47,10 @@ public class Board{
             // }
 
         } catch (NullPointerException e) {
-            view.showPopUp("Error = " + e);
+            view.showErrorPopUp("Error = " + e);
             return;
         } catch (Exception e) {
-            view.showPopUp("Error parsing sets: ");
+            view.showErrorPopUp("Error parsing sets: ");
             e.printStackTrace();
             return;
         }

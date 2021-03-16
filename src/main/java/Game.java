@@ -48,7 +48,7 @@ public class Game{
      */
     public void run(){
         //make sure user enters valid number
-        if((numPlayers < 1) || (numPlayers > 9)){
+        if((numPlayers < 1) || (numPlayers > 8)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
