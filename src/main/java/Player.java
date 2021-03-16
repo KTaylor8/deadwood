@@ -11,6 +11,7 @@ public class Player{
     private boolean hasPlayed; 
     private boolean employed; 
     private int rehearseTokens;
+    private boolean isComputer;
     private Set location;
     private Role role;
     private View view = View.getInstance();
@@ -23,10 +24,11 @@ public class Player{
      * @param sr
      * @param paths
      */
-    public Player(Set s, String p, int sr, String[] paths){
+    public Player(Set s, String p, int sr, String[] paths, boolean ic){
         location = s;
         playerName = p;
         playerDiePaths = paths;
+        isComputer = ic;
         
         rank = sr;
         credits = 0;
@@ -45,12 +47,13 @@ public class Player{
      * @param sc
      * @param paths
      */
-    public Player(Set s, String p, int sr, int sc, String[] paths){
+    public Player(Set s, String p, int sr, int sc, String[] paths, boolean ic){
         location = s;
         playerName = p;
         rank = sr;
         credits = sc;
         playerDiePaths = paths;
+        isComputer = ic;
 
         dollars = 0;
         employed = false;
@@ -114,6 +117,10 @@ public class Player{
     }
     public void incTokens(){
         rehearseTokens++;
+    }
+
+    public boolean isComputer() {
+        return isComputer;
     }
 
     public Set getLocation() {

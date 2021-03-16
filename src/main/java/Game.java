@@ -4,7 +4,9 @@ import java.util.*;
 public class Game{
     private int numDays;
     private Queue<Player> players = new LinkedList<Player>();
-    private int numPlayers;
+    private int numTotalPlayers;
+    private int numComputerPlayers;
+    private int numHumanPlayers;
     private Board board;
     private View view;
     private Player[] playerArray;
@@ -18,7 +20,13 @@ public class Game{
      * @param args
      */
     private Game (String[] args) {
-        numPlayers = Integer.valueOf(args[2]); 
+        numTotalPlayers = Integer.valueOf(args[2]); 
+        if (args[3] == null) {
+            numComputerPlayers = 0;
+        } else {
+            numComputerPlayers = Integer.parseInt(args[3]);
+        }
+        numHumanPlayers = numTotalPlayers - numComputerPlayers;
         board = Board.getInstance(args[0], args[1]);
         view = View.getInstance();
     }
@@ -48,7 +56,7 @@ public class Game{
      */
     public void run(){
         //make sure user enters valid number
-        if((numPlayers < 1) || (numPlayers > 8)){
+        if((numTotalPlayers < 1) || (numTotalPlayers > 8)){
             view.showPopUp("Invalid input, please enter a player number from 2 to 8");
             System.exit(0);
         }
@@ -75,6 +83,7 @@ public class Game{
         Set startLocation = board.getSet("trailer"); 
         int startRank = 1; 
         int startCredits = 0;
+        boolean playerIsComputer = false;
         numDays = 4;
 
         // managing the image filepaths for the die assigned to each player
@@ -85,43 +94,56 @@ public class Game{
         String imgExtension = ".png";
 
         //changes player values according to number of players
-        if((numPlayers < 2) || (numPlayers > 8)){
+        if((numTotalPlayers < 2) || (numTotalPlayers > 8)){
             System.out.println("Please enter a number from 2 to 8");
             System.exit(0);
         }
-        if (numPlayers >= 7){
+        if (numTotalPlayers >= 7){
             startRank = 2;
             startCredits = 0;
         }
-        else if (numPlayers == 6){
+        else if (numTotalPlayers == 6){
             startRank = 1;
             startCredits = 4;
         }
-        else if (numPlayers == 5){
+        else if (numTotalPlayers == 5){
             startRank = 1;
             startCredits = 2;
         }
-        else if (numPlayers == 4){
+        else if (numTotalPlayers == 4){
         }
         else {
             numDays = 3;
         }
 
         // Make players
-        for(int i = 0; i < numPlayers; i++){
+        for(int i = 0; i < numTotalPlayers; i++){
+            // determine if this player should be a computer
+            // human players get generated first
+            if (i >= numHumanPlayers) { 
+                playerIsComputer = true;
+            } else {
+                playerIsComputer = false;
+            }
+
             // Create dieImgPaths
             dieImgPaths = new String[numImgs];
             for (int j = 0; j < numImgs; j++) {
                 dieImgPaths[j] = dieImgPathStub + playerDieLetters[i] + (j+1) + imgExtension;
             }
             // Create players
-            String tempName = "player" + (i+1); 
-            if (numPlayers >= 5) {
-                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths);
+            String tempName;
+            if (playerIsComputer == false) { // name human players
+                tempName = "player" + (i+1);
+            } else { // name computer players
+                tempName = "player" + (i+1) + " (computer)";
+            }
+            if (numTotalPlayers >= 5) {
+                p = new Player(startLocation, tempName, startRank, startCredits, dieImgPaths, playerIsComputer);
                 p.setAreaData(startLocation.getArea());
                 view.setDie(p);
             } else {
-                p = new Player(startLocation, tempName, startRank, dieImgPaths);
+                p = new Player(startLocation, tempName, startRank, dieImgPaths, playerIsComputer);
                 p.setAreaData(startLocation.getArea());
                 view.setDie(p);
             }
