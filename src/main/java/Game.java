@@ -69,6 +69,10 @@ public class Game{
         board.resetBoard();
         startNewTurn();
         view.show(); // show view as last step of run()
+
+        if (numTotalPlayers == numComputerPlayers) { // if all players are computers, trigger doComputerTurn()
+            doComputerTurn();
+        }
     }
 
     /**
@@ -338,6 +342,69 @@ public class Game{
     }
 
     /**
+     * Acts for computer player, suppressing popups 
+     * @params none
+     * @return void
+     */
+    public void computerAct() {
+        List<Player> onCardPlayers = new ArrayList<Player>();
+        List<Player> offCardPlayers = new ArrayList<Player>();
+
+        onCardPlayers = findPlayers(currentPlayer.getLocation().getOnCardRoles());
+        offCardPlayers = findPlayers(currentPlayer.getLocation().getOffCardRoles());
+        currentPlayer.act(onCardPlayers, offCardPlayers);
+
+        refreshPlayerPanel();
+        view.updateSidePanel(playerArray);
+    }
+
+       /**
+     * Plays turn for computer player by selecting random actions
+     * @param none
+     * @return void
+     */
+    public void doComputerTurn() {
+        Random rand = new Random();
+        int randInt;
+
+        if (!currentPlayer.isEmployed()) { // player not employed
+            // moves (but suppresses popups) at random and update of player panel
+            computerMove();
+
+            if (!(currentPlayer.getLocation().getName() == "trailer")) {
+                if (currentPlayer.getLocation().getName() == "office") { // in office
+                    // upgrade (but suppresses popups) at random and update of player panel
+                    computerUpgrade(); // supress
+                    
+                } else { // in regular set
+                    // take role (but suppresses popups) at random and update of player panel
+                    computerTakeRole();
+                }
+            }
+            endTurn();
+        } else { // player is employed
+            randInt = rand.nextInt(2); // get either 0 or 1
+            if (randInt == 0) {
+                // rehearse (but suppresses popups) and update of side panel
+                computerRehearse(); 
+            } else {
+                // act (but suppresses popups) and update of side panel
+                computerAct();
+            }
+
+            endTurn();
+        }
+
+        // else if employed:
+            // random choice
+                // rehearse (bypass popup)
+                // end turn
+
+                // act (bypass popup)
+                // end turn
+    }
+
+    /**
      * change who is next in the queue and place the old current back in the queue, update the view with who is currently playing
      */
     public void startNewTurn(){
@@ -363,21 +430,14 @@ public class Game{
 
     }
 
-    /**
-     * When the player wants to end their turn, check to see if there is 1 scene remaining, if there is, end the day
-     * If that day was the last one, calculate who is the winner and display it, end the game.
-     */
     public void endTurn() {
-        if (board.getSceneNum() > 1) { // day continues
-            startNewTurn();
-            view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
-            view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
-        }
-        else { // day ends
+        if (board.getSceneNum() > 1) { // day ends
             if (numDays > 0) { // game continues
                 //decrement days and reset the roles and board
                 numDays--;
-                view.showPopUp("Its the end of the day! " + numDays + " days remain");
+                if (currentPlayer.isComputer() == false) {
+                    view.showPopUp("Its the end of the day! " + numDays + " days remain");
+                }
                 
                 view.clearDice();
                 board.resetBoard();
@@ -390,14 +450,21 @@ public class Game{
                 System.exit(0);
                 // do something to freeze the screen and not allow 
             }
-            startNewTurn();
-            view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+        }
+
+        // set up for new turn
+        startNewTurn();
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+
+        if (currentPlayer.isComputer() == true) {
+            doComputerTurn();
+        } else {
             view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
+
         view.updateSidePanel(playerArray);
 
     }
-
     
     /**
      * Returns a list of all of the people who are employed in a list of roles, this is used to see who else works in a scene 
