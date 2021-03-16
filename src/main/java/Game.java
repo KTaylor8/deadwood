@@ -26,7 +26,7 @@ public class Game{
     /**
      * initializer (w/ args)
      * @param args
-     * @return
+     * @return Game
      */
     public static synchronized Game getInstance(String[] args) {
         if (uniqueInstance == null) {
