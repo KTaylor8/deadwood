@@ -19,10 +19,11 @@ public class Player{
     /**
      * Constructor for the player, when there aren't enough people where credits need to be given
      *
-     * @param s
-     * @param p
-     * @param sr
-     * @param paths
+     * @param s - location
+     * @param p - playername
+     * @param sr - starting rank
+     * @param paths - paths for player dice images
+     * @param ic -- whether or not the player is a computer
      */
     public Player(Set s, String p, int sr, String[] paths, boolean ic){
         location = s;
@@ -41,11 +42,12 @@ public class Player{
 
     /**
      * Constructor for the player, when there are enough player that credits need to be given
-     * @param s
-     * @param p
-     * @param sr
-     * @param sc
-     * @param paths
+     * @param s - location
+     * @param p - playername
+     * @param sr - starting rank
+     * @param sc - starting credits
+     * @param paths - paths for player dice images
+     * @param ic -- whether or not the player is a computer
      */
     public Player(Set s, String p, int sr, int sc, String[] paths, boolean ic){
         location = s;

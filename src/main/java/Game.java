@@ -374,7 +374,7 @@ public class Game{
             if (!(currentPlayer.getLocation().getName() == "trailer")) {
                 if (currentPlayer.getLocation().getName() == "office") { // in office
                     // upgrade (but suppresses popups) at random and update of player panel
-                    computerUpgrade(); // supress
+                    computerUpgrade();
                     
                 } else { // in regular set
                     // take role (but suppresses popups) at random and update of player panel
@@ -394,14 +394,6 @@ public class Game{
 
             endTurn();
         }
-
-        // else if employed:
-            // random choice
-                // rehearse (bypass popup)
-                // end turn
-
-                // act (bypass popup)
-                // end turn
     }
 
     /**
@@ -431,7 +423,7 @@ public class Game{
     }
 
     public void endTurn() {
-        if (board.getSceneNum() > 1) { // day ends
+        if (board.getSceneNum() <= 1) { // day ends
             if (numDays > 0) { // game continues
                 //decrement days and reset the roles and board
                 numDays--;
@@ -448,7 +440,6 @@ public class Game{
                 view.showPopUp("Calculating winner...");
                 calcWinner();
                 System.exit(0);
-                // do something to freeze the screen and not allow 
             }
         }
 

@@ -202,7 +202,7 @@ public class Board{
                 numScene++;
             }
         }
-        return numScene - 2;
+        return numScene - 2; // office & trailers will never wrap so subtract those
     }
    
 }

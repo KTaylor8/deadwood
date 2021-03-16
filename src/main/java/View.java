@@ -193,10 +193,14 @@ public class View implements ActionListener{
     }
 
     /**
-     * Displays a pop up with the given string to notify the player about an event that has occurred 
+     * Displays a pop up with the given string to notify the player about an event that has occurred, only if player is not a computer.
+     * @param isComputerPlayer
      * @param notif
      */
-    public void showPopUp(String notif){
+    public void showPopUp(boolean isComputerPlayer, String notif){
+        if (isComputerPlayer) {
+            return;
+        }
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
