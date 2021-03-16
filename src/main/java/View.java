@@ -72,7 +72,7 @@ public class View implements ActionListener{
         //panel with the action buttons
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayout(1, 6));
-        String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end"};
+        String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end turn"};
         for (String symbol: buttonText) {
             JButton b = new JButton(symbol);
             b.addActionListener(this);
