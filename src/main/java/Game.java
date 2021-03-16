@@ -55,12 +55,12 @@ public class Game{
      * runs the elements of game to create the board and let the player play it
      */
     public void run(){
-        //make sure user enters valid number
+        //make sure user enters valid number of players
         if((numTotalPlayers < 1) || (numTotalPlayers > 8)){
             view.showErrorPopUp("Invalid input, please enter a player number from 2 to 8");
+            System.out.println("Please enter a number from 2 to 8");
             System.exit(0);
         }
-
         
         //creates the player queue with diff values according to num players
         players = initPlayers();
@@ -98,10 +98,6 @@ public class Game{
         String imgExtension = ".png";
 
         //changes player values according to number of players
-        if((numTotalPlayers < 2) || (numTotalPlayers > 8)){
-            System.out.println("Please enter a number from 2 to 8");
-            System.exit(0);
-        }
         if (numTotalPlayers >= 7){
             startRank = 2;
             startCredits = 0;
@@ -188,11 +184,11 @@ public class Game{
                 refreshPlayerPanel(); // this is layering more components over the others but if it works it works
             }
             else {
-                view.showPopUp("Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
+                view.showPopUp(currentPlayer.isComputer(), "Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
             }
         }
         else{                    
-            view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
+            view.showPopUp(currentPlayer.isComputer(), "You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
         }
         view.updateSidePanel(playerArray);
     }
@@ -204,7 +200,7 @@ public class Game{
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
         if(roles.length <= 0){
-            view.showPopUp("There are no more available roles on this card!");
+            view.showPopUp(currentPlayer.isComputer(), "There are no more available roles on this card!");
             return "";
         }
         else{
@@ -221,11 +217,11 @@ public class Game{
     public void tryTakeRole() {
         if (currentPlayer.isEmployed() == false) {
             if(currentPlayer.getLocation().getName() == "office" || currentPlayer.getLocation().getName() == "trailer"){
-                view.showPopUp("You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
+                view.showPopUp(currentPlayer.isComputer(), "You are currently in the " + currentPlayer.getLocation().getName() + " please move to a tile that has a role");
             }
             else{
                 if(currentPlayer.getLocation().getFlipStage() == 2){
-                    view.showPopUp("This scene has already finished! You're too late!!");
+                    view.showPopUp(currentPlayer.isComputer(), "This scene has already finished! You're too late!!");
                 }
                 else{
                     String chosenRole = chooseRole();
@@ -246,7 +242,7 @@ public class Game{
                     }
             }
         } else {
-            view.showPopUp("You're already employed, so you can't take another role until you finish this one");
+            view.showPopUp(currentPlayer.isComputer(), "You're already employed, so you can't take another role until you finish this one");
         }   
         view.updateSidePanel(playerArray);
     }
@@ -263,22 +259,22 @@ public class Game{
                 String[] splited = n.split("\\s+");
                 if(splited[4].equals("dollars")){
                     if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
-                        view.showPopUp("You don't have enough dollars for this upgrade");
+                        view.showPopUp(currentPlayer.isComputer(), "You don't have enough dollars for this upgrade");
                     }
                     else{
                         currentPlayer.incDollars(-1*(Integer.valueOf(splited[3])));
                         currentPlayer.setRank(Integer.valueOf(splited[1]));
-                        view.showPopUp("You are now level " + splited[1]);
+                        view.showPopUp(currentPlayer.isComputer(), "You are now level " + splited[1]);
                     }
                 }
                 else{
                     if(Integer.valueOf(splited[3]) > currentPlayer.getCredits()){
-                        view.showPopUp("You don't have enough credits for this upgrade");
+                        view.showPopUp(currentPlayer.isComputer(), "You don't have enough credits for this upgrade");
                     }
                     else{
                         currentPlayer.incCredits(-1*(Integer.valueOf(splited[3])));
                         currentPlayer.setRank(Integer.valueOf(splited[1]));
-                        view.showPopUp("You are now level " + splited[1]);
+                        view.showPopUp(currentPlayer.isComputer(), "You are now level " + splited[1]);
                         
                     }
                 }
@@ -286,12 +282,12 @@ public class Game{
                 view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
             }
             else{
-                view.showPopUp("You are already max level");
+                view.showPopUp(currentPlayer.isComputer(), "You are already max level");
             }
             
         }
         else{
-            view.showPopUp("You are not located in the office, move to the office");
+            view.showPopUp(currentPlayer.isComputer(), "You are not located in the office, move to the office");
         }
         view.updateSidePanel(playerArray);
     }
@@ -305,11 +301,11 @@ public class Game{
                 currentPlayer.rehearse();
             }
             else{                    
-                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
+                view.showPopUp(currentPlayer.isComputer(), "You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
             }
         }
         else {
-            view.showPopUp("You're not employed, so you need to take a role before you can rehearse.");
+            view.showPopUp(currentPlayer.isComputer(), "You're not employed, so you need to take a role before you can rehearse.");
         }
         view.updateSidePanel(playerArray);
     }
@@ -328,37 +324,19 @@ public class Game{
                 onCardPlayers = findPlayers(currentPlayer.getLocation().getOnCardRoles());
                 offCardPlayers = findPlayers(currentPlayer.getLocation().getOffCardRoles());
                 currentPlayer.act(onCardPlayers, offCardPlayers);
-                //board.reloadImgs();
                 refreshPlayerPanel();
             }
             else{
-                view.showPopUp("You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
+                view.showPopUp(currentPlayer.isComputer(), "You've already moved, rehearsed or acted this turn. Try a different command or click `end` to end your turn.");
             }
         }
         else {
-            view.showPopUp("You're not employed, so you need to take a role before you can act.");
+            view.showPopUp(currentPlayer.isComputer(), "You're not employed, so you need to take a role before you can act.");
         }
         view.updateSidePanel(playerArray);
     }
 
     /**
-     * Acts for computer player, suppressing popups 
-     * @params none
-     * @return void
-     */
-    public void computerAct() {
-        List<Player> onCardPlayers = new ArrayList<Player>();
-        List<Player> offCardPlayers = new ArrayList<Player>();
-
-        onCardPlayers = findPlayers(currentPlayer.getLocation().getOnCardRoles());
-        offCardPlayers = findPlayers(currentPlayer.getLocation().getOffCardRoles());
-        currentPlayer.act(onCardPlayers, offCardPlayers);
-
-        refreshPlayerPanel();
-        view.updateSidePanel(playerArray);
-    }
-
-       /**
      * Plays turn for computer player by selecting random actions
      * @param none
      * @return void
@@ -385,11 +363,11 @@ public class Game{
         } else { // player is employed
             randInt = rand.nextInt(2); // get either 0 or 1
             if (randInt == 0) {
-                // rehearse (but suppresses popups) and update of side panel
-                computerRehearse(); 
+                // rehearse
+                tryRehearse(); 
             } else {
-                // act (but suppresses popups) and update of side panel
-                computerAct();
+                // act
+                tryAct();
             }
 
             endTurn();
@@ -428,7 +406,7 @@ public class Game{
                 //decrement days and reset the roles and board
                 numDays--;
                 if (currentPlayer.isComputer() == false) {
-                    view.showPopUp("Its the end of the day! " + numDays + " days remain");
+                    view.showPopUp(currentPlayer.isComputer(), "Its the end of the day! " + numDays + " days remain");
                 }
                 
                 view.clearDice();
@@ -437,7 +415,7 @@ public class Game{
                 resetPlayers();
             }
             else { // game ends
-                view.showPopUp("Calculating winner...");
+                view.showPopUp(currentPlayer.isComputer(), "Calculating winner...");
                 calcWinner();
                 System.exit(0);
             }
@@ -445,16 +423,15 @@ public class Game{
 
         // set up for new turn
         startNewTurn();
-        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
 
+        // rotate player
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+        view.showPopUp(currentPlayer.isComputer(), "It is now " + currentPlayer.getName() + "'s turn");
+        view.updateSidePanel(playerArray);
+        
         if (currentPlayer.isComputer() == true) {
             doComputerTurn();
-        } else {
-            view.showPopUp("It is now " + currentPlayer.getName() + "'s turn");
         }
-
-        view.updateSidePanel(playerArray);
-
     }
     
     /**
@@ -533,16 +510,18 @@ public class Game{
                 winners.remove(i);
             }
         }
-        String winnersString = "";
+
         // Announce winners
+        boolean hideCalculatingWinnerPopUp = false;
+        String winnersString = "";
         if (winners.size() > 1) {
             winnersString = "There's a tie with " + winners.get(0).calcFinalScore() + " points. The following players tied: ";
             for (Player p : winners) {
                 winnersString += p.getName() + " ";
             }
-            view.showPopUp(winnersString);
+            view.showPopUp(hideCalculatingWinnerPopUp, winnersString);
         } else {
-            view.showPopUp(winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            view.showPopUp(hideCalculatingWinnerPopUp, winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
         }
     }
 
