@@ -11,6 +11,7 @@ public class Player{
     private boolean hasPlayed; 
     private boolean employed; 
     private int rehearseTokens;
+    private boolean isComputer;
     private Set location;
     private Role role;
     private View view = View.getInstance();
@@ -18,15 +19,17 @@ public class Player{
     /**
      * Constructor for the player, when there aren't enough people where credits need to be given
      *
-     * @param s
-     * @param p
-     * @param sr
-     * @param paths
+     * @param s - location
+     * @param p - player name
+     * @param sr - starting rank
+     * @param paths - paths for player dice images
+     * @param ic -- whether or not the player is a computer
      */
-    public Player(Set s, String p, int sr, String[] paths){
+    public Player(Set s, String p, int sr, String[] paths, boolean ic){
         location = s;
         playerName = p;
         playerDiePaths = paths;
+        isComputer = ic;
         
         rank = sr;
         credits = 0;
@@ -39,18 +42,20 @@ public class Player{
 
     /**
      * Constructor for the player, when there are enough player that credits need to be given
-     * @param s
-     * @param p
-     * @param sr
-     * @param sc
-     * @param paths
+     * @param s - location
+     * @param p - player name
+     * @param sr - starting rank
+     * @param sc - starting credits
+     * @param paths - paths for player dice images
+     * @param ic -- whether or not the player is a computer
      */
-    public Player(Set s, String p, int sr, int sc, String[] paths){
+    public Player(Set s, String p, int sr, int sc, String[] paths, boolean ic){
         location = s;
         playerName = p;
         rank = sr;
         credits = sc;
         playerDiePaths = paths;
+        isComputer = ic;
 
         dollars = 0;
         employed = false;
@@ -116,6 +121,10 @@ public class Player{
         rehearseTokens++;
     }
 
+    public boolean isComputer() {
+        return isComputer;
+    }
+
     public Set getLocation() {
         return location;
     }
@@ -158,20 +167,20 @@ public class Player{
         try { // this might not be the best way to handle this error...
             destName = dest.getName(); // null if not a valid Set name
         } catch (NullPointerException e){
-            view.showPopUp("The place you tried to move to isn't a valid set name. Try again...or don't.");
+            view.showPopUp(isComputer, "The place you tried to move to isn't a valid set name. Try again...or don't.");
             return successfulMove;
         }
 
         if (location.checkNeighbor(destName) ) {
             location = dest;
             setAreaData(dest.getArea());
-            view.showPopUp("You're now located in " + destName);
+            view.showPopUp(isComputer, "You're now located in " + destName);
             hasPlayed = true;
             successfulMove = true;
         }
         else
         {
-            view.showPopUp("You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
+            view.showPopUp(isComputer, "You can't move to that location; it's not a neighbor of the current location. (View neighbors with the command `neighbors`.)");
         }
 
         return successfulMove;
@@ -203,19 +212,20 @@ public class Player{
                 {
                     employed = true;
                     role = desiredRole;
-                    view.showPopUp("You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
+                    this.role.occupy();
+                    view.showPopUp(isComputer, "You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
                 }
                 else{
-                    view.showPopUp("Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
+                    view.showPopUp(isComputer, "Your rank isn't high enough to take this role. Your rank is " + rank + " while the role level is " + roleLevel);
                 }
             }
             else{
-                view.showPopUp("This set was already finished!");
+                view.showPopUp(isComputer, "This set was already finished!");
             }
 
         }
         else {
-            view.showPopUp("This location doesn't have any roles.");
+            view.showPopUp(isComputer, "This location doesn't have any roles.");
         }
     }
 
@@ -236,32 +246,32 @@ public class Player{
         budget = Integer.valueOf((location.getCard()).getBudget());
         dieVal = 1 + (int)(Math.random() * 6);
 
-        view.showPopUp("The budget of your current job is: " + budget + ", you rolled a: " + dieVal + ", and you have " + rehearseTokens + " rehearsal tokens");
+        view.showPopUp(isComputer, "The budget of your current job is: " + budget + ", you rolled a: " + dieVal + ", and you have " + rehearseTokens + " rehearsal tokens");
         // view.changePlayerDieVal(this, dieVal);
         //if the die is higher than the budget
         if(budget > (dieVal + rehearseTokens)){
             //for acting failures on card and off card
-            view.showPopUp("Acting failure!");
+            view.showPopUp(isComputer, "Acting failure!");
             if(location.getCard().hasRole(role)){
-                view.showPopUp("Since you had an important role you get nothing!");
+                view.showPopUp(isComputer, "You had an important role, but you get nothing!");
             }
             else{
-                view.showPopUp("Since you weren't that important you will get 1 dollar, out of pity");
+                view.showPopUp(isComputer, "Since you weren't that important you will get 1 dollar, out of pity");
                 incDollars(1);
             }
         }
         else{
             //for acting successes on card and off card
-            view.showPopUp("Acting success!");
+            view.showPopUp(isComputer, "Acting success!");
             //decrement takesLeft
             location.decTakesLeft();
             // determine pay for successful shot
             if(location.getCard().hasRole(role)){
-                view.showPopUp("Since you were important, you get 2 credits");
+                view.showPopUp(isComputer, "Since you were important, you get 2 credits");
                 incCredits(2);
             }
             else{
-                view.showPopUp("Since you weren't that important you get 1 credit and 1 dollar");
+                view.showPopUp(isComputer, "Since you weren't that important you get 1 credit and 1 dollar");
                 incCredits(1);
                 incDollars(1);
             }
@@ -271,16 +281,16 @@ public class Player{
         if(location.getTakesLeft() <= 0){
             
             if(location.canBonus()){
-                view.showPopUp("Oh no! That was the last scene! Everyone gets money!");
-                location.bonuses(onCardPlayers, offCardPlayers);
+                view.showPopUp(isComputer, "That was the last shot in the set! Everyone gets money!");
+                location.bonuses(isComputer, onCardPlayers, offCardPlayers);
             }
             else{
-                view.showPopUp("That was the last scene, but no ones on card so no one gets money! Aha!");
+                view.showPopUp(isComputer, "That was the last shot in the set, but no ones on card so no one gets money! Aha!");
             }
             location.wrapUp(onCardPlayers, offCardPlayers);
         }
         else{
-            view.showPopUp("There are " + location.getTakesLeft() + " takes left in this scene.");
+            view.showPopUp(isComputer, "There are " + location.getTakesLeft() + " takes left in this scene.");
         }
         hasPlayed = true;
         successfulActing = true;
@@ -299,12 +309,12 @@ public class Player{
 
         //if the player does not have the max number of tokens already
         if(rehearseTokens < Integer.valueOf(getLocation().getCard().getBudget()) - 1) {
-            this.incTokens();
-            view.showPopUp("You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
+            incTokens();
+            view.showPopUp(isComputer, "You've rehearsed! You gain a rehearsal token (adds +1 to your subsequent dice rolls while acting on role only)");
             hasPlayed = true;
             successfulRehearsal = true;
         } else {
-            view.showPopUp("You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
+            view.showPopUp(isComputer, "You have reached the max for rehearsal and only have the option to act. Its a guaranteed success though!");
         }
 
         return successfulRehearsal;

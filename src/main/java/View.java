@@ -72,7 +72,7 @@ public class View implements ActionListener{
         //panel with the action buttons
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayout(1, 6));
-        String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end"};
+        String[] buttonText = {"move", "take role", "upgrade", "rehearse", "act", "end turn"};
         for (String symbol: buttonText) {
             JButton b = new JButton(symbol);
             b.addActionListener(this);
@@ -193,10 +193,14 @@ public class View implements ActionListener{
     }
 
     /**
-     * Displays a pop up with the given string to notify the player about an event that has occurred 
+     * Displays a pop up with the given string to notify the player about an event that has occurred, only if player is not a computer.
+     * @param isComputerPlayer
      * @param notif
      */
-    public void showPopUp(String notif){
+    public void showPopUp(boolean isComputerPlayer, String notif){
+        if (isComputerPlayer) {
+            return;
+        }
         JOptionPane.showMessageDialog(frame, notif); 
     }
 
@@ -243,14 +247,15 @@ public class View implements ActionListener{
      * changes the display on the top of the board that shows the current player as well as an image of their die
      * @param playerName
      * @param path
+     * @param numDaysLeft
      */
-    public void changeCurrentPlayer(String playerName, String path){
+    public void changeCurrentPlayer(String playerName, String path, int numDaysLeft){
         displayPanel.removeAll();
         displayPanel.revalidate();
 	    displayPanel.repaint();
 
-        display = new JLabel("Current player: " + playerName, JLabel.CENTER);
-        display.setPreferredSize(new Dimension(300, 50));
+        display = new JLabel("Days left: " + numDaysLeft + ",  Current player: " + playerName, JLabel.CENTER);
+        display.setPreferredSize(new Dimension(500, 50));
         display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 

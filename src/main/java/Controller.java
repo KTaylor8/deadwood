@@ -26,7 +26,7 @@ public class Controller{
             game.tryRehearse();
         } else if (res.equals("act")) {
             game.tryAct();
-        } else if (res.equals("end")) {
+        } else if (res.equals("end turn")) {
             game.endTurn();
         }
     }

@@ -274,32 +274,34 @@ public class Set{
      * @param onCardPlayers
      * @param offCardPlayers
      */
-    public void bonuses(List<Player> onCardPlayers, List<Player> offCardPlayers){
+    public void bonuses(boolean currentPlayerIsComputer, List<Player> onCardPlayers, List<Player> offCardPlayers){
 
-        int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
-        view.showPopUp("Rolling " + (this.currentCard.getBudget()) + " dice");
-        for (int i = 0; i < dice.length; i++) {
-            dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
-        }
+        if (onCardPlayers.size() > 0) { // calculate special on-card-player bonuses if there were any on-card-players
+            int[] dice = new int[Integer.valueOf(this.currentCard.getBudget())];
+            view.showPopUp(currentPlayerIsComputer, "Rolling " + (this.currentCard.getBudget()) + " dice");
+            for (int i = 0; i < dice.length; i++) {
+                dice[i] = 1 + (int)(Math.random() * ((6 - 1) + 1));
+            }
 
-        // sort array in ascending order and then reverse it
-        Arrays.sort(dice);
-        int[] newDice = new int[dice.length];
-        for(int i = 0; i < dice.length; i++) {
-            newDice[dice.length-1-i] = dice[i];
-        }
+            // sort array in ascending order and then reverse it
+            Arrays.sort(dice);
+            int[] newDice = new int[dice.length];
+            for(int i = 0; i < dice.length; i++) {
+                newDice[dice.length-1-i] = dice[i];
+            }
 
-        //hand out bonuses of randomized dice to on card people
-        for(int i = 0; i < dice.length; i++){
-            (onCardPlayers.get(i%(onCardPlayers.size()))).incDollars(dice[i]);
-            view.showPopUp((onCardPlayers.get(i%(onCardPlayers.size()))).getName() + " gets $" + dice[i]);
+            //hand out bonuses of randomized dice to on card people
+            for(int i = 0; i < dice.length; i++){
+                (onCardPlayers.get(i%(onCardPlayers.size()))).incDollars(dice[i]);
+                view.showPopUp(currentPlayerIsComputer, onCardPlayers.get(i%(onCardPlayers.size())).getName() + " gets $" + dice[i]);
+            }
         }
 
         //hand out bonuses of rank to off card people
         for(Player p: offCardPlayers){
             int playerRoleRank = Integer.parseInt(p.getRole().getLevel());
             p.incDollars(playerRoleRank);
-            view.showPopUp(p.getName() + " gets $" + playerRoleRank);
+            view.showPopUp(currentPlayerIsComputer, p.getName() + " gets $" + playerRoleRank);
         }
     }
 
