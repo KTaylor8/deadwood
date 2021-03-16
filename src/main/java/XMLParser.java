@@ -1,5 +1,5 @@
 /**
- * Based on example code for parsing XML file
+ * Based on example code provided for parsing book XML file
  */
 
 import org.w3c.dom.Document;

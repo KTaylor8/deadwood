@@ -1,5 +1,3 @@
-
-
 public class ShotToken {
     private int shotNum;
     private AreaData area;

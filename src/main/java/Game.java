@@ -203,21 +203,21 @@ public class Game{
                 }
                 else{
                     String chosenRole = chooseRole();
-                if (chosenRole.equals("")) {
-                    
-                    return;
-                }
-                currentPlayer.takeRole(chosenRole);
-                currentPlayer.getRole().occupy();
+                    if (chosenRole.equals("")) {
+                        
+                        return;
+                    }
+                    currentPlayer.takeRole(chosenRole);
+                    currentPlayer.getRole().occupy();
 
-                if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
-                    currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
-                }
-                else{
-                    currentPlayer.setAreaData(currentPlayer.getRole().getArea());
-                }
-                refreshPlayerPanel();
-                }
+                    if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
+                        currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
+                    }
+                    else{
+                        currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                    }
+                    refreshPlayerPanel();
+                    }
             }
         } else {
             view.showPopUp("You're already employed, so you can't take another role until you finish this one");

@@ -1,21 +1,8 @@
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.*;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-// import java.awt.Graphics;
 
 // uses singleton with lazy initialization b/c of args
 public class View implements ActionListener{
@@ -33,7 +20,7 @@ public class View implements ActionListener{
     JPanel rightPlayers = new JPanel();
     
     
-        //panel for the top information about current player
+    //panel for the top information about current player
     JPanel displayPanel = new JPanel();
     Controller controller;
 

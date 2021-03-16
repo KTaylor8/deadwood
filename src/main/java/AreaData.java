@@ -1,5 +1,4 @@
 // class for Area, so then it's easier to store and access the dimensions
-// import java.util.*;
 
 public class AreaData{
     private int x;
