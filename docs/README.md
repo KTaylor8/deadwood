@@ -8,7 +8,7 @@
         ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {number of total players} {number of computer players (if 0, can leave blank)}
 
 ## How to Play Deadwood
-Note: We implemented computer players, for which the enablement specifications are listed above. Computer players suppress ALL popups EXCEPT for errors and those at the day's end and at the game's end, but even though popups are suppressed, the board and player side panels will still update and the game will otherwise continue as normal.
+Note: We implemented computer players, for which the enablement specifications are listed above. Computer players suppress ALL popups EXCEPT for errors and those at the day's end and at the game's end, but even though popups are suppressed, the board and player side panels will still update and the game will otherwise continue as normal. Computer players implement reasonable turn logic in that they move if they aren't working on a role, take roles if there are any they can take, rehearse or act when employed in a role, try to upgrade when in the casting office, etc.
 
     1. Once code is running, the current player will be displayed on the top of the screen
     2. During a turn you can pick from these options:
