@@ -71,6 +71,7 @@ public class Game{
         view.show(); // show view as last step of run()
 
         if (numTotalPlayers == numComputerPlayers) { // if all players are computers, trigger doComputerTurn()
+            view.showErrorPopUp("Warning: do not do this option if you are epileptic as the colors of the game are about to flash on-screen for the duration of this computer-player-only game play.");
             doComputerTurn();
         }
     }
@@ -166,11 +167,13 @@ public class Game{
         String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
         String result;
         if (currentPlayer.isComputer()) {
+            // choose random neighbor
             Random rand = new Random();
             int randInt = rand.nextInt(neighbors.length);
             result = neighbors[randInt];
         }
-        else {
+        else { // if current player is human
+            // choose upgrade manually
             result = view.showMovePopUp(neighbors);
         }
         return result;
@@ -202,19 +205,31 @@ public class Game{
     }
 
     /**
-     * Grabs the available roles and gives a popup with the options that the player can choose from. Returns the resulting string.
+     * Grabs the available roles and gives a popup with the options that the player can choose from or chooses one option at random. Returns the resulting string.
      * @return String
      */
     public String chooseRole() {
         String[] roles = currentPlayer.getLocation().getRoleStrings();
-        if(roles.length <= 0){
-            view.showPopUp(currentPlayer.isComputer(), "There are no more available roles on this card!");
-            return "";
+        String result;
+        if (currentPlayer.isComputer()) {
+            // choose random role
+            Random rand = new Random();
+            int randInt = rand.nextInt(roles.length);
+            result = roles[randInt];
         }
-        else{
-            String result = view.showRolePopUp(roles);
-            return result;
+        else { // if current player is human
+            // choose upgrade manually
+            if(roles.length <= 0){
+                view.showPopUp(currentPlayer.isComputer(), "There are no more available roles on this card!");
+                result = "";
+            }
+            else{
+                result = view.showRolePopUp(roles);
+            }
         }
+
+
+        return result;
     }
 
     /**
@@ -234,20 +249,26 @@ public class Game{
                 else{
                     String chosenRole = chooseRole();
                     if (chosenRole.equals("")) {
-                        
                         return;
                     }
                     currentPlayer.takeRole(chosenRole);
-                    currentPlayer.getRole().occupy();
 
-                    if(!board.isOnCard(currentPlayer.getRole().getName(), currentPlayer.getLocation())){
-                        currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
+                    if (currentPlayer.isEmployed()) {
+                        if(
+                            !board.isOnCard(
+                                currentPlayer.getRole().getName(), currentPlayer.getLocation())
+                            )
+                        {
+                            currentPlayer.setOnCardAreaData(currentPlayer.getRole().getArea());
+                        }
+                        else
+                        {
+                            currentPlayer.setAreaData(currentPlayer.getRole().getArea());
+                        }
+                        refreshPlayerPanel();
+                        
                     }
-                    else{
-                        currentPlayer.setAreaData(currentPlayer.getRole().getArea());
-                    }
-                    refreshPlayerPanel();
-                    }
+                }
             }
         } else {
             view.showPopUp(currentPlayer.isComputer(), "You're already employed, so you can't take another role until you finish this one");
@@ -256,41 +277,71 @@ public class Game{
     }
 
     /**
+     * Grabs the available roles and gives a popup with the options that the player can choose from or tries to upgrade to rank 1 greater than player's current rank. Returns the resulting string.
+     * @return String
+     */
+    private void upgrade() {
+        String[] upgradeOptions = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
+        // String[] upgradeTypes = {"credits", "dollars"}; // credits come before dollars for each rank in getUpgradeStrings()
+        // String upgradeCostChosen;
+        // String upgradeTypeChosen;
+        String upgradeChoice;
+
+        // choose upgrade
+        if (currentPlayer.isComputer()) {
+            // get next rank above player's rank
+            // String upgradeRankChosen = Integer.toString(currentPlayer.getRank()+1);
+    
+            // randomly choose between the credit option or the dollar option for the next rank 1 above the player's current rank
+            Random rand = new Random();
+            int randInt = rand.nextInt(2); 
+            upgradeChoice = upgradeOptions[randInt];
+        }
+        else { // if current player is human
+            // choose upgrade manually
+            upgradeChoice = view.showUpgradePopUp(upgradeOptions);
+        }
+
+        // parse upgradeChosen and do upgrade
+        String[] upgradesSplit = upgradeChoice.split("\\s+");
+        if(upgradesSplit[4].equals("dollars")){ // upgrade in dollars
+            if(Integer.valueOf(upgradesSplit[3]) > currentPlayer.getDollars()){ // upgrade fails
+                view.showPopUp(currentPlayer.isComputer(), "You don't have enough dollars for this upgrade");
+            }
+            else{ // upgrade succeeds
+                currentPlayer.incDollars(-1*(Integer.valueOf(upgradesSplit[3])));
+                currentPlayer.setRank(Integer.valueOf(upgradesSplit[1]));
+                view.showPopUp(currentPlayer.isComputer(), "You are now level " + upgradesSplit[1]);
+            }
+        }
+        else { // upgrade in credits
+            if(Integer.valueOf(upgradesSplit[3]) > currentPlayer.getCredits()){ // upgrade fails
+                view.showPopUp(currentPlayer.isComputer(), "You don't have enough credits for this upgrade");
+            }
+            else{ // upgrade succeeds
+                currentPlayer.incCredits(-1*(Integer.valueOf(upgradesSplit[3])));
+                currentPlayer.setRank(Integer.valueOf(upgradesSplit[1]));
+                view.showPopUp(currentPlayer.isComputer(), "You are now level " + upgradesSplit[1]);
+                
+            }
+        }
+    }
+
+    /**
      * If the player is located in the office and are not already max level, give a popup with the upgrade options and their prices
      * check if the player can afford the one that they've chosen, and assign the player their new rank, update their die on the board
      */
     public void tryUpgrade() {
+        int maxLevel = 6;
         if(currentPlayer.getLocation().getName().equals("office")){
-            String[] upgrades = currentPlayer.getLocation().getUpgradeStrings(currentPlayer.getRank());
-            if(upgrades.length != 0){
-                String n = view.showUpgradePopUp(upgrades);
-                String[] splited = n.split("\\s+");
-                if(splited[4].equals("dollars")){
-                    if(Integer.valueOf(splited[3]) > currentPlayer.getDollars()){
-                        view.showPopUp(currentPlayer.isComputer(), "You don't have enough dollars for this upgrade");
-                    }
-                    else{
-                        currentPlayer.incDollars(-1*(Integer.valueOf(splited[3])));
-                        currentPlayer.setRank(Integer.valueOf(splited[1]));
-                        view.showPopUp(currentPlayer.isComputer(), "You are now level " + splited[1]);
-                    }
-                }
-                else{
-                    if(Integer.valueOf(splited[3]) > currentPlayer.getCredits()){
-                        view.showPopUp(currentPlayer.isComputer(), "You don't have enough credits for this upgrade");
-                    }
-                    else{
-                        currentPlayer.incCredits(-1*(Integer.valueOf(splited[3])));
-                        currentPlayer.setRank(Integer.valueOf(splited[1]));
-                        view.showPopUp(currentPlayer.isComputer(), "You are now level " + splited[1]);
-                        
-                    }
-                }
+            if(currentPlayer.getRank() < maxLevel){ // player not at max level, allow upgrade
+                upgrade();
+                
                 refreshPlayerPanel();
-                view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+                view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath(), numDays);
             }
             else{
-                view.showPopUp(currentPlayer.isComputer(), "You are already max level");
+                view.showPopUp(currentPlayer.isComputer(), "You are already max level: " + maxLevel);
             }
             
         }
@@ -360,11 +411,11 @@ public class Game{
             if (!(currentPlayer.getLocation().getName() == "trailer")) {
                 if (currentPlayer.getLocation().getName() == "office") { // in office
                     // upgrade (but suppresses popups) at random and update of player panel
-                    // computerUpgrade();
+                    tryUpgrade();
                     
                 } else { // in regular set
                     // take role (but suppresses popups) at random and update of player panel
-                    // computerTakeRole();
+                    tryTakeRole();
                 }
             }
             endTurn();
@@ -388,7 +439,7 @@ public class Game{
     public void startNewTurn(){
         currentPlayer = players.peek();
         players.add(players.remove());
-        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath(), numDays);
         currentPlayer.setHasPlayed(false);
     }
 
@@ -433,7 +484,7 @@ public class Game{
         startNewTurn();
 
         // rotate player
-        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath());
+        view.changeCurrentPlayer(currentPlayer.getName(), currentPlayer.getPlayerDiePath(), numDays);
         view.showPopUp(currentPlayer.isComputer(), "It is now " + currentPlayer.getName() + "'s turn");
         view.updateSidePanel(playerArray);
         
@@ -529,7 +580,7 @@ public class Game{
             }
             view.showPopUp(hideCalculatingWinnerPopUp, winnersString);
         } else {
-            view.showPopUp(hideCalculatingWinnerPopUp, winners.get(0).getName() + " wins with " + winners.get(0).calcFinalScore() + "!");
+            view.showPopUp(hideCalculatingWinnerPopUp, winners.get(0).getName() + " wins with a score of " + winners.get(0).calcFinalScore() + " points! Clicking `ok` will end and close the game.");
         }
     }
 

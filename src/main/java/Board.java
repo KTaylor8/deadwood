@@ -90,8 +90,9 @@ public class Board{
     public void resetBoard(){
         view.clearCard();
         view.clearShot();
+        Collections.shuffle(cardDeck);
         for(int i = 2; i < boardSets.size(); i++){ // exclude first 2 sets, which are office and trailers
-            boardSets.get(i).resetSet(cardDeck.remove(i-2)); // get from shuffled, not remove
+            boardSets.get(i).resetSet(cardDeck.get(i-2)); // get from shuffled, not remove
             view.resetCard(boardSets.get(i));
             view.resetShot(boardSets.get(i));
         }

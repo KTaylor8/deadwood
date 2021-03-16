@@ -212,6 +212,7 @@ public class Player{
                 {
                     employed = true;
                     role = desiredRole;
+                    this.role.occupy();
                     view.showPopUp(isComputer, "You are now employed as: " + roleName + ". If you just moved, you'll be able to rehearse or act in this role on your next turn");
                 }
                 else{

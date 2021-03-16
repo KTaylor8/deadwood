@@ -247,14 +247,15 @@ public class View implements ActionListener{
      * changes the display on the top of the board that shows the current player as well as an image of their die
      * @param playerName
      * @param path
+     * @param numDaysLeft
      */
-    public void changeCurrentPlayer(String playerName, String path){
+    public void changeCurrentPlayer(String playerName, String path, int numDaysLeft){
         displayPanel.removeAll();
         displayPanel.revalidate();
 	    displayPanel.repaint();
 
-        display = new JLabel("Current player: " + playerName, JLabel.CENTER);
-        display.setPreferredSize(new Dimension(300, 50));
+        display = new JLabel("Days left in game: " + numDaysLeft + ",  Current player: " + playerName, JLabel.CENTER);
+        display.setPreferredSize(new Dimension(400, 50));
         display.setOpaque(false);
         display.setFont(new Font("TimesRoman", Font.PLAIN, 18));
 
