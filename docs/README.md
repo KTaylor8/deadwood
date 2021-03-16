@@ -5,10 +5,12 @@
     1. While in team_bunny_345-21wi compile with:  
         ./compile.sh
     2. Then decide player number run with:
-        ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {player number}
+        ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {number of total players} {number of computer players}
 
 ## How to Play Deadwood
-    
+
+Note: computer players suppress ALL popups EXCEPT for errors and those at the day's end and at the game's end, but even though popups are suppressed, the board and player side panels will still update and the game will otherwise continue as normal.
+
     1. Once code is running, the current player will be displayed on the top of the screen
     2. During a turn you can pick from these options:
         - "end turn" to end the turn
@@ -28,10 +30,10 @@
             - If you are employed you will either have a successful or failed act attempt, and given the corresponding amount of money
             - Scene tokens will decrement until none remain and the set will be wrapped up, bonuses will be distributed if necessary
         - "rehearse"
-            - If you are employed you can rehearse once per turn to increase your odds of a successful act until its garunteed
+            - If you are employed you can rehearse once per turn to increase your odds of a successful act until its guaranteed
         Note: You are allowed to many of these things any amount of times, but you can only do one of the following (once) per turn:
             act
             move
             rehearse
-    3. After a day board will reset
-    4. After the max days it will calc and give winner
+    3. After each day, the board will reset and move the players back to the trailers
+    4. After the max days it will calculate the scores and display which player is the winner
