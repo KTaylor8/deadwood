@@ -21,10 +21,11 @@ public class Game{
      */
     private Game (String[] args) {
         numTotalPlayers = Integer.valueOf(args[2]); 
-        if (args[3] == null) {
-            numComputerPlayers = 0;
-        } else {
+        try {
             numComputerPlayers = Integer.parseInt(args[3]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            numComputerPlayers = 0;
+            System.out.println("No computer players enabled.");
         }
         numHumanPlayers = numTotalPlayers - numComputerPlayers;
         board = Board.getInstance(args[0], args[1]);

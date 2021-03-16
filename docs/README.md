@@ -8,7 +8,6 @@
         ./run.sh src/main/resources/xml/board.xml src/main/resources/xml/cards.xml {number of total players} {number of computer players}
 
 ## How to Play Deadwood
-
 Note: computer players suppress ALL popups EXCEPT for errors and those at the day's end and at the game's end, but even though popups are suppressed, the board and player side panels will still update and the game will otherwise continue as normal.
 
     1. Once code is running, the current player will be displayed on the top of the screen
