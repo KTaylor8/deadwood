@@ -159,12 +159,20 @@ public class Game{
     }
 
     /**
-     * Grabs the available neighbors and creates a popup with the options, returns the chosen option
-     * @return String
+     * Grabs the available neighbors and creates a popup with the options or chooses an option randomly, returns the chosen option
+     * @return String chosen neighbor
      */
     public String chooseNeighbor() {
         String[] neighbors = currentPlayer.getLocation().getNeighborStrings();
-        String result = view.showMovePopUp(neighbors);
+        String result;
+        if (currentPlayer.isComputer()) {
+            Random rand = new Random();
+            int randInt = rand.nextInt(neighbors.length);
+            result = neighbors[randInt];
+        }
+        else {
+            result = view.showMovePopUp(neighbors);
+        }
         return result;
     }
 
@@ -176,12 +184,12 @@ public class Game{
         if(!currentPlayer.getHasPlayed()){
             if (!currentPlayer.isEmployed()) {
                 String destStr = chooseNeighbor();
-                //currentPlayer.setAreaData(getBoardSet(destStr).getArea());
+
                 currentPlayer.moveTo(destStr, getBoardSet(destStr));
                 if(currentPlayer.getLocation().getFlipStage() == 0){
                     currentPlayer.getLocation().flipSet();
                 }
-                refreshPlayerPanel(); // this is layering more components over the others but if it works it works
+                refreshPlayerPanel();
             }
             else {
                 view.showPopUp(currentPlayer.isComputer(), "Since you are employed in a role, you cannot move but you can act or rehearse if you have not already");
@@ -347,16 +355,16 @@ public class Game{
 
         if (!currentPlayer.isEmployed()) { // player not employed
             // moves (but suppresses popups) at random and update of player panel
-            computerMove();
+            tryMove();
 
             if (!(currentPlayer.getLocation().getName() == "trailer")) {
                 if (currentPlayer.getLocation().getName() == "office") { // in office
                     // upgrade (but suppresses popups) at random and update of player panel
-                    computerUpgrade();
+                    // computerUpgrade();
                     
                 } else { // in regular set
                     // take role (but suppresses popups) at random and update of player panel
-                    computerTakeRole();
+                    // computerTakeRole();
                 }
             }
             endTurn();
