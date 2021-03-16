@@ -72,7 +72,7 @@ public class Game{
         view.show(); // show view as last step of run()
 
         if (numTotalPlayers == numComputerPlayers) { // if all players are computers, trigger doComputerTurn()
-            view.showErrorPopUp("Warning: do not do this option if you are epileptic as the colors of the game are about to flash on-screen for the duration of this computer-player-only game play.");
+            view.showErrorPopUp("The board is excited to have all computer players, so it's about to shake things up, like it's dancing! \n\nWARNING: do not run the program with all of the players as computer players if you have epilepsy as the colors of the game are about to flash on-screen during the whole game.");
             doComputerTurn();
         }
     }
