@@ -36,12 +36,12 @@ Players can do the following:
      * Bonuses for on-card roles: the active player rolls as many dice as millions of dollars of movie budget. Distribute the dice, matching each one in decreasing value to the roles in decreasing order and wrapping around when you run out of roles, so that each role has multiple dice. The players acting on these roles receive money equivalent to the dice assigned to those roles.
      * Bonuses for off-card roles: Every extra gets paid a bonus equivalent to their role’s rank (regardless of the player rank).
 
-### End of days and end of game
+### End of Days and End of Game
 
 When there is only one scene left, the day ends and this last scene doesn’t finish. Players return to the trailers to start the next day, if there is one, starting from the next player. Deal new scene cards onto the board for all sets and reset all shot counters. The game ends after the 4th day and players’ scores are calculated. The player with the highest score wins!
 Player’s score = (1 point/dollar) + (1 point/credit) + (5 points * player rank)
 
-### Alternate flows
+### Alternate Flows
 
 2-3 players: play only 3 days
 
@@ -83,3 +83,21 @@ Note 2: The number shown on the a die face matches its player's rank rather than
        * rehearse
 3. After each day, the board will reset and move the players back to the trailers.
 4. After the max days it will calculate the scores and display which player is the winner.
+
+## Summary of Major Contributions to the GUI Version of the Game
+
+Some of Ktaylor8's contributions include the following:
+
+* implementing parsing for the xml for the area data and shot data
+* doing an overhaul on our code to align with the MVC design pattern (e.g. creating the controller, making the controller instantiate everything purposefully, making sure the flow of cross-component method calls throughout gameplay goes in a loop from Controller to the model (Game, which calls methods encapsulated in other model classes) to View and back to Controller, etc
+* implementing the singleton design pattern (for the classes that only needed to instantiate a single object: Board, View, XMLParser, and Game, implemented singletons using lazy initialization for the constructors that required arguments and using eager initialization for the rest)
+* making the die for each player appear on the board
+* coding and testing the computer players
+
+Some of lilu-martin's contributions include the following:
+
+* doing the majority of the Java Swing work in View (e.g. setting up all of the panels except the dice panel, setting up the first iterations of the popups (I made edits to suppress most of them while using computer players), etc)
+* coding the methods that reset the board, players, and images (resetBoard(), reloadImgs(), etc)
+* coding the non-computer-player part of the upgrade method
+* doing more extensive manual testing than me before we had working computer players
+* adding/cleaning up the method description comments for most of the code as well as the "How to play" part of the README.md
