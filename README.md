@@ -6,7 +6,7 @@ The following description is based on the original board game's rules found [her
 
 ### Overview
 
-lilu-martin and ktaylor8 designed and coded this digital implementation of the free board game Deadwood for our object-oriented programming class in winter 2020. In Deadwood, players are bit actors looking for cowboy acting jobs in the Deadwood backlot. Players, represented on the board as 6-sided dice whose number indicates their talent rank, traverse scenes in the backlot, taking on roles less than or equal to their talent rank, where they act in the scenes for money and credits. The goal of the game is to become the most successful actor at the end of 4 "days" (or 3 "days", if there are many players), determined by your rank, credits and dollars.
+lilu-martin and ktaylor8 designed and coded this digital implementation of the free board game Deadwood for our object-oriented programming class in winter quarter spanning 2020-2021. In Deadwood, players are bit actors looking for cowboy acting jobs in the Deadwood backlot. Players, represented on the board as 6-sided dice whose number indicates their talent rank, traverse scenes in the backlot, taking on roles less than or equal to their talent rank, where they act in the scenes for money and credits. The goal of the game is to become the most successful actor at the end of 4 "days" (or 3 "days", if there are many players), determined by your rank, credits and dollars.
 
 ### Initialization
 
